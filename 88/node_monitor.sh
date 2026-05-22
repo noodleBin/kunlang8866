@@ -12,17 +12,17 @@ declare -A processes=(
   ["monitor"]="mainboard -d /century/modules/monitor/dag/monitor.dag -p monitor_sched"
   ["mcloud"]="mainboard -d /century/modules/mcloud/dag/mcloud.dag"
   ["led"]="mainboard -d /century/modules/led_monitor/dag/led_monitor.dag"
-  ["gnss"]="mainboard -d /century/modules/drivers/gnss/dag/gnss.dag -s drivers"
+  ["gnss"]="mainboard -d /century/modules/drivers/gnss/dag/gnss.dag -s drivers -p drivers"
   ["ins_loc"]="mainboard -d /century/modules/localization/dag/ins_loc.dag -p localization_sched"
   ["transform"]="mainboard -d /century/modules/transform/dag/static_transform.dag"
   ["perception"]="mainboard -d /century/modules/perception/production/dag/dag_streaming_kl_perception_lidar.dag -p perception_sched"
   ["lidar_tracking"]="/century/bazel-bin/modules/perception/lidar_tracking/sample_lidar_tracking"
-  ["rs_rear"]="mainboard -d /century/modules/drivers/lidar/robosense/dag/rs32_rear.dag -s drivers"
-  ["rs_front"]="mainboard -d /century/modules/drivers/lidar/robosense/dag/rs32_front.dag -s drivers"
-  ["rsbp_rear"]="mainboard -d /century/modules/drivers/lidar/robosense/dag/rsbp_rear.dag -s drivers"
-  ["rsbp_front"]="mainboard -d /century/modules/drivers/lidar/robosense/dag/rsbp_front.dag -s drivers"
-  ["rsbp_rear_left"]="mainboard -d /century/modules/drivers/lidar/robosense/dag/rsbp_rear_left.dag -s drivers"
-  ["rsbp_front_right"]="mainboard -d /century/modules/drivers/lidar/robosense/dag/rsbp_front_right.dag -s drivers"
+  ["rs_rear"]="mainboard -d /century/modules/drivers/lidar/robosense/dag/rs32_rear.dag -s drivers -p robosense"
+  ["rs_front"]="mainboard -d /century/modules/drivers/lidar/robosense/dag/rs32_front.dag -s drivers -p robosense"
+  ["rsbp_rear"]="mainboard -d /century/modules/drivers/lidar/robosense/dag/rsbp_rear.dag -s drivers -p robosense"
+  ["rsbp_front"]="mainboard -d /century/modules/drivers/lidar/robosense/dag/rsbp_front.dag -s drivers -p robosense"
+  ["rsbp_rear_left"]="mainboard -d /century/modules/drivers/lidar/robosense/dag/rsbp_rear_left.dag -s drivers -p robosense"
+  ["rsbp_front_right"]="mainboard -d /century/modules/drivers/lidar/robosense/dag/rsbp_front_right.dag -s drivers -p robosense"
   ["fas_aeb_backend"]="mainboard -d /century/modules/fas_aeb_backend/dag/fas_aeb_backend.dag"
   ["map_change_listener"]="/century/bazel-bin/modules/dreamview/backend/hmi/map_change_listener"
 )
@@ -30,7 +30,7 @@ declare -A processes=(
 declare -A special_processes=(
   ["canbus"]="mainboard -d /century/modules/canbus/dag/canbus.dag"
   ["cyber_recorder"]="cyber_recorder record -a"
-  ["camera"]="mainboard -d /century/modules/drivers/camera/dag/camera.dag -s drivers"
+  ["camera"]="mainboard -d /century/modules/drivers/camera/dag/camera.dag -s drivers -p drivers"
 )
 
 declare -A special_processes_run=(

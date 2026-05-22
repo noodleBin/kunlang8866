@@ -20,7 +20,7 @@ bash /century/create_link.sh
 bash -c 'echo -1 > /proc/sys/kernel/sched_rt_runtime_us'
 
 function run_nvidia_slave() {
-  nohup mainboard -d /century/modules/drivers/gnss/dag/gnss.dag -s drivers > /dev/null 2>&1 &
+  nohup mainboard -d /century/modules/drivers/gnss/dag/gnss.dag -s drivers -p drivers > /dev/null 2>&1 &
   sleep 1
   nohup mainboard -d /century/modules/localization/dag/ins_loc.dag -p localization_sched > /dev/null 2>&1 &
   sleep 1
