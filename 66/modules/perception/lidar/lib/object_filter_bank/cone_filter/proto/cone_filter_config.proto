@@ -1,0 +1,10 @@
+syntax = "proto2";
+package century.perception.lidar;
+
+message ConeFilterConfig {
+  optional float grid_range = 1;
+  optional float grid_size = 2;
+  optional int32 appera_count = 3;
+  optional int32 disappear_count = 4;
+  optional float match_distance = 5;
+}

@@ -1,0 +1,10 @@
+header {
+  timestamp_sec: 0
+  module_name: "pass_stacker_response"
+  sequence_num: 0
+}
+has_response: true
+#stacker_id: "0"
+stacker_id: "2"
+pass_stacker_response_type: PASS #PASS ORIGINAL NOPASS
+

@@ -1,0 +1,2 @@
+
+channel_name: "/century/sensor/camera/traffic/image_short"

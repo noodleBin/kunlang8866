@@ -1,0 +1,36 @@
+.point_cloud_channel_select {
+  .selector {
+    z-index: 200;
+    border: none;
+    appearance: none;
+    width: 100%;
+    line-height: inherit;
+    color: inherit;
+
+    .select {
+      padding-left: 20px;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    .slider {
+      display: flex;
+      align-items: center;
+    }
+     
+    .slider p {
+      padding-left: 30px;
+      margin: 0;
+    }
+     
+    .slider input[type="range"] {
+      width: 180px;
+      background: black;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+  }
+}

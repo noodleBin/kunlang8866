@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+package century.v2x;
+
+import "modules/localization/proto/localization.proto";
+import "modules/canbus/proto/chassis_detail.proto";
+import "modules/v2x/proto/v2x_junction.proto";
+
+message CarStatus {
+  optional century.localization.LocalizationEstimate localization = 1;
+  optional century.canbus.ChassisDetail chassis_detail = 2;
+  optional century.v2x.Junction junction = 3;
+  optional Id rsu_id = 4;
+}

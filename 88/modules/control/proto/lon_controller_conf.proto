@@ -1,0 +1,98 @@
+syntax = "proto2";
+
+package century.control;
+
+import "modules/control/proto/calibration_table.proto";
+import "modules/control/proto/leadlag_conf.proto";
+import "modules/control/proto/pid_conf.proto";
+import "modules/control/proto/gain_scheduler_conf.proto";
+import "modules/control/proto/brake_table.proto";
+
+message FilterConf {
+  optional double cutoff_freq = 1;
+}
+enum control_mode
+{
+  TORQUE_CONTROL = 1;
+  SPEED_CONTROL = 2;
+}
+
+// controller param
+message LonControllerConf {
+  optional double ts = 1;  // longitudinal controller sampling time
+  optional double brake_minimum_action = 2;
+  optional double throttle_minimum_action = 3;
+  optional double speed_controller_input_limit = 4;
+  optional double station_error_limit = 5;
+  optional double preview_window = 6;
+  optional double standstill_acceleration = 7;
+
+  optional PidConf station_pid_conf = 8;
+  optional PidConf low_speed_pid_conf = 9;
+  optional PidConf high_speed_pid_conf = 10;
+  optional double switch_speed = 11;  // low/high speed controller switch speed
+  optional PidConf reverse_station_pid_conf = 12;
+  optional PidConf reverse_speed_pid_conf = 13;
+  optional FilterConf pitch_angle_filter_conf = 14;
+  optional LeadlagConf reverse_station_leadlag_conf = 15;
+  optional LeadlagConf reverse_speed_leadlag_conf = 16;
+
+  optional calibrationtable.ControlCalibrationTable calibration_table = 17;
+
+  optional bool enable_reverse_leadlag_compensation = 18 [default = false];
+
+  // low/high speed switch transition-window
+  optional double switch_speed_window = 19 [default = 0.0];
+  optional PidConf torque_pid_conf = 20;
+  optional double torque_ks = 21;
+  optional double brakegain = 22;
+  optional uint32 gearchangetime = 23;
+  optional double max_torquerequest = 24;
+  optional double speed_standstill = 25;
+  optional uint32 standstill_thres = 26;
+  optional double brakecmd_test = 27;
+  optional braketable.ControlBrakeTable lon_brake_accel_table = 28;
+  optional braketable.BrakeSpdTable lon_brake_velocity_gain = 29;
+  optional PidConf brake_pid_conf = 30;
+  optional double brake_max = 31;
+  optional double torque_driveoff_offset = 32;
+  optional double speed_driveoff = 33;
+  optional double targetspeed = 34;
+  optional double accelerate_thres = 35;
+  optional double decelerate_thres = 36;
+  optional double acceleration_max = 37;
+  optional double acceleration_min = 38;
+  optional double min_threshold_abnormal_data_detection_lon = 39;
+  optional double max_closest_trajectory_distance = 40;
+  optional FilterConf mass_filter= 41;
+  optional FilterConf speed_filter= 42;
+  optional double speed_error_average_threshold = 43 [default = 0.20];
+  optional int32 detection_data_size = 44 [default = 200];
+  optional int32 detection_waiting_times = 45 [default = 50];
+  optional double min_speed_error_average_threshold = 46 [default = 0.05];
+  optional double detection_wheel_angle = 47 [default = 1.0];
+  optional double detection_velocity = 48 [default = 3.0];
+  optional double time_to_collision = 49 [default = 1.7];
+  optional FilterConf acceleration_filter = 50;
+  optional PidConf reverse_torque_pid_conf = 51;
+  optional control_mode control_mode_switch = 52;
+  optional FilterConf torq_filter = 53;
+  optional double accel_thres_mass_update = 54;
+  optional PidConf station_pid_for_spd_ctrl_conf = 55;
+  optional FilterConf chassis_spd_filter = 56;
+  optional FilterConf local_spd_filter = 57;
+  optional FilterConf vel_compen_filter = 58;
+  optional double acceleration_threshold_for_turn = 59;
+  optional double kappa_for_turn = 60;
+  optional double driveoff_speed = 61;
+  optional double driveoff_acc = 62;
+  optional double aeb_brake_decel_l1 = 63;
+  optional double aeb_brake_decel_l2 = 64;
+  optional double aeb_brake_decel_l3 = 65;
+  optional double brake_decel_l1 = 66;
+  optional double brake_decel_l2 = 67;
+  optional double brake_decel_l3 = 68;
+  optional double brake_decel_l4 = 69;
+  optional double min_traj_length = 70;
+
+}

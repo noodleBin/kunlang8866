@@ -1,0 +1,17 @@
+model: "RSHELIOS"
+frame_id: "rslidar_32"
+ip: "192.168.1.81"
+msop_port: 6681
+difop_port: 7781
+echo_mode: 1
+start_angle: 0
+end_angle: 360
+min_distance: 0
+max_distance: 200
+cut_angle: 0
+pointcloud_channel: "/lidar/helios/rear_right"
+scan_channel: "century/sensor/rs32/Scan"
+use_lidar_clock: true
+is_dense: true
+split_frame_mode: 1
+split_angle: 180

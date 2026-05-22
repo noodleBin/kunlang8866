@@ -1,0 +1,10 @@
+# key: option name
+1: showTasks
+2: showModuleController
+3: showMenu
+4: showSimulateEditingBar
+5: showDataRecorder
+v: cameraAngle
+p: showPNCMonitor
+d: showMeasuringDistance
+a: showDestination

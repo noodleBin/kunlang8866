@@ -1,0 +1,100 @@
+syntax = "proto2";
+
+package century.routing;
+
+message TopicConfig {
+  optional string routing_response_topic = 1;
+  optional string routing_response_history_topic = 2;
+  optional string planning_trajectory_topic = 3;
+  optional string routing_result_topic = 4;
+}
+
+message CloudRoutingGenerateConfig {
+  // The third route starting point is to obtain the route starting point of the
+  // left lane, and s (0)+start of the starting point of the left road_ s_
+  // buffer
+  optional double start_s_buffer = 1 [default = 2.0];  // m
+  // The first route endpoint is obtained by obtaining the route endpoint of the
+  // right lane, and the s-end at the end of the right road_ s_ buffer
+  optional double end_s_buffer = 2 [default = 15.0];  // m
+  // Broken end routing request correlation: calculated from the end of the road
+  // Starting point: s - uturn at the end of the right road_ start_ s_ buffer
+  optional double uturn_start_s_buffer = 3 [default = 30.0];  // m
+  // End point: s - uturn at the end of the right road_ end_ s_ buffer
+  optional double uturn_end_s_buffer = 4 [default = 1.0];  // m
+  // Target point: s (0)+uturn of the starting point of the left road_ target_
+  // s_ buffer
+  optional double uturn_target_s_buffer = 5 [default = 5.0];  // m
+  // The time interval between processing 2 requests
+  optional double process_request_interval_time = 6 [default = 5.0];  // s
+  // Whether to generate the first segment of routing request: If not, the
+  // header request will be directly disconnected
+  optional bool generate_first_routing = 20 [default = true];
+}
+
+enum CraneProjectionMode {
+  // Use only nearest (center point) projection
+  NEAREST_ONLY = 0;
+  // Use heading projection from nearest lane, fallback to nearest if heading
+  // fails or two projections diverge beyond threshold (original behavior)
+  HEADING_WITH_NEAREST = 1;
+  // Weighted blend of nearest and heading projections
+  BLEND_BOTH = 2;
+}
+
+message CraneProjectionConfig {
+  // ---- mode selection ----
+  optional CraneProjectionMode mode = 1 [default = HEADING_WITH_NEAREST];
+  // HEADING_WITH_NEAREST: fallback to nearest when two projections differ > this [m]
+  optional double heading_nearest_distance_threshold = 2 [default = 4.0];
+  // BLEND_BOTH: weight for nearest projection [0.0, 1.0]
+  optional double blend_nearest_weight = 3 [default = 0.5];
+
+  // ---- common: lane search radius used by GetNearestProjection /
+  //              GetHeadingProjection [m] ----
+  optional double adc_lane_range = 4 [default = 3.5];
+  // minimum point distance for heading-diff numerics [m]
+  optional double proj_min_point_dist = 5 [default = 0.1];
+
+  // ---- GetHeadingProjection (iterative cross-lane search) ----
+  optional double heading_proj_coarse_step = 6 [default = 1.0];      // [m]
+  optional double heading_proj_fine_step = 7 [default = 0.1];        // [m]
+  optional int32  heading_proj_max_iter = 8 [default = 10];
+  optional double heading_proj_boundary_margin = 9 [default = 1.0];  // [m]
+  // reject candidate if heading diff exceeds this [degrees]
+  optional double heading_proj_max_diff_deg = 10 [default = 45.0];
+
+  // ---- GetHeadingProjectionFromLane (along-lane search) ----
+  optional double heading_from_lane_coarse_step = 11 [default = 1.0];      // [m]
+  optional double heading_from_lane_fine_step = 12 [default = 0.1];        // [m]
+  optional int32  heading_from_lane_max_lane_count = 13 [default = 3];
+  optional double heading_from_lane_max_search_dist = 14 [default = 30.0]; // [m]
+  // reject entirely if initial heading diff exceeds this [degrees]
+  optional double heading_from_lane_init_max_diff_deg = 15 [default = 30.0];
+
+  // ---- lateral blend (GetHeadingProjectionFromLane) ----
+  optional bool   enable_lateral_blend = 16 [default = false];
+  // ego-to-nearest distance at which blend weight becomes zero [m]
+  optional double lateral_blend_offset = 17 [default = 7.0];
+}
+
+message RoutingConfig {
+  // base speed for node creator [m/s]
+  optional double base_speed = 1;
+  // left turn penalty for node creator [m]
+  optional double left_turn_penalty = 2;
+  // right turn penalty for node creator [m]
+  optional double right_turn_penalty = 3;
+  // u turn penalty for node creator [m]
+  optional double uturn_penalty = 4;
+  // change penalty for edge creator [m]
+  optional double change_penalty = 5;
+  // base change length penalty for edge creator [m]
+  optional double base_changing_length = 6;
+  // topic config
+  optional TopicConfig topic_config = 7;
+  // cloud routing request generation configuration
+  optional CloudRoutingGenerateConfig generate_config = 8;
+  // crane projection mode configuration
+  optional CraneProjectionConfig crane_projection_config = 9;
+}

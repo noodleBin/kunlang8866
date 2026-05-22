@@ -1,0 +1,1 @@
+channel_name: "/century/sensor/camera/right_rear/image"

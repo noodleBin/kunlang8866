@@ -1,0 +1,10 @@
+module_config {
+    module_library : "/century/bazel-bin/modules/tools/planning/fake_stackers_info/libfake_stackers_info_component.so"
+    timer_components {
+        class_name : "FakeStackersInfoComponent"
+        config {
+            name: "fake_stackers_info"
+            interval: 10000
+        }
+    }
+}

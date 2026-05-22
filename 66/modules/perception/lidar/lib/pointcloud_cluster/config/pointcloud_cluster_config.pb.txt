@@ -1,0 +1,6 @@
+  euclidean_min_size: 3
+  euclidean_max_size: 25000
+  euclidean_tolerance: 0.9
+  euclidean_leaf_size: 0.1
+
+  dbscan_max_neighbor: 50

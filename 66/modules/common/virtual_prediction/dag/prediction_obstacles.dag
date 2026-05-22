@@ -1,0 +1,11 @@
+module_config {
+  module_library : "/century/bazel-bin/modules/common/virtual_prediction/libprediction_virtual_obstacles_component.so"
+
+  components {
+    class_name : "PredictionVirtualObstaclesComponent"
+    config {
+      name : "prediction_virtual_obstacles"
+      config_file_path: "/century/modules/common/virtual_prediction/conf/prediction_sim.pb.txt"
+    }
+  }
+}

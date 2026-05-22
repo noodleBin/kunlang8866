@@ -1,0 +1,266 @@
+syntax = "proto2";
+
+import "modules/planning/proto/math/fem_pos_deviation_smoother_config.proto";
+import "modules/planning/proto/task_config.proto";
+import "modules/planning/proto/openspace_bidirection_config.proto";
+
+package century.planning;
+
+enum DualWarmUpMode {
+  IPOPT = 0;
+  IPOPTQP = 1;
+  OSQP = 2;
+  DEBUG = 3;
+  SLACKQP = 4;
+}
+
+enum DistanceApproachMode {
+  DISTANCE_APPROACH_IPOPT = 0;
+  DISTANCE_APPROACH_IPOPT_CUDA = 1;
+  DISTANCE_APPROACH_IPOPT_FIXED_TS = 2;
+  DISTANCE_APPROACH_IPOPT_FIXED_DUAL = 3;
+  DISTANCE_APPROACH_IPOPT_RELAX_END = 4;
+  DISTANCE_APPROACH_IPOPT_RELAX_END_SLACK = 5;
+}
+
+message PlannerOpenSpaceConfig {
+  // Open Space ROIConfig
+  optional ROIConfig roi_config = 1;
+  // Hybrid A Star Warm Start
+  optional WarmStartConfig warm_start_config = 2;
+  // Dual Variable Warm Start
+  optional DualVariableWarmStartConfig dual_variable_warm_start_config = 3;
+  // Distance Approach Configs
+  optional DistanceApproachConfig distance_approach_config = 4;
+  // Iterative Anchoring Configs
+  optional IterativeAnchoringConfig iterative_anchoring_smoother_config = 5;
+  // Trajectory PartitionConfig Configs
+  optional TrajectoryPartitionConfig trajectory_partition_config = 6;
+  optional float delta_t = 7 [default = 1.0];
+  optional double is_near_destination_threshold = 8 [default = 0.001];
+  optional bool enable_check_parallel_trajectory = 9 [default = false];
+  optional bool enable_linear_interpolation = 10 [default = false];
+  optional double is_near_destination_theta_threshold = 11 [default = 0.05];
+
+  optional double search_radius_smooth_ratio = 14 [default = 0.75];
+  optional bool use_pure_astar = 15 [default = false];
+  optional bool use_hybrid_thread = 16 [default = true];
+
+  // roi scenario definitions
+  enum RoiType {
+    NOT_DEFINED = 0;
+    PARKING = 1;
+    PULL_OVER = 2;
+    PARK_AND_GO = 3;
+    NARROW_STREET_U_TURN = 4;
+    DEAD_END = 5;
+    TRAFFIC_LIGHT = 6;
+    RESCUE = 7;
+    UTURN = 8;
+  }
+  optional RoiType roi_type = 20;
+}
+
+message ROIConfig {
+  // longitudinal range of parking roi backward
+  optional double roi_longitudinal_range_start = 1 [default = 10.0];
+  // longitudinal range of parking roi forward
+  optional double roi_longitudinal_range_end = 2 [default = 10.0];
+  // parking spot range detection threshold
+  optional double parking_start_range = 3 [default = 7.0];
+  // Parking orientation for reverse parking
+  optional bool parking_inwards = 4 [default = false];
+}
+
+message KappaContraintRatioConfig {
+  // traj kappa contraint ratio
+  optional double traj_kappa_contraint_ratio = 1 [default = 1.0];
+  // a star normal search time
+  optional double astar_max_time_first = 2 [default = 0.5];
+  // a star search with map boundary time
+  optional double astar_max_time_second = 3 [default = 0.3];
+}
+
+message WarmStartConfig {
+  // Hybrid a star for warm start
+  optional double xy_grid_resolution = 1 [default = 0.2];
+  optional double phi_grid_resolution = 2 [default = 0.05];
+  optional uint64 next_node_num = 3 [default = 10];
+  optional double step_size = 4 [default = 0.5];
+  optional double traj_forward_penalty = 5 [default = 0.0];
+  optional double traj_back_penalty = 6 [default = 0.0];
+  optional double traj_gear_switch_penalty = 7 [default = 10.0];
+  optional double traj_steer_penalty = 8 [default = 100.0];
+  optional double traj_steer_change_penalty = 9 [default = 10.0];
+  optional double traj_end_heading_error_penalty = 80 [default = 0.0];
+  // Grid a star for heuristic
+  optional double grid_a_star_xy_resolution = 10 [default = 0.5];
+  optional double grid_a_star_node_radius = 11 [default = 0.5];
+  optional PiecewiseJerkSpeedOptimizerConfig s_curve_config = 12;
+  optional double traj_kappa_contraint_ratio = 13 [default = 1.0];
+  optional double astar_first_long_buffer = 14 [default = 0.3];
+  optional double astar_first_lat_buffer = 15 [default = 0.5];
+
+  // an ordered list of kappa config that are used at runtime.
+  repeated KappaContraintRatioConfig kappa_contraint_config = 16;
+
+  //---------------------------------------------------------------------------
+  // Added for Hybrid a star
+  // Added for Hybrid a star Collision detection safety distance
+  optional double hybrid_a_star_node_radius = 20 [default = 0.5];
+  optional double hybrid_a_star_bounds_radius = 21 [default = 0.5];
+  optional bool is_hybrid_a_star_bounds_check = 22 [default = false];
+  //---------------------------------------------------------------------------
+  // Add boundary check
+  optional bool is_convert_to_grid_coordinates = 30 [default = true];
+  optional bool is_xy_bounds_check = 31 [default = false];
+  optional double grid_a_star_bounds_radius = 32 [default = 0.5];
+  // A Star Heuristic Type And Update OpenSet G And F
+  // a_star_heuristic_type:0-Manhattan,1-Diagonal,2-Euclid
+  optional uint32 a_star_heuristic_type = 33 [default = 0];
+  optional bool is_astar_update_cost = 34 [default = false];
+  // 0-cmp F; 1-cmp G;
+  optional uint32 a_star_update_type = 35 [default = 0];
+  //---------------------------------------------------------------------------
+  // debug conf
+  optional int32 required_size_of_rs_segs = 40;
+  optional bool is_hybrid_debug = 41 [default = false];
+  optional int32 hybrid_debug_next_node_sleep_ms = 42 [default = 0];
+  // heuristic_type:0-dp_map,1-a_star,2-Euler,3-Manhattan,4-ReedSheep,
+  // 5-RS And AStar
+  optional uint32 heuristic_type = 43 [default = 2];
+  optional uint32 rs_num_peroid = 44 [default = 1];
+  optional bool is_hybrid_update_cost = 45 [default = false];
+
+  optional double hybrid_use_rs_dis = 46 [default = 5.0];
+  optional bool use_bestest_rs = 47 [default = false];
+  //---------------------------------------------------------------------------
+  // A Star Path Nearby point
+  optional bool is_use_a_star_path = 50 [default = false];
+  optional double a_star_path_distance_threshold = 51 [default = 10.0];
+  //---------------------------------------------------------------------------
+
+  optional double search_near_destination_x_threshold = 52 [default = 0.5];
+  optional double search_near_destination_y_threshold = 53 [default = 0.3];
+  optional double search_near_destination_theta_threshold = 54 [default = 0.1];
+  optional double astar_max_time_first = 61 [default = 1.5];
+  optional double astar_max_time_second = 62 [default = 4.1];
+  optional double goal_dist_cost = 63 [default = 1.5];
+  optional uint64 force_forward_init = 64 [default = 0];
+  optional double near_obs_dist = 65 [default = 3.0];
+  optional double near_obs_dist_cost = 66 [default = 3.0];
+  optional bool  enable_voronoi_field = 67 [default = false];
+  optional uint32 voronoi_obs_acting_dis = 68 [default = 25];
+  optional double voronoi_dist_cost = 69 [default = 10];
+  optional double min_astar_long_buffer = 70 [default = 0.15];
+  optional double min_astar_lat_buffer = 71 [default = 0.15];
+  optional double max_buff_adjustment_distance = 72 [default = 4.0];
+  optional double min_buff_adjustment_distance = 73 [default = 2.0];
+  optional double same_direction_force_distance = 74 [default = 0.8];
+
+  optional OpenSpaceBidirectionConfig openspace_bidirection_config = 150;
+}
+
+message DualVariableWarmStartConfig {
+  // Dual variable Warm Start
+  optional double weight_d = 1 [default = 1.0];
+  optional IpoptConfig ipopt_config = 2;
+  optional DualWarmUpMode qp_format = 3;
+  optional double min_safety_distance = 4 [default = 0.0];
+  optional bool debug_osqp = 5 [default = false];
+  optional double beta = 6 [default = 1.0];
+  optional OSQPConfig osqp_config = 7;
+}
+
+message DistanceApproachConfig {
+  // Distance approach weight configs
+  optional double weight_steer = 1;
+  optional double weight_a = 2;
+  optional double weight_steer_rate = 3;
+  optional double weight_a_rate = 4;
+  optional double weight_x = 5;
+  optional double weight_y = 6;
+  optional double weight_phi = 7;
+  optional double weight_v = 8;
+  optional double weight_steer_stitching = 9;
+  optional double weight_a_stitching = 10;
+  optional double weight_first_order_time = 11;
+  optional double weight_second_order_time = 12;
+  optional double min_safety_distance = 13 [default = 0.0];
+  optional double max_speed_forward = 14 [default = 3.0];
+  optional double max_speed_reverse = 15 [default = 2.0];
+  optional double max_acceleration_forward = 16 [default = 2.0];
+  optional double max_acceleration_reverse = 17 [default = 2.0];
+  optional double min_time_sample_scaling = 18 [default = 0.1];
+  optional double max_time_sample_scaling = 19 [default = 10.0];
+  optional bool use_fix_time = 20 [default = false];
+  optional IpoptConfig ipopt_config = 21;
+  optional bool enable_constraint_check = 22;
+  optional bool enable_hand_derivative = 23;
+  // True to enable hand derived derivative inside open space planner
+  optional bool enable_derivative_check = 24;
+  // True to enable derivative check inside open space planner
+  optional bool enable_initial_final_check = 25 [default = false];
+  optional DistanceApproachMode distance_approach_mode = 26;
+  optional bool enable_jacobian_ad = 27 [default = false];
+  optional bool enable_check_initial_state = 28 [default = false];
+  optional double weight_end_state = 29 [default = 0.0];
+  optional double weight_slack = 30 [default = 0.0];
+}
+
+message IpoptConfig {
+  // Ipopt configs
+  optional int32 ipopt_print_level = 1;
+  optional int32 mumps_mem_percent = 2;
+  optional double mumps_pivtol = 3;
+  optional int32 ipopt_max_iter = 4;
+  optional double ipopt_tol = 5;
+  optional double ipopt_acceptable_constr_viol_tol = 6;
+  optional double ipopt_min_hessian_perturbation = 7;
+  optional double ipopt_jacobian_regularization_value = 8;
+  optional string ipopt_print_timing_statistics = 9;
+  optional string ipopt_alpha_for_y = 10;
+  optional string ipopt_recalc_y = 11;
+  optional double ipopt_mu_init = 12 [default = 0.1];
+  // ipopt barrier parameter, default 0.1
+}
+
+// Dual variable configs for OSQP
+message OSQPConfig {
+  optional double alpha = 1 [default = 1.0];
+  optional double eps_abs = 2 [default = 1.0e-3];
+  optional double eps_rel = 3 [default = 1.0e-3];
+  optional int32 max_iter = 4 [default = 10000];
+  optional bool polish = 5 [default = true];
+  optional bool osqp_debug_log = 6 [default = false];
+}
+
+message IterativeAnchoringConfig {
+  // Ipopt configs
+  optional double interpolated_delta_s = 1 [default = 0.1];
+  optional int32 reanchoring_trails_num = 2 [default = 50];
+  optional double reanchoring_pos_stddev = 3 [default = 0.25];
+  optional double reanchoring_length_stddev = 4 [default = 1.0];
+  optional bool estimate_bound = 5 [default = false];
+  optional double default_bound = 6 [default = 2.0];
+  optional double vehicle_shortest_dimension = 7 [default = 1.04];
+  optional FemPosDeviationSmootherConfig fem_pos_deviation_smoother_config = 8;
+  optional double collision_decrease_ratio = 9 [default = 0.9];
+  // TODO(QiL, Jinyun): Merge following with overall config for open space
+  optional double max_forward_v = 10 [default = 2.0];
+  optional double max_reverse_v = 11 [default = 2.0];
+  optional double max_forward_acc = 12 [default = 3.0];
+  optional double max_reverse_acc = 13 [default = 2.0];
+  optional double max_acc_jerk = 14 [default = 4.0];
+  optional double delta_t = 15 [default = 0.2];
+  optional PiecewiseJerkSpeedOptimizerConfig s_curve_config = 16;
+}
+
+message TrajectoryPartitionConfig {
+  optional uint64 interpolated_pieces_num = 1 [default = 50];
+  optional uint64 initial_gear_check_horizon = 2 [default = 3];
+  optional double heading_searching_range = 3 [default = 0.3];
+  optional double gear_shift_period_duration = 4 [default = 2.0];
+  optional double gear_shift_max_t = 5 [default = 3.0];
+  optional double gear_shift_unit_t = 6 [default = 0.02];
+}

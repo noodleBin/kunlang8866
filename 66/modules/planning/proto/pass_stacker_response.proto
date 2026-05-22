@@ -1,0 +1,17 @@
+syntax = "proto2";
+package century.planning;
+
+import "modules/common/proto/header.proto";
+
+enum PassStackerResponseType {
+  ORIGINAL = 0;
+  PASS = 1;
+  NOPASS = 2;
+}
+
+message PassStackerResponse {
+  optional century.common.Header header = 1;
+  optional bool has_response = 2 [default = false];
+  optional string stacker_id = 3;
+  optional PassStackerResponseType pass_stacker_response_type = 4 [default = ORIGINAL];
+}

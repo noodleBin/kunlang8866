@@ -1,0 +1,989 @@
+syntax = "proto2";
+
+package century.planning;
+
+//////////////////////////////////
+// CreesDeciderConfig
+
+message CreepDeciderConfig {
+  // stop distance(m) to the creeping stop fence while creeping
+  optional double stop_distance = 1 [default = 0.5];  // meter
+  optional double speed_limit = 2 [default = 1.0];    // m/s
+  // max distance(m) to the to the creeping stop fence
+  // to be considered as a valid stop for creep
+  optional double max_valid_stop_distance = 3 [default = 0.3];  // meter
+  // min boundary t to ignore obstacles while creeping
+  optional double min_boundary_t = 4 [default = 6.0];  // second
+  // tolerance min_t & min_s to ignore obstacles which are moving
+  // on same direction of ADC while creeping
+  optional double ignore_max_st_min_t = 5 [default = 0.1];   // second
+  optional double ignore_min_st_min_s = 6 [default = 15.0];  // meter
+}
+
+//////////////////////////////////
+// LaneChangeDeciderConfig
+
+message LaneChangeDeciderConfig {
+  optional bool enable_lane_change_urgency_check = 1;
+  // True to enable prioritize change_lane reference line
+  optional bool enable_prioritize_change_lane = 2 [default = false];
+  // True to enable remove change_lane reference line");
+  optional bool enable_remove_change_lane = 3 [default = false];
+  // always allow the vehicle change lane. The vehicle may continue changing
+  // lane
+  optional bool reckless_change_lane = 4 [default = false];
+  // not allowed to change lane this amount of time if just finished
+  optional double change_lane_success_freeze_time = 5
+      [default = 1.5];  // second
+  // not allowed to change lane this amount of time if just failed
+  optional double change_lane_fail_freeze_time = 6 [default = 1.0];  // second
+}
+
+//////////////////////////////////
+// LearningModelInferenceTaskConfig
+
+message LearningModelInferenceTaskConfig {
+  enum ModelType {
+    CNN = 1;
+    CNN_LSTM = 2;
+  }
+  optional ModelType model_type = 1;
+  optional string cpu_model_file = 2;
+  optional string gpu_model_file = 3;
+  optional bool use_cuda = 4 [default = true];
+  // delta_t depends on the model output, not a configurable value here
+  optional double trajectory_delta_t = 5 [default = 0.2];  // second
+  optional bool allow_empty_learning_based_data = 6 [default = false];
+  optional bool allow_empty_output_trajectory = 7 [default = false];
+}
+
+//////////////////////////////////
+// LearningModelInferenceTrajectoryTaskConfig
+
+message LearningModelInferenceTrajectoryTaskConfig {
+  optional double min_adc_future_trajectory_time_length = 1
+      [default = 2.0];  // second
+}
+
+//////////////////////////////////
+// Navi
+
+message NaviObstacleDeciderConfig {
+  optional double min_nudge_distance = 1 [default = 0.2];
+  optional double max_nudge_distance = 2 [default = 1.2];
+  optional double max_allow_nudge_speed = 3 [default = 16.667];
+  optional double safe_distance = 4 [default = 0.2];
+  optional double nudge_allow_tolerance = 5 [default = 0.05];
+  optional uint32 cycles_number = 6 [default = 3];
+  optional double judge_dis_coeff = 7 [default = 2.0];
+  optional double basis_dis_value = 8 [default = 30.0];
+  optional double lateral_velocity_value = 9 [default = 0.5];
+  optional double speed_decider_detect_range = 10 [default = 1.0];
+  optional uint32 max_keep_nudge_cycles = 11 [default = 100];
+}
+
+message NaviPathDeciderConfig {
+  optional double min_path_length = 1 [default = 5];
+  optional uint32 min_look_forward_time = 2 [default = 2];
+  optional double max_keep_lane_distance = 3 [default = 0.8];
+  optional double max_keep_lane_shift_y = 4 [default = 20.0];
+  optional double min_keep_lane_offset = 5 [default = 15.0];
+  optional double keep_lane_shift_compensation = 6 [default = 0.01];
+  optional MoveDestLaneConfigTable move_dest_lane_config_talbe = 7;
+  optional double move_dest_lane_compensation = 8 [default = 0.35];
+  optional double max_kappa_threshold = 9 [default = 0.0];
+  optional double kappa_move_dest_lane_compensation = 10 [default = 0.0];
+  optional uint32 start_plan_point_from = 11 [default = 0];
+}
+
+message MoveDestLaneConfigTable {
+  repeated ShiftConfig lateral_shift = 1;
+}
+
+message ShiftConfig {
+  optional double max_speed = 1 [default = 4.16];
+  optional double max_move_dest_lane_shift_y = 3 [default = 0.4];
+}
+
+message NaviSpeedDeciderConfig {
+  optional double preferred_accel = 1 [default = 2.0];
+  optional double preferred_decel = 2 [default = 2.0];
+  optional double preferred_jerk = 3 [default = 2.0];
+  optional double max_accel = 4 [default = 4.0];
+  optional double max_decel = 5 [default = 5.0];
+  optional double obstacle_buffer = 6 [default = 0.5];
+  optional double safe_distance_base = 7 [default = 2.0];
+  optional double safe_distance_ratio = 8 [default = 1.0];
+  optional double following_accel_ratio = 9 [default = 0.5];
+  optional double soft_centric_accel_limit = 10 [default = 1.2];
+  optional double hard_centric_accel_limit = 11 [default = 1.5];
+  optional double hard_speed_limit = 12 [default = 100.0];
+  optional double hard_accel_limit = 13 [default = 10.0];
+  optional bool enable_safe_path = 14 [default = true];
+  optional bool enable_planning_start_point = 15 [default = true];
+  optional bool enable_accel_auto_compensation = 16 [default = true];
+  optional double kappa_preview = 17 [default = 0.0];
+  optional double kappa_threshold = 18 [default = 0.0];
+}
+
+//////////////////////////////////
+// PathAssessmentDeciderConfig
+
+message PathAssessmentDeciderConfig {
+  optional uint32 assess_lane_borrow_exit_times = 1 [default = 3];
+  optional bool enable_path_assessment_check_collision = 2 [default = false];
+}
+
+//////////////////////////////////
+// PathBoundsDeciderConfig
+
+message PathBoundsDeciderConfig {
+  enum LaneChangePathBoundMethod {
+    DEFAULT = 0;
+    PRE_FORWARD = 1;
+    LINEAR_LINE = 2;
+    CUBIC = 3;
+  }
+  optional bool is_lane_borrowing = 1;
+  optional bool is_pull_over = 2;
+  // not search pull-over position if the destination is within this distance
+  // from ADC
+  optional double pull_over_destination_to_adc_buffer = 3 [default = 25.0];
+  // not search pull-over position if the destination is within this distance to
+  // path-end
+  optional double pull_over_destination_to_pathend_buffer = 4 [default = 10.0];
+  // disquality a pull-over position if the available path boundary's edge is
+  // not within this distance from the road edge
+  optional double pull_over_road_edge_buffer = 5 [default = 0.15];
+  optional double pull_over_approach_lon_distance_adjust_factor = 6
+      [default = 1.5];
+  optional double adc_buffer_coeff = 7 [default = 1.0];
+  optional bool is_extend_lane_bounds_to_include_adc = 8 [default = true];
+  optional double safe_limit_edge_buffer_ratio = 9 [default = 0.4];
+  optional double obstacle_track_keep_time = 10 [default = 0.5];
+  optional double near_merge_lane_check_distance = 11 [default = 5.0];
+  optional double public_road_max_path_length = 12 [default = 70.0];
+  optional double public_road_min_path_length = 13 [default = 40.0];
+  optional double play_street_max_path_length = 14 [default = 40.0];
+  optional double play_street_min_path_length = 15 [default = 20.0];
+  optional double extend_path_over_destination = 16 [default = 10.0];
+  optional double max_lateral_acceleration = 17 [default = 0.6];
+  optional double in_borrow_free_solid_line_length = 18 [default = 2.0];
+  optional double lane_change_preview_time = 19 [default = 3.0];
+  optional double max_lane_change_preview_time_for_cubic = 20 [default = 0.0];
+  optional double min_lane_change_preview_time_for_cubic = 21 [default = -1.0];
+  optional double anchor_change_path_preparation_plan_time = 22 [default = 16.0];
+  optional double cubic_max_dl_bound = 23 [default = 0.3];
+  optional double cubic_dl_bound_weight = 24 [default = 0.2];
+  optional double obstacle_start_edge_buffer_ratio = 25 [default = 0.5];
+  optional double lane_change_acceleration = 26 [default = 1.5];
+  optional double forbidden_zone_use_deceleration = 27 [default = 1.0];
+  optional LaneChangePathBoundMethod lane_change_path_bound_method = 28;
+  optional double keep_right_offset = 29 [default = -0.5];
+  optional int32 keep_hold_safe_check_times = 30 [default = 10];
+  optional double keep_right_road_min_kappa = 31 [default = 0.005];
+  optional double keep_right_road_min_width = 32 [default = 4.0];
+  optional bool consider_neighbor_lane = 33 [default = false];
+  optional double keep_right_road_length = 34 [default = 30.0];
+  optional double min_include_adc_path_bound_buffer = 35 [default = 0.0];
+  optional double fix_lateral_buffer_first_level = 36 [default = 0.5];
+  optional double check_head_bang_ttc = 37 [default = 3.0];
+  optional int32 adc_slow_down_block_count_threshold = 38 [default = 20];
+  optional double narrow_area_lat_safe_buffer = 39 [default = 0.25];
+  optional double narrow_area_lon_start_safe_buffer = 40 [default = 0.5];
+  optional double narrow_area_lon_end_safe_buffer = 41 [default = 0.5];
+  optional double lane_borrow_use_remain_path_threshold = 42 [default = 15.0];
+  optional double routing_end_reserved_distance = 43 [default = 5.0];
+  optional double fixed_short_path_length = 44 [default = 10.0];
+  optional int32 moving_obstacle_keep_time_threshold = 45 [default = 20];
+  optional double ignore_obs_edge_distance_threshold = 46 [default = 25.0];
+  optional double min_safe_obstacle_lateral_buffer = 47 [default = 0.25];
+  optional double extend_path_length_for_speed_plan = 48 [default = 6.0];
+  optional double ignore_obs_edge_distance_threshold_mixed_traffic = 49
+      [default = 8.0];
+  optional double check_head_obs_lat_buffer_threshold = 50 [default = 1.0];
+  optional bool enable_mixed_flow_keep_right = 51 [default = false];
+  optional bool enable_wide_road_keep_right = 52 [default = false];
+  optional double check_obstacle_lateral_diff = 53 [default = 0.5];
+  optional double obstacle_lon_start_safe_buffer = 54 [default = 3.0];
+  optional double obstacle_lon_end_safe_buffer = 55 [default = 2.0];
+  optional bool enable_exclude_overtake_obstacle = 56 [default = true];
+  optional bool enable_keep_right = 57 [default = true];
+  optional int32 self_path_keep_straight_count_limit = 58 [default = 10];
+  optional double self_path_keep_straight_speed_limit = 59 [default = 5.0];
+  optional double self_path_obs_start_l_limit = 60 [default = 0.0];
+}
+
+//////////////////////////////////
+// PathDeciderConfig
+
+message PathDeciderConfig {
+  // buffer for static obstacles (meter)
+  optional double static_obstacle_buffer = 1 [default = 0.3];
+  optional double min_adc_speed = 2 [default = 2.0];
+  optional double path_distance_threshold = 3 [default = 12.0];
+  optional double max_reference_line_path_kappa_threshold = 4 [default = 0.05];
+  optional double max_kappa_threshold = 5 [default = 0.1];
+  optional double max_centripetal_acceleration_threshold = 6 [default = 0.1];
+  optional double min_distance_to_obstacle_near_traffic_light = 7
+      [default = 4.0];
+  optional double use_obstacle_polygon_check_remain_dis = 8 [default = 6.0];
+  optional double out_lane_stop_immediately_velocity_threshold = 9
+      [default = 3.0];
+  optional bool enable_check_headbang_path = 10 [default = false];
+  optional bool enable_use_polygon_collision_check = 11 [default = true];
+  optional double adc_lateral_collision_safe_buffer = 12 [default = 0.2];
+}
+
+//////////////////////////////////
+// PathLaneBorrowDeciderConfig
+
+message PathLaneBorrowDeciderConfig {
+  optional double check_forward_distance = 2 [default = 15.0];
+  optional double in_borrow_check_forward_distance = 3 [default = 3.0];
+  optional double adc_block_velocity_threshold = 4 [default = 0.5];
+  optional int32 slow_obs_threshold_times = 5 [default = 3];
+  optional double obs_far_away_safe_distance = 6 [default = 15.0];
+  optional uint32 borrow_path_fail_remote_report_threshold = 7 [default = 10];
+  optional double stop_near_intersection_time_threshold = 8 [default = 5.0];
+  optional double stop_near_intersection_distance_threshold = 9
+      [default = 10.0];
+  optional double near_junction_distance_check_borrow = 10 [default = 60.0];
+  optional uint32 near_junction_obstacle_check_times = 11 [default = 200];
+  optional double near_junction_not_borrow_reverse_distance = 12
+      [default = 50.0];
+  optional double safe_check_time_same_direction = 13 [default = 2.0];
+  optional double safe_check_time_opposite_direction = 14 [default = 5.0];
+  optional double forward_safe_distance_same_direction = 15 [default = 10.0];
+  optional double backward_safe_distance_same_direction = 16 [default = 10.0];
+  optional double forward_safe_distance_opposite_direction = 17
+      [default = 20.0];
+  optional double backward_safe_distance_opposite_direction = 18
+      [default = 2.0];
+  optional double far_from_intersection_distance_threshold = 19
+      [default = 15.0];
+
+  // parameters used for near junction laneborrow.
+  optional double obs_to_solid_line_distance_threshold = 20 [default = 15.0];
+  optional int32 near_junction_obs_keep_check_time_threshold = 21
+      [default = 50];
+  optional double adc_to_solid_line_distance_threshold = 22 [default = 15.0];
+  optional double adc_goto_neighbor_lane_heading_threshold = 23
+      [default = 15.0];
+  optional double left_neighbor_lane_obs_buffer = 24 [default = 0.25];
+  optional double reference_lane_obs_buffer = 25 [default = 0.25];
+  optional int32 in_solid_line_obs_keep_check_time_threshold = 26
+      [default = 400];
+  optional int32 in_junction_obs_keep_check_time_threshold = 27 [default = 300];
+  optional int32 in_solid_line_check_time_limit_level_1 = 41 [default = 400];
+  optional int32 in_solid_line_check_time_limit_level_2 = 42 [default = 300];
+  optional int32 in_solid_line_check_time_limit_level_3 = 43 [default = 200];
+  optional double distance_to_signal_limit_level_1 = 44 [default = 15.0];
+  optional double distance_to_signal_limit_level_2 = 45 [default = 40.0];
+  optional int32 waiting_time_for_one_more_car = 47 [default = 600];
+  optional int32 max_waiting_time = 48 [default = 1800];
+  optional double slow_vehicle_speed_limit = 49 [default = 2.0];
+
+  optional double truck_distance_threshold = 28 [default = 80.0];
+  optional double truck_height_threshold = 29 [default = 2.2];
+  optional int32 truck_keep_check_time_threshold = 30 [default = 300];
+  optional int32 extra_waiting_time_for_truck = 31 [default = 100];
+  optional int32 extra_waiting_time_for_red_light = 40 [default = 600];
+  optional double crowd_traffic_car_gap_distance_limit = 32 [default = 6.0];
+  optional int32 in_crowd_traffic_check_count_limit = 33 [default = 3];
+  optional int32 crowd_traffic_car_number_limit = 34 [default = 3];
+  optional double crowd_traffic_overlap_car_lookforward_distance = 35
+      [default = 20.0];
+  optional double left_lane_veh_buffer = 36 [default = 0.8];
+  optional double reference_lane_veh_buffer = 37 [default = 0.8];
+  optional bool enable_truck_negative_laneborrow = 38 [default = true];
+  optional bool enable_crowd_traffic_laneborrow = 39 [default = true];
+  optional double in_junction_routing_check_remain_dis = 46 [default = 10.0];
+
+  // parameters used for auxiliary_road borrow.
+  optional double auxiliary_road_in_junction_left_lane_length_limit = 50
+      [default = 15.0];
+  optional double auxiliary_road_distance_to_curb_limit = 51 [default = 20.0];
+  optional int32 auxiliary_road_in_curb_wait_time_limit = 52 [default = 600];
+
+  optional double safe_check_adc_lateral_velocity_estimate = 53 [default = 0.6];
+  optional double pass_by_safe_distance = 54 [default = 15.0];
+}
+
+//////////////////////////////////
+// LaneOvertakeConfig
+
+message LaneOvertakeDeciderConfig {
+  optional bool allow_overtake_fsm = 1;
+  optional int32 slow_obs_total_times = 2;
+  optional double min_safe_follow_distance = 3 [default = 1.5];
+  optional double min_distance_check_threshold = 4 [default = 10.0];
+  optional double max_distance_check_threshold = 5 [default = 60.0];
+  optional double obs_faster_than_adc_ratio = 6 [default = 1.5];
+  optional double overtake_need_total_distance = 7 [default = 100.0];
+  optional double adc_faster_than_obstacle_ratio = 8 [default = 0.2];
+  optional double lane_change_hwt = 9 [default = 1.0];
+  optional double pre_change_hwt = 10 [default = 1.5];
+  optional double pre_change_ttc = 11 [default = 6.0];
+  optional double max_overtake_spend_time = 12 [default = 10.0];
+  optional double allow_turn_sustain_time = 13 [default = 10.0];
+  optional int32 cancel_turn_safe_count = 14 [default = 15];
+  optional int32 cancel_turn_slow_obs_total_times = 15 [default = 30];
+  optional double min_overtake_keep_time_for_stable = 16 [default = 3.5];
+  optional double pre_change_ttc_for_vehicle = 17 [default = 8.0];
+  optional double fixed_overtake_spend_time = 18 [default = 5.0];
+  optional int32 slow_vehicle_type_obs_total_times = 19 [default = 200];
+  optional double block_stop_velocity_threshold = 20 [default = 1.5];
+  optional double block_stop_total_time_threshold = 21 [default = 5.0];
+  optional bool enable_overtake_vehicle = 22 [default = true];
+  optional bool enable_overtake_static_obstacle = 23 [default = false];
+  optional double overtake_return_dis = 24 [default = 5.0];
+  optional double overtake_coef_of_road_limit = 25 [default = 0.6];
+  optional double overtake_coef_of_road_limit_for_vehicle = 26 [default = 0.4];
+  optional double forbid_overtake_distance_to_destination = 27 [default = 100.0];
+  optional double overtake_velocity_limit_for_vehicle = 28 [default = 3.0];
+}
+
+//////////////////////////////////
+// TopBullDeciderConfig
+message TopBullDeciderConfig {
+  optional bool enable_top_bull = 1 [default = false];
+}
+
+//////////////////////////////////
+// RiskShiftDeciderConfig
+
+message RiskShiftDeciderConfig {
+  optional int32 quit_reverse_shift_state_count_threshold = 1 [default = 10];
+  optional int32 min_check_keep_exist_reverse_obstacle_time = 2 [default = 3];
+  optional int32 max_check_keep_exist_reverse_obstacle_time = 36 [default = 10];
+  optional double min_check_turn_on_distance = 37 [default = 10.0];
+  optional double max_check_turn_on_distance = 38 [default = 40.0];
+  optional double check_lateral_risk_safe_buffer = 3 [default = 0.6];
+  optional double large_vehicle_check_length = 4 [default = 6.0];
+  optional double check_lateral_risk_safe_buffer_for_vehicle = 35 [default = 0.6];
+  optional double check_lateral_risk_safe_buffer_for_large_vehicle = 5 [default = 0.9];
+  optional double check_reverse_max_lateral_deceleration = 6 [default = 1.5];
+  optional double cruise_ttc = 7 [default = 3.0];
+  optional double cruise_hwt = 8 [default = 1.0];
+  optional double reverse_ttc = 10 [default = 5.0];
+  optional double reverse_hwt = 11 [default = 1.2];
+  optional double check_reverse_heading_diff_degree = 12 [default = 160.0];
+  optional double check_forward_heading_diff_degree = 32 [default = 15.0];
+  optional double left_front_reverse_risk_weight = 13 [default = 1000];
+  optional double right_front_reverse_risk_weight = 14 [default = 800];
+  optional double left_rear_forward_risk_weight = 15 [default = 500];
+  optional double right_rear_forward_risk_weight = 16 [default = 800];
+  optional double check_risk_max_lon_decelerate = 17 [default = 3.0];
+  optional double cruise_min_lon_safe_distance = 18 [default = 2.0];
+  optional double min_danger_lat_reverse_react_time = 19 [default = 0.8];
+  optional double min_danger_lat_forward_react_time = 20 [default = 0.6];
+  optional double max_safe_lat_reverse_react_time = 21 [default = 2.6];
+  optional double max_safe_lat_forward_react_time = 22 [default = 2.2];
+  optional double potential_lat_steering_angle = 23 [default = 0.0];
+  optional double potential_lat_steering_angle_for_static_obs = 31 [default = 0.01];
+  optional double cruise_min_lat_safe_distance = 24 [default = 0.5];
+  optional double cruise_max_lat_safe_distance = 9 [default = 1.6];
+  optional double check_risk_max_lat_decelerate = 25 [default = 1.2];
+  optional double reverse_lon_risk_weight = 26 [default = 0.4];
+  optional double reverse_lat_risk_weight = 27 [default = 0.6];
+  optional double forward_lon_risk_weight = 28 [default = 0.5];
+  optional double forward_lat_risk_weight = 29 [default = 0.5];
+  optional double lateral_risk_value_rate_of_rise = 30 [default = 10.0];
+  optional double consider_reverse_lateral_overlap_buffer = 33 [default = 0.5];
+  optional double ignore_lon_risk_reverse_obs_threshold = 34 [default = 50.0];
+  optional double reverse_shift_result_risk_weight = 41 [default = 1.0];
+  optional double reverse_shift_result_efficiency_weight = 42 [default = 1.0];
+  optional double far_from_lane_center_efficiency_weight = 43 [default = 0.5];
+  optional double far_from_adc_center_efficiency_weight = 44 [default = 1.0];
+  optional double keep_lane_center_lateral_ref_shift = 45 [default = 0.5];
+  optional bool enable_reverse_shift_avoid = 46 [default = false];
+  optional bool enable_risk_shift_avoid_static_obstacle = 47 [default = false];
+  optional bool enable_risk_shift_avoid_slow_obstacle = 48 [default = false];
+  optional bool enable_risk_shift_in_play_street = 49 [default = false];
+
+  optional bool enable_efficiency_shift_bypass = 60 [default = false];
+  optional double efficiency_shift_obs_speed_limit_coef = 61 [default = 0.7];
+  optional double obs_faster_than_adc_ratio = 62 [default = 1.3];
+  optional double max_efficiency_bypass_distance_check_threshold = 63 [default = 25.0];
+  optional double efficidency_check_ttc = 64 [default = 3.0];
+  optional double efficidency_check_hwt = 65 [default = 1.0];
+  optional int32 quit_efficiency_bypass_state_count_threshold = 66 [default = 5];
+  optional int32 check_keep_exist_slow_obstacle_time = 67 [default = 100];
+  optional int32 check_keep_exist_slow_obstacle_time_in_playstreet = 68 [default = 50];
+  optional int32 check_keep_exist_slow_obstacle_time_in_laneborrow = 71 [default = 5];
+  optional bool enable_radical_efficiency_shift_public_road = 69 [default = false];
+  optional double small_unknown_check_width = 70 [default = 1.2];
+}
+
+//////////////////////////////////
+// PathReferenceDeciderConfig
+
+message PathReferenceDeciderConfig {
+  optional uint32 min_path_reference_length = 1 [default = 20];
+  // learning model s weight
+  optional double weight_x_ref_path_reference = 2;
+}
+
+//////////////////////////////////
+// PathReuseDeciderConfig
+
+message PathReuseDeciderConfig {
+  optional bool reuse_path = 1;
+  optional bool enable_reuse_path_in_lane_follow = 2 [default = true];
+  optional double min_lane_change_traj_time_length = 3 [default = 4.0];
+  optional double allow_max_deceleration_for_lane_change_path = 4 [default = 0.8];
+}
+
+//////////////////////////////////
+// PiecewiseJerkNonlinearSpeedOptimizerConfig
+
+message PiecewiseJerkNonlinearSpeedOptimizerConfig {
+  // Driving comfort weights
+  optional double acc_weight = 1 [default = 500.0];
+  optional double jerk_weight = 2 [default = 100.0];
+  optional double lat_acc_weight = 3 [default = 500.0];
+  optional double acc_weight_for_trafficlight = 4 [default = 500.0];
+  optional double jerk_weight_for_trafficlight = 5 [default = 100.0];
+  // Minimal traversal time weight
+  optional double s_potential_weight = 6 [default = 10.0];
+
+  // Preferred cruising speed weight
+  optional double ref_v_weight = 7 [default = 10.0];
+
+  // Optional reference speed profile weight
+  optional double ref_s_weight = 8 [default = 10.0];
+
+  // Task specific end point weight
+  optional double end_s_weight = 9 [default = 10.0];
+  optional double end_v_weight = 10 [default = 10.0];
+  optional double end_a_weight = 11 [default = 10.0];
+
+  // soft safety boundary constraint violation weight
+  optional double soft_s_bound_weight = 12 [default = 10.0];
+
+  // Solver settings
+  optional bool use_warm_start = 100 [default = true];
+}
+
+//////////////////////////////////
+// PiecewiseJerkPathOptimizerConfig
+
+message PiecewiseJerkPathOptimizerConfig {
+  optional PiecewiseJerkPathWeights default_path_config = 1;
+  optional PiecewiseJerkPathWeights lane_change_path_config = 2;
+  optional double smooth_l_heading_diff_threshold = 3 [default = 0.15];
+  optional double path_reference_l_weight = 4 [default = 0.0];
+  optional double lane_change_min_ratio = 5 [default = 0.6];
+  optional double lane_change_distance_diff = 6 [default = 0.2];
+  optional double lane_change_ratio_step = 7 [default = 0.01];
+  optional double lane_change_min_time_return_reference_lane = 8
+      [default = 5.0];
+  optional double overtake_end_state_l_ratio = 9 [default = 0.4];
+  optional double fallback_smooth_ratio = 10 [default = 1.0];
+  optional double overtake_end_state_l_threshold = 11 [default = 1.2];
+  optional double distance_to_destination = 12 [default = 40.0];
+  optional double end_state_center_threshold = 13 [default = 0.3];
+  optional double dddl_weight_coeff = 14 [default = 10.0];
+  optional double dddl_weight_min = 15 [default = 10000.0];
+  optional double dddl_weight_max = 16 [default = 500000.0];
+  optional double yaw_rate_min_coeff = 17 [default = 0.1];
+  optional double yaw_rate_max_coeff = 18 [default = 0.5];
+  optional double adc_min_speed = 19 [default = 4.0];
+  optional double adc_max_speed = 20 [default = 8.0];
+  optional int32 path_failure_times_threshold = 21 [default = 3];
+  optional int32 max_allow_path_failure_time = 22 [default = 30];
+  optional double near_junction_min_borrow_distance = 23 [default = 20.0];
+  optional double ignore_end_state_l_distance_threshold = 24 [default = 25.0];
+  optional double min_end_state_l_lateral_buffer = 25 [default = 0.5];
+  optional double max_end_state_l_lateral_buffer = 26 [default = 1.0];
+  optional double low_adc_speed_end_state_l = 27 [default = 0.0];
+  optional double high_adc_speed_end_state_l = 28 [default = 8.34];
+  optional double path_x_ref_pre_smooth_time = 33 [default = 0.8];
+  optional double ignore_end_state_l_distance_threshold_mixed_traffic = 34
+      [default = 30.0];
+  optional double merge_lane_fix_end_state_shift_buffer = 35 [default = 0.5];
+
+  // parameters used for near junction laneborrow.
+  optional double adc_to_solid_line_distance_threshold = 36 [default = 20.0];
+  optional double adc_goback_heading_threshold = 37 [default = 5.0];
+  optional double lateral_buffer_to_center = 38 [default = 0.75];
+  optional double adc_slow_drive_threshold = 39 [default = 3.0];
+
+  optional int32 end_state_keep_times_threshold = 40 [default = 5];
+  optional bool enable_merge_lane_shift_laneborrow = 41 [default = true];
+  optional double lateral_derivative_bound_default = 42 [default = 1.0];
+  optional bool reuse_last_optimized_path = 43 [default = true];
+  optional double max_reuse_last_path_length = 44 [default = 10.0];
+  optional double min_caution_pedestrain_front_dis_threshold = 45 [default = 12.0];
+  optional double max_caution_pedestrain_front_dis_threshold = 46 [default = 6.0];
+  optional int32 caution_pedestrain_check_times_threshold = 47 [default = 30];
+  optional double single_lane_selfborrow_buffer = 48 [default = 0.3];
+  optional double auxiliary_road_distance_to_curb_limit = 49 [default = 20.0];
+  optional double auxiliary_road_in_junction_distance_to_curb_limit = 50 [default = 15.0];
+  optional bool enable_boundary_drop_smooth_protection = 51 [default = false];
+  optional double boundary_drop_protection_forward_distance = 52
+      [default = 10.0];
+  optional double boundary_drop_protection_near_boundary_clearance = 53
+      [default = 0.3];
+  optional double boundary_drop_protection_large_drop_threshold = 54
+      [default = 0.35];
+  optional double boundary_drop_protection_ddl_weight_factor = 55
+      [default = 2.0];
+  optional double boundary_drop_protection_dddl_weight_factor = 56
+      [default = 2.0];
+  optional double boundary_drop_protection_path_x_ref_pre_smooth_time = 57
+      [default = 1.2];
+  optional double boundary_drop_protection_lateral_derivative_bound = 58
+      [default = 0.7];
+  optional double boundary_drop_protection_hold_length = 59
+      [default = 3.0];
+  optional double boundary_drop_protection_release_length = 60
+      [default = 3.0];
+  optional double boundary_drop_protection_start_x_ref_weight = 61
+      [default = 1000.0];
+  optional double boundary_drop_protection_start_lateral_derivative_bound = 62
+      [default = 0.15];
+  optional double boundary_drop_protection_start_x_bound_buffer = 63
+      [default = 0.05];
+}
+
+message PiecewiseJerkPathWeights {
+  optional double l_weight = 1 [default = 1.0];
+  optional double dl_weight = 2 [default = 100.0];
+  optional double ddl_weight = 3 [default = 1000.0];
+  optional double dddl_weight = 4 [default = 10000.0];
+  optional double dddl_weight_for_cityroad = 5 [default = 10000.0];
+}
+
+//////////////////////////////////
+// PiecewiseJerkSpeedOptimizerConfig
+
+enum KinematicSpeedOptimizerType {
+  CONSTANT_JERK = 1;       // const jerk of kinematic speed optimizer
+  TWO_PIECEWISE_JERK = 2;  // two piecewise jerk of kinematic speed optimizer
+  TWO_PIECEWISE_STATIONARY_JERK = 3;  // two piecewise stationary jerk
+};
+
+message PiecewiseJerkSpeedOptimizerConfig {
+  optional double acc_weight = 1 [default = 1.0];
+  optional double jerk_weight = 2 [default = 10.0];
+  optional double kappa_penalty_weight = 3 [default = 1000.0];
+  optional double ref_s_weight = 4 [default = 10.0];
+  optional double ref_v_weight = 5 [default = 10.0];
+  optional double acc_weight_for_trafficlight = 6 [default = 1.0];
+  optional double jerk_weight_for_trafficlight = 7 [default = 10.0];
+  optional double acc_weight_dynamic = 8 [default = 1.0];
+  optional double jerk_weight_dynamic = 9 [default = 10.0];
+  optional double ref_s_weight_dynamic = 10 [default = 10.0];
+  optional double ref_v_weight_dynamic = 11 [default = 10.0];
+
+  optional double speed_buffer = 12 [default = 0.2];
+  optional double deceleration_buffer = 13 [default = 0.1];
+  optional double reduction_ratio = 14 [default = 0.5];
+  optional KinematicSpeedOptimizerType kinematic_speed_optimizer_type = 15
+      [default = TWO_PIECEWISE_STATIONARY_JERK];
+  optional double min_deceleration = 16 [default = -4.0];
+  optional double min_stop_time = 17 [default = 4.0];
+  optional double average_stop_decel = 18 [default = 0.5];
+  optional double speed_up_ratio = 19 [default = 3.0];
+  optional double stop_speed_buffer = 20 [default = 0.1];
+  optional double min_stoped_accel = 21 [default = -0.1];
+  optional double endpoint_distance_max_buffer = 22 [default = 0.5];
+  optional double endpoint_distance_min_buffer = 23 [default = 0.1];
+  optional double max_dis_to_enable_kinematic_speed_optimizer = 24
+      [default = 20.0];
+  optional double stop_distance_buffer_for_kinematic = 25 [default = 0.5];
+  optional uint32 max_iter_num = 26 [default = 30];
+  optional double presight_time_for_reinit = 27 [default = 2.0];
+  optional double accel_buffer_for_reinit = 28 [default = 0.5];
+  optional double lower_speed_for_reinit = 29 [default = 3.0];
+  optional double diff_acc_buffer_for_reinit = 30 [default = 0.3];
+  optional double decel_buffer_of_init_point = 31 [default = -0.4];
+  optional uint32 min_sequence_num_interval_for_reinit = 32 [default = 10];
+  optional double look_up_relative_time = 33 [default = 3.0];
+  optional double start_up_min_v = 34 [default = 0.3];
+  optional double min_lateral_distance = 35 [default = 0.3];
+  optional double max_lateral_distance = 36 [default = 1.0];
+  optional double max_stop_distance = 37 [default = 10.0];
+  optional double max_presight_time_for_passable_area = 38 [default = 5.0];
+  optional double max_jerk_for_decel = 39 [default = -0.5];
+  optional double jerk_buffer_for_decel = 40 [default = 0.2];
+  optional double jerk_buffer_for_presight_time = 41 [default = 0.1];
+  optional double accel_for_slower_decel = 42 [default = -1.0];
+  optional double accel_up_buffer_for_slower_decel = 43 [default = 0.5];
+  optional double accel_low_buffer_for_slower_decel = 44 [default = 3.0];
+  optional double accel_buffer_for_passable_area = 45 [default = 0.5];
+  optional double accel_step_for_passable_area = 46 [default = 0.05];
+  optional double kappa_bound_for_slower_acceleration = 47 [default = 0.04];
+  optional double dkappa_bound_for_slower_acceleration = 48 [default = 0.03];
+  optional double max_acceleration_for_slowly_start = 49 [default = 0.8];
+  optional double max_jerk_for_slowly_start = 50 [default = 1.0];
+  optional double low_start_up_speed = 51 [default = 7.0];
+  optional double low_start_up_one_level_acc = 52 [default = 0.5];
+  optional double low_start_up_two_level_acc = 53 [default = 0.3];
+  optional double low_start_up_three_level_acc = 54 [default = 0.2];
+  optional double low_start_up_four_level_acc = 55 [default = 0.1];
+  optional double low_start_up_one_level_acc_at_intersection = 56 [default = 1.5];
+  optional double low_start_up_two_level_acc_at_intersection = 57 [default = 1.2];
+  optional double low_start_up_three_level_acc_at_intersection = 58 [default = 0.8];
+  optional double low_start_up_four_level_acc_at_intersection = 59 [default = 0.5];
+}
+
+//////////////////////////////////
+// RuleBasedStopDeciderConfig
+
+message RuleBasedStopDeciderConfig {
+  optional double max_adc_stop_speed = 1 [default = 0.3];
+  optional double max_valid_stop_distance = 2 [default = 0.5];
+  optional double search_beam_length = 3 [default = 5.0];
+  optional double search_beam_radius_intensity = 4 [default = 0.08];
+  optional double search_range = 5 [default = 3.14];
+  optional double is_block_angle_threshold = 6 [default = 1.57];
+
+  optional double approach_distance_for_lane_change = 7 [default = 80.0];
+  optional double urgent_distance_for_lane_change = 8 [default = 50.0];
+  optional double stop_wall_distance = 9 [default = 1.0];
+}
+
+//////////////////////////////////
+// SpeedBoundsDeciderConfig
+message ScopeRangeConfig {
+  optional double front_scope_dis = 1 [default = 15.0];
+  optional double rear_scope_dis = 2 [default = 0.0];
+  optional double left_scope_dis = 3 [default = 4.0];
+  optional double right_scope_dis = 4 [default = 4.0];
+}
+
+//////////////////////////////////
+// SpeedLimitDeciderConfig
+message SpeedLimitDeciderConfig {
+  optional uint32 closer_path_step_for_speed_limit = 1 [default = 1];
+  optional uint32 far_away_path_step_for_speed_limit = 2 [default = 2];
+  optional double threshold_time_of_far_away_path = 3 [default = 5.0];
+  optional double lowest_speed = 4 [default = 2.5];
+  optional double max_centric_acceleration_limit_road = 5 [default = 2.0];
+  optional double max_centric_acceleration_limit_play_street = 6
+      [default = 0.8];
+  optional double minimal_kappa = 7 [default = 0.00001];
+  optional double obs_nudge_s_threshold = 8 [default = 0.5];
+  optional double very_close_nudge_threshold = 9 [default = 0.3];
+  optional double slightly_close_nudge_threshold = 10 [default = 0.6];
+  optional double static_obs_nudge_speed_ratio_very = 11 [default = 0.65];
+  optional double static_obs_nudge_speed_ratio_slightly = 12 [default = 0.85];
+  optional double dynamic_obs_nudge_speed_ratio_very = 13 [default = 0.8];
+  optional double dynamic_obs_nudge_speed_ratio_slightly = 14 [default = 0.9];
+  optional double min_speed_limit = 15 [default = 2.0];
+  optional double lower_speed_limit = 16 [default = 3.0];
+  optional double min_speed_limit_for_caution_obstacle = 17 [default = 2.0];
+  optional double max_longitudinal_range_for_low_start_up = 18 [default = 20.0];
+  optional double max_lateral_range_for_low_start_up = 19 [default = 2.0];
+  optional double distance_behind_caution_obs = 20 [default = 3.0];
+  optional double max_speed_limit_ratio = 21 [default = 0.9];
+  optional double min_speed_limit_ratio_for_approach_obs = 22 [default = 0.5];
+  optional double min_pedestrian_speed = 23 [default = 0.8];
+  optional double min_dynamic_ped_distance = 24 [default = 3.0];
+  optional double max_dynamic_ped_distance = 25 [default = 5.0];
+  optional double min_dynamic_ped_speed_limit = 26 [default = 2.0];
+  optional double min_static_ped_distance = 27 [default = 2.0];
+  optional double max_static_ped_distance = 28 [default = 3.0];
+  optional double min_static_ped_speed_limit = 29 [default = 3.0];
+  optional double pedestrian_speed_limit_time = 30 [default = 10.0];
+  optional double speed_limit_advance_distance = 31 [default = 6.0];
+  optional double lower_pedestrian_speed = 32 [default = 0.3];
+  optional double upper_pedestrian_speed = 33 [default = 0.8];
+  optional double faster_pedestrian_speed = 78 [default = 0.8];
+  optional double min_dynamic_ped_distance_lower = 34 [default = 1.5];
+  optional double max_dynamic_ped_distance_lower = 35 [default = 2.5];
+  optional double min_dynamic_ped_speed_limit_lower = 36 [default = 4.0];
+  optional double min_dynamic_ped_distance_middle = 37 [default = 1.65];
+  optional double max_dynamic_ped_distance_middle = 38 [default = 3.0];
+  optional double min_dynamic_ped_speed_limit_middle = 39 [default = 3.0];
+  optional double min_dynamic_ped_distance_faster = 79 [default = 2.0];
+  optional double max_dynamic_ped_distance_faster = 80 [default = 6.0];
+  optional double min_dynamic_ped_speed_limit_faster = 81 [default = 2.0];
+  optional double min_bicycle_distance = 40 [default = 0.5];
+  optional double max_bicycle_distance = 41 [default = 1.0];
+  optional double min_speed_limit_ratio_for_bicycle = 42 [default = 0.7];
+  optional double bicycle_speed_limit_time = 43 [default = 10.0];
+  optional double speed_limit_advance_distance_for_bicycle = 44 [default = 6.0];
+  optional double min_nudge_obs_lateral_distance = 45 [default = 0.15];
+  optional double max_nudge_obs_lateral_distance = 46 [default = 3.0];
+  optional double min_nudge_obs_speed_limit = 47 [default = 4.0];
+  optional double min_speed_limit_longitude_distance = 48 [default = 10.0];
+  optional double max_speed_limit_longitude_distance = 49 [default = 60.0];
+  optional double min_follow_speed_limit = 50 [default = 4.0];
+  optional double min_follow_obstacle_speed_ratio = 51 [default = 0.9];
+  optional double min_stop_speed_limit = 52 [default = 4.0];
+  optional double min_yield_speed_limit = 53 [default = 4.0];
+  optional double yield_speed_limit_ratio = 77   [default = 0.8];
+  optional double max_speed_limit_longitude_distance_for_follow = 54
+      [default = 60.0];
+  optional double max_speed_limit_longitude_distance_for_stop = 55
+      [default = 40.0];
+  optional double max_nudge_pedestrian_lateral_distance = 56 [default = 3.0];
+  optional double max_nudge_bicycle_lateral_distance = 57 [default = 2.0];
+  optional double max_nudge_vehicle_lateral_distance = 58 [default = 1.5];
+  optional double max_nudge_unknown_lateral_distance = 59 [default = 1.0];
+  optional double lower_approach_obs_speed = 60 [default = 0.2];
+  optional double upper_approach_obs_speed = 61 [default = 0.6];
+  optional double min_distance_lower_for_approach_obs = 62 [default = 1.0];
+  optional double max_distance_lower_for_approach_obs = 63 [default = 3.5];
+  optional double min_distance_middle_for_approach_obs = 64 [default = 1.0];
+  optional double max_distance_middle_for_approach_obs = 65 [default = 3.5];
+  optional double min_distance_upper_for_approach_obs = 66 [default = 1.0];
+  optional double max_distance_upper_for_approach_obs = 67 [default = 3.5];
+  optional double min_distance_for_fast_approach_obs = 68 [default = 1.0];
+  optional double max_distance_for_fast_approach_obs = 69 [default = 3.5];
+  optional double aspect_range_ratio = 70 [default = 1.0];
+  optional double speed_limit_advance_dis_for_approach_obs = 71 [default = 6.0];
+  optional double speed_limit_backward_dis_for_approach_obs = 72
+      [default = 0.0];
+  optional double max_cross_path_distance = 73 [default = 30.0];
+  optional double min_cross_limit_speed = 74 [default = 2.0];
+  optional double cross_limit_speed_time_buffer = 75 [default = 1.0];
+  optional double min_reverse_limit_speed = 76 [default = 2.0];
+  optional double min_speed_limit_kappa_threshold = 82 [default = 0.03];
+  // last number is: 82
+}
+
+message SpeedBoundsDeciderConfig {
+  optional SpeedLimitDeciderConfig speed_limit_config = 1;
+  optional double total_time = 2 [default = 7.0];
+  optional double boundary_buffer = 3 [default = 0.1];
+  optional double point_extension = 4 [default = 1.0];
+  optional double default_min_tune_step = 5 [default = 0.1];
+  optional double default_second_tune_step = 6 [default = 0.1];
+  optional double min_trajectory_relative_time = 7 [default = 2.0];
+  optional double percent_of_speed = 8 [default = 0.5];
+  optional double min_reverse_speed = 9 [default = 0.5];
+  optional double min_cross_speed = 10 [default = 0.5];
+  optional double min_skip_obs_speed = 11 [default = 3.0];
+  optional double min_skip_obs_distance = 12 [default = 2.0];
+  optional double min_skip_obs_distance_for_no_vehicle = 13 [default = 1.0];
+  optional double min_overtake_lateral_buffer = 14 [default = 1.5];
+  optional double max_overtake_lateral_buffer = 15 [default = 5.0];
+  optional double min_overtake_lateral_speed = 16 [default = 0.3];
+  optional double min_angle_for_dangerous_stop_distance = 17 [default = 30.0];
+  optional double max_angle_for_dangerous_stop_distance = 18 [default = 80.0];
+  optional double min_stop_distance_for_dangerous_startup = 19 [default = -3.0];
+  optional double max_stop_distance_for_dangerous_startup = 20 [default = -5.0];
+  optional double max_speed_to_ignore_dangerous_start_up = 21 [default = 3.0];
+  optional double slower_speed_for_start_up = 22 [default = 2.0];
+  optional double max_aspect_ratio_to_ignore_unknown = 23 [default = 3.0];
+  optional double max_area_size_to_ignore_unknown = 24 [default = 2.0];
+  optional double min_area_size_to_ignore_unknown = 25 [default = 0.2];
+  optional double min_adc_speed_for_approach_obs_speed_limit = 26
+      [default = 2.0];
+  optional ScopeRangeConfig scope_range_in_junction_for_start_up = 27;
+  optional ScopeRangeConfig scope_range_not_junction_for_start_up = 28;
+  optional ScopeRangeConfig scope_range_in_junction_unknown_obs_for_start_up =
+      29;
+  optional ScopeRangeConfig scope_range_not_junction_unknown_obs_for_start_up =
+      30;
+  optional ScopeRangeConfig scope_range_for_speed_limit = 31;
+  optional uint32 delay_frame_times_for_limit_speed = 32 [default = 30];
+  optional uint32 min_delay_frame_times_for_stop = 33 [default = 5];
+  optional uint32 max_delay_frame_times_for_stop = 157 [default = 20];
+  optional double min_distance_for_delay_startup = 158 [default = 6.0];
+  optional double max_distance_for_delay_startup = 159 [default = 10.0];
+  optional uint32 delay_frame_times_of_approach_obs = 34 [default = 5];
+  optional double speed_of_faster_move_obstacle = 35 [default = 2.0];
+  optional double advance_buffer = 36 [default = 2.0];
+  optional double min_deceleration_for_approach_obs = 37 [default = -3.0];
+  optional double stoped_speed_for_start_up = 38 [default = 0.3];
+  optional uint32 stoped_delay_time_for_start_up = 39 [default = 40];
+  optional double nearly_stoped_speed_for_start_up = 40 [default = 0.8];
+  optional uint32 nearly_stoped_delay_time_for_start_up = 41 [default = 20];
+  optional double aspect_range_ratio_for_start_up = 140 [default = 0.5];
+  optional double slower_vehicle_speed = 119 [default = 4.0];
+  optional double min_same_angle = 42 [default = 5.0];
+  optional double min_angle_diff = 43 [default = 2.0];
+  optional double min_lateral_distance = 44 [default = 0.3];
+  optional double second_lateral_distance = 45 [default = 0.8];
+  optional double max_lateral_distance = 46 [default = 2.0];
+  optional double first_level_decel = 47 [default = -0.5];
+  optional double second_level_decel = 48 [default = -1.5];
+  optional double three_level_decel = 49 [default = -3.0];
+  optional double four_level_decel = 50 [default = -4.0];
+  optional double min_level_decel = 51 [default = -0.2];
+  optional double zero_level_decel = 52 [default = -0.1];
+  optional double min_collision_time = 53 [default = 2.0];
+  optional double min_vertical_degree = 54 [default = 70.0];
+  optional double max_vertical_degree = 55 [default = 110.0];
+  optional double min_opposite_degree = 56 [default = 160.0];
+  optional double min_obs_cross_relative_time = 57 [default = 1.0];
+  optional double min_adc_speed = 58 [default = 2.0];
+  optional double lateral_monitor_range = 59 [default = 2.0];
+  optional double lon_back_monitor_range = 60 [default = 15.0];
+  optional double lon_front_monitor_range = 61 [default = 5.0];
+  optional double min_lateral_speed = 62 [default = 0.1];
+  optional double close_lateral_distance = 63 [default = 1.0];
+  optional double consider_lateral_distance = 64 [default = 1.5];
+  optional double pre_slow_breaking_distance = 65 [default = 5.0];
+  optional double first_level_slow_breking_decel = 66 [default = -0.5];
+  optional double second_level_slow_breking_decel = 67 [default = -1.0];
+  optional double three_level_slow_breking_decel = 68 [default = -1.5];
+  optional double four_level_slow_breking_decel = 69 [default = -3.0];
+  optional double five_level_slow_breking_decel = 70 [default = -4.0];
+  optional double min_level_slow_breking_decel = 71 [default = -6.0];
+  optional double first_lateral_distance = 72 [default = 0.3];
+  optional double three_lateral_distance = 73 [default = 1.0];
+  optional double max_aver_stop_accel = 74 [default = -4.0];
+  optional double presight_distance_to_merge_area = 75 [default = 40.0];
+  optional double lat_dis_off_lane_bound_to_stop = 76 [default = -0.5];
+  optional double lower_buffer_of_stop_dis = 77 [default = -1.0];
+  optional double upper_buffer_of_stop_dis = 78 [default = 0.0];
+  optional double start_up_target_acc = 79 [default = 0.3];
+  optional double target_low_speed = 80 [default = 3.0];
+  optional double yield_collision_begin_time = 81 [default = 2.5];
+  optional double yield_collision_end_time = 82 [default = 5.5];
+  optional ScopeRangeConfig scope_range_for_side_pass = 83;
+  optional double presight_time_for_move_away = 84 [default = 3.0];
+  optional double min_presight_lon_dis_for_move_away = 85 [default = 4.0];
+  optional double presight_distance_to_changing_lane = 86 [default = 20.0];
+  optional double max_ignore_distance_behind_adc = 87 [default = 5.0];
+  optional double min_ignore_distance_behind_adc = 88 [default = 0.1];
+  optional double extend_s_for_max_ignore_distance = 89 [default = 0.0];
+  optional double extend_s_for_min_ignore_distance = 90 [default = 2.0];
+  optional double min_diff_heading_for_changing_lane = 91 [default = 5.0];
+  optional double lat_overlap_large_buffer = 92 [default = 0.5];
+  optional double lat_overlap_small_buffer = 93 [default = 0.2];
+  optional double faster_speed_ratio_for_front_obs = 94 [default = 1.2];
+  optional double slower_speed_ratio_for_behind_obs = 95 [default = 0.9];
+  optional double faster_speed_ratio_for_behind_obs = 96 [default = 1.1];
+  optional double faster_diff_speed = 97 [default = 1.0];
+  optional double very_faster_diff_speed = 98 [default = 2.0];
+  optional double acceleration_buffer = 99 [default = 0.2];
+  optional double keep_approach_time_buffer = 100 [default = 1.0];
+  optional double min_target_speed_ratio_for_sidepass_brake = 101
+      [default = 0.8];
+  optional double obstacle_target_accel_for_sidepass_brake = 102
+      [default = -0.5];
+  optional double lateral_monitor_range_for_approaching_obs = 103
+      [default = 5.0];
+  optional double lateral_enter_slow_breaking_range_for_approaching_obs = 104
+      [default = 4.0];
+  optional double second_lateral_distance_for_approaching = 105 [default = 0.6];
+  optional double first_level_cutin_decel = 106 [default = -0.5];
+  optional double second_level_cutin_decel = 107 [default = -1.0];
+  optional double min_level_cutin_decel = 108 [default = -6.0];
+  optional double cutin_comfort_time = 109 [default = 1.5];
+  optional double three_level_apporaching_decel = 110 [default = -0.8];
+  optional double second_level_apporaching_decel = 111 [default = -0.5];
+  optional double first_level_apporaching_decel = 112 [default = -0.3];
+  optional double min_level_apporaching_decel = 113 [default = -6.0];
+  optional double four_level_apporaching_decel = 114 [default = -1.5];
+  optional double five_level_apporaching_decel = 115 [default = -3.0];
+  optional double min_obs_speed = 116 [default = 4.0];
+  optional double min_speed_diff = 117 [default = 3.0];
+  optional double obs_breaking_decel = 118 [default = -1.0];
+  optional double svm_one_level_lateral_distance = 139 [default = 0.5];
+  optional double svm_two_level_lateral_distance = 120 [default = 1.0];
+  optional double svm_three_level_lateral_distance = 121 [default = 2.0];
+  optional double svm_four_level_lateral_distance = 122 [default = 3.0];
+  optional double svm_five_level_lateral_distance = 123 [default = 3.0];
+  optional double svm_one_level_lon_distance = 124 [default = 10.0];
+  optional double svm_two_level_lon_distance = 125 [default = 18.0];
+  optional double svm_three_level_lon_distance = 126 [default = 24.0];
+  optional double svm_four_level_lon_distance = 127 [default = 26.0];
+  optional double svm_five_level_lon_distance = 128 [default = 30.0];
+  optional double svm_one_level_lon_distance_for_dynamic_obs = 129 [default = 8.0];
+  optional double svm_two_level_lon_distance_for_dynamic_obs = 130 [default = 15.0];
+  optional double svm_three_level_lon_distance_for_dynamic_obs = 131 [default = 20.0];
+  optional double svm_four_level_lon_distance_for_dynamic_obs = 132 [default = 30.0];
+  optional double svm_five_level_lon_distance_for_dynamic_obs = 133 [default = 40.0];
+  optional double svm_one_level_reach_time = 134 [default = 2.0];
+  optional double svm_two_level_reach_time = 135 [default = 3.0];
+  optional double svm_three_level_reach_time = 136 [default = 4.0];
+  optional double svm_four_level_reach_time = 137 [default = 5.0];
+  optional double svm_five_level_reach_time = 138 [default = 7.0];
+  optional double max_diff_angle_for_same_orientation = 141 [default = 20.0];
+  optional double hy_buffer_lower_for_same_orientation = 142 [default = -10.0];
+  optional double hy_buffer_upper_for_same_orientation = 143 [default = 5.0];
+  optional double obs_cross_angle_degree_for_startup = 144 [default = 75.0];
+  optional double hy_buffer_of_cross_angle_for_startup = 145 [default = 10.0];
+  optional double obs_cross_angle_degree_for_speed_limit = 146 [default = 75.0];
+  optional double hy_buffer_of_cross_angle_for_speed_limit = 147 [default = 10.0];
+  optional double obs_cross_angle_degree_for_away_obs = 148 [default = 90.0];
+  optional double hy_buffer_of_cross_angle_for_away_obs = 149 [default = 10.0];
+  optional double obstacle_min_distance = 150 [default = 1.0];
+  optional double obstacle_max_distance = 151 [default = 6.0];
+  optional double adc_min_speed = 152 [default = 0.5];
+  optional double adc_max_speed = 153 [default = 3.0];
+  optional double max_speed_to_enable_estop = 154 [default = 1.67];
+  optional double s_buffer_to_enable_estop = 155 [default = 1.0];
+  optional double lane_change_obstacle_nudge_l_buffer = 156 [default = 0.2];
+  // last number is: 159
+}
+
+//////////////////////////////////
+// SpeedHeuristicOptimizerConfig
+
+message SpeedHeuristicOptimizerConfig {
+  optional DpStSpeedOptimizerConfig default_speed_config = 1;
+  optional DpStSpeedOptimizerConfig lane_change_speed_config = 2;
+}
+
+message DpStSpeedOptimizerConfig {
+  optional double unit_t = 1 [default = 1.0];
+  optional int32 dense_dimension_s = 2 [default = 41];
+  optional double dense_unit_s = 3 [default = 0.5];
+  optional double sparse_unit_s = 4 [default = 1.0];
+
+  optional double speed_weight = 5 [default = 0.0];
+  optional double accel_weight = 6 [default = 10.0];
+  optional double jerk_weight = 7 [default = 10.0];
+  optional double obstacle_weight = 8 [default = 1.0];
+  optional double reference_weight = 9 [default = 0.0];
+  optional double go_down_buffer = 10 [default = 5.0];
+  optional double go_up_buffer = 11 [default = 5.0];
+  optional double obstacle_overtake_weight = 12 [default = 10.0];
+
+  // obstacle cost config
+  optional double default_obstacle_cost = 13 [default = 1e10];
+
+  // speed cost config
+  optional double default_speed_cost = 14 [default = 1.0];
+  optional double exceed_speed_penalty = 15 [default = 10.0];
+  optional double low_speed_penalty = 16 [default = 2.5];
+  optional double reference_speed_penalty = 17 [default = 1.0];
+  optional double keep_clear_low_speed_penalty = 18 [default = 10.0];
+
+  // accel cost config
+  optional double accel_penalty = 19 [default = 2.0];
+  optional double decel_penalty = 20 [default = 2.0];
+
+  // jerk cost config
+  optional double positive_jerk_coeff = 21 [default = 1.0];
+  optional double negative_jerk_coeff = 22 [default = 300.0];
+
+  // other constraint
+  optional double max_acceleration = 23 [default = 4.5];
+  optional double max_deceleration = 24 [default = -4.5];
+
+  // buffer
+  optional double safe_time_buffer = 25 [default = 3.0];
+  optional double safe_distance = 26 [default = 20.0];
+  optional double safe_distance_base = 27 [default = 10.0];
+  optional double safe_distance_min = 28 [default = 10.0];
+  optional double safe_distance_max = 29 [default = 30.0];
+  optional double min_speed_for_safe_distance = 30 [default = 2.0];
+  optional double faster_speed_ratio = 33 [default = 1.1];
+  optional double very_faster_speed_ratio = 34 [default = 1.5];
+  optional double safe_distance_ratio_for_faster_obs = 35 [default = 0.9];
+  optional double safe_distance_ratio_for_very_faster_obs = 36 [default = 0.5];
+  optional double min_adc_speed = 37 [default = 0.5];
+
+  // spatial potential cost config for minimal time traversal
+  optional double spatial_potential_penalty = 31 [default = 1.0];
+
+  optional bool is_lane_changing = 32 [default = false];
+}
+
+//////////////////////////////////
+// STBoundsDeciderConfig
+
+message STBoundsDeciderConfig {
+  optional double total_time = 1 [default = 7.0];
+}

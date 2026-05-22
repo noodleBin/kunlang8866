@@ -1,0 +1,19 @@
+syntax = "proto2";
+
+package century.mcloud;
+
+import "modules/common/proto/header.proto";
+
+message SuperTrafficLight {
+  enum Color {
+    UNKNOWN = 0;
+    RED = 1;
+    YELLOW = 2;
+    GREEN = 3;
+    BLACK = 4;
+  };
+
+  optional century.common.Header header = 1;
+  optional string id = 2;
+  optional Color color = 3;
+}

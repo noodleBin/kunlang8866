@@ -1,0 +1,15 @@
+max_record_times: 15
+
+left_buffer: 0.3
+right_buffer: 0.3
+
+angle_rate_threshold: 3.0
+
+cross_dis_buffer: 1.0
+
+obstacle_scope_range {
+    front_scope_dis: 20.0
+    rear_scope_dis: 0.0
+    left_scope_dis: 6.0
+    right_scope_dis: 6.0
+}

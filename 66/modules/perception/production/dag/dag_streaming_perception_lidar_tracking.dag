@@ -1,0 +1,8 @@
+module_config {
+  module_library : "/century/bazel-bin/modules/perception/lidar_tracking/libshell_component.so"
+
+  components {
+    class_name : "ShellComponent"
+  }
+
+}

@@ -1,0 +1,21 @@
+base_speed: 4.167
+left_turn_penalty: 50.0
+right_turn_penalty: 20.0
+uturn_penalty: 100.0
+change_penalty: 12.0
+base_changing_length: 10.0
+topic_config {
+  routing_response_topic: "/century/routing_response"
+  routing_response_history_topic: "/century/routing_response_history"
+  planning_trajectory_topic: "/century/planning"
+  routing_result_topic: "/century/routing_result"
+}
+generate_config {
+  start_s_buffer: 2.0
+  end_s_buffer: 15.0
+  uturn_start_s_buffer: 30.0
+  uturn_end_s_buffer: 1.0
+  uturn_target_s_buffer: 5.0
+  process_request_interval_time: 5.0
+  generate_first_routing: false
+}

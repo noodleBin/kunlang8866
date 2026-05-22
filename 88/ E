@@ -1,0 +1,70 @@
+wall_sec=1777365251.649903 mono_ns=22267388952896 event=data_dispatch_begin slow=0 channel_id=12866899218109700873 channel=/century/sensor/camera/left_rear/image
+wall_sec=1777365252.197741 mono_ns=22267936792240 event=data_notify_begin slow=0 channel_id=5038075964951187535 channel=/century/sensor/camera/rear/image callbacks=1
+wall_sec=1777365252.198497 mono_ns=22267937541494 event=data_dispatch_end slow=0 channel_id=17916674421969449585 channel=/century/sensor/camera/right_rear/image/compressed notified=1
+wall_sec=1777365252.202937 mono_ns=22267941987449 event=transport_to_dispatch_begin slow=0 node=MonitorReader2541657-27 channel=/century/sensor/camera/right_rear/image channel_id=11267853878067913172 seq=4339
+wall_sec=1777365252.205411 mono_ns=22267944462732 event=data_dispatch_filled slow=0 channel_id=2954899879712469227 channel=/century/sensor/camera/left_rear/image/compressed buffers=0
+wall_sec=1777365252.206063 mono_ns=22267945108081 event=data_notify_end slow=0 channel_id=18252597024424542795 channel=/century/sensor/camera/rear/image/compressed
+wall_sec=1777365252.210354 mono_ns=22267949398450 event=transport_to_dispatch_end slow=0 node=MonitorReader2541657-27 channel=/century/sensor/camera/right_rear/image channel_id=11267853878067913172 seq=4340
+wall_sec=1777365252.212891 mono_ns=22267951935941 event=data_dispatch_begin slow=0 channel_id=9916490048958701896 channel=/century/sensor/camera/front/image/compressed
+wall_sec=1777365252.214421 mono_ns=22267953468049 event=data_notify_begin slow=0 channel_id=18252597024424542795 channel=/century/sensor/camera/rear/image/compressed callbacks=1
+wall_sec=1777365252.217860 mono_ns=22267956903532 event=data_dispatch_end slow=0 channel_id=5959044485100912018 channel=/century/sensor/camera/right_front/image notified=1
+wall_sec=1777365252.219753 mono_ns=22267958796827 event=transport_to_dispatch_begin slow=0 node=MonitorReader2541657-28 channel=/century/sensor/camera/right_rear/image/compressed channel_id=17916674421969449585 seq=4341
+wall_sec=1777365252.222547 mono_ns=22267961591568 event=data_dispatch_filled slow=0 channel_id=18333005677654975573 channel=/century/sensor/camera/front/image buffers=0
+wall_sec=1777365252.225267 mono_ns=22267964314149 event=data_notify_end slow=0 channel_id=12866899218109700873 channel=/century/sensor/camera/left_rear/image
+wall_sec=1777365252.226577 mono_ns=22267965623695 event=transport_to_dispatch_end slow=0 node=MonitorReader2541657-24 channel=/century/sensor/camera/left_rear/image/compressed channel_id=2954899879712469227 seq=4379
+wall_sec=1777365252.230800 mono_ns=22267969851984 event=data_dispatch_begin slow=0 channel_id=18333005677654975573 channel=/century/sensor/camera/front/image
+wall_sec=1777365252.233585 mono_ns=22267972631366 event=data_notify_begin slow=0 channel_id=11267853878067913172 channel=/century/sensor/camera/right_rear/image callbacks=1
+wall_sec=1777365252.234230 mono_ns=22267973272202 event=data_dispatch_end slow=0 channel_id=9916490048958701896 channel=/century/sensor/camera/front/image/compressed notified=1
+wall_sec=1777365252.253418 mono_ns=22267992465503 event=transport_to_dispatch_begin slow=0 node=MonitorReader2541657-27 channel=/century/sensor/camera/right_rear/image channel_id=11267853878067913172 seq=4344
+wall_sec=1777365252.256272 mono_ns=22267995323093 event=data_dispatch_filled slow=0 channel_id=2954899879712469227 channel=/century/sensor/camera/left_rear/image/compressed buffers=0
+wall_sec=1777365252.256993 mono_ns=22267996038298 event=data_notify_end slow=0 channel_id=14176855520724004216 channel=/century/sensor/camera/right_front/image/compressed
+wall_sec=1777365252.345556 mono_ns=22268084600647 event=transport_to_dispatch_end slow=0 node=MonitorReader2541657-25 channel=/century/sensor/camera/right_front/image channel_id=5959044485100912018 seq=4505
+wall_sec=1777365252.356537 mono_ns=22268095582812 event=data_dispatch_begin slow=0 channel_id=18252597024424542795 channel=/century/sensor/camera/rear/image/compressed
+wall_sec=1777365252.364656 mono_ns=22268103699611 event=data_notify_begin slow=0 channel_id=2954899879712469227 channel=/century/sensor/camera/left_rear/image/compressed callbacks=1
+wall_sec=1777365252.442116 mono_ns=22268181166258 event=data_dispatch_end slow=0 channel_id=5959044485100912018 channel=/century/sensor/camera/right_front/image notified=1
+wall_sec=1777365252.460692 mono_ns=22268199741154 event=transport_to_dispatch_begin slow=0 node=MonitorReader2541657-24 channel=/century/sensor/camera/left_rear/image/compressed channel_id=2954899879712469227 seq=4383
+wall_sec=1777365252.537331 mono_ns=22268276380402 event=data_dispatch_filled slow=0 channel_id=18333005677654975573 channel=/century/sensor/camera/front/image buffers=0
+wall_sec=1777365252.542794 mono_ns=22268281842748 event=data_notify_end slow=0 channel_id=5038075964951187535 channel=/century/sensor/camera/rear/image
+wall_sec=1777365252.561818 mono_ns=22268300865839 event=transport_to_dispatch_end slow=0 node=MonitorReader2541657-26 channel=/century/sensor/camera/right_front/image/compressed channel_id=14176855520724004216 seq=4507
+wall_sec=1777365252.639332 mono_ns=22268378380711 event=data_dispatch_begin slow=0 channel_id=11267853878067913172 channel=/century/sensor/camera/right_rear/image
+wall_sec=1777365252.643542 mono_ns=22268382592967 event=data_notify_begin slow=0 channel_id=12866899218109700873 channel=/century/sensor/camera/left_rear/image callbacks=1
+wall_sec=1777365252.661091 mono_ns=22268400145135 event=data_dispatch_end slow=0 channel_id=17916674421969449585 channel=/century/sensor/camera/right_rear/image/compressed notified=1
+wall_sec=1777365252.739435 mono_ns=22268478482349 event=transport_to_dispatch_begin slow=0 node=MonitorReader2541657-27 channel=/century/sensor/camera/right_rear/image channel_id=11267853878067913172 seq=4349
+wall_sec=1777365252.752238 mono_ns=22268491285808 event=data_dispatch_filled slow=0 channel_id=18252597024424542795 channel=/century/sensor/camera/rear/image/compressed buffers=0
+wall_sec=1777365252.760166 mono_ns=22268499209837 event=data_notify_end slow=0 channel_id=14176855520724004216 channel=/century/sensor/camera/right_front/image/compressed
+wall_sec=1777365252.841653 mono_ns=22268580700227 event=transport_to_dispatch_end slow=0 node=MonitorReader2541657-21 channel=/century/sensor/camera/left_front/image channel_id=1486890519566268418 seq=4453
+wall_sec=1777365252.853591 mono_ns=22268592639711 event=data_dispatch_begin slow=0 channel_id=14176855520724004216 channel=/century/sensor/camera/right_front/image/compressed
+wall_sec=1777365252.859633 mono_ns=22268598681166 event=data_notify_begin slow=0 channel_id=9916490048958701896 channel=/century/sensor/camera/front/image/compressed callbacks=1
+wall_sec=1777365252.943574 mono_ns=22268682620407 event=data_dispatch_end slow=0 channel_id=5959044485100912018 channel=/century/sensor/camera/right_front/image notified=1
+wall_sec=1777365252.959769 mono_ns=22268698815444 event=transport_to_dispatch_begin slow=0 node=MonitorReader2541657-20 channel=/century/sensor/camera/rear/image/compressed channel_id=18252597024424542795 seq=4511
+wall_sec=1777365253.043549 mono_ns=22268782594172 event=data_dispatch_filled slow=0 channel_id=18333005677654975573 channel=/century/sensor/camera/front/image buffers=0
+wall_sec=1777365253.048291 mono_ns=22268787337313 event=data_notify_end slow=0 channel_id=5038075964951187535 channel=/century/sensor/camera/rear/image
+wall_sec=1777365253.059230 mono_ns=22268798280565 event=transport_to_dispatch_end slow=0 node=MonitorReader2541657-24 channel=/century/sensor/camera/left_rear/image/compressed channel_id=2954899879712469227 seq=4389
+wall_sec=1777365253.143845 mono_ns=22268882892324 event=data_dispatch_begin slow=0 channel_id=11267853878067913172 channel=/century/sensor/camera/right_rear/image
+wall_sec=1777365253.147790 mono_ns=22268886843170 event=data_notify_begin slow=0 channel_id=12866899218109700873 channel=/century/sensor/camera/left_rear/image callbacks=1
+wall_sec=1777365253.167673 mono_ns=22268906717404 event=data_dispatch_end slow=0 channel_id=2954899879712469227 channel=/century/sensor/camera/left_rear/image/compressed notified=1
+wall_sec=1777365253.251729 mono_ns=22268990776233 event=transport_to_dispatch_begin slow=0 node=MonitorReader2541657-27 channel=/century/sensor/camera/right_rear/image channel_id=11267853878067913172 seq=4354
+wall_sec=1777365253.254900 mono_ns=22268993950178 event=data_dispatch_filled slow=0 channel_id=9916490048958701896 channel=/century/sensor/camera/front/image/compressed buffers=0
+wall_sec=1777365253.266843 mono_ns=22269005888638 event=data_notify_end slow=0 channel_id=18252597024424542795 channel=/century/sensor/camera/rear/image/compressed
+wall_sec=1777365253.346925 mono_ns=22269085971148 event=transport_to_dispatch_end slow=0 node=MonitorReader2541657-25 channel=/century/sensor/camera/right_front/image channel_id=5959044485100912018 seq=4515
+wall_sec=1777365253.360045 mono_ns=22269099092498 event=data_dispatch_begin slow=0 channel_id=13798320131760453801 channel=/century/sensor/camera/left_front/image/compressed
+wall_sec=1777365253.364540 mono_ns=22269103586677 event=data_notify_begin slow=0 channel_id=2954899879712469227 channel=/century/sensor/camera/left_rear/image/compressed callbacks=1
+wall_sec=1777365253.451403 mono_ns=22269190456760 event=data_dispatch_end slow=0 channel_id=1486890519566268418 channel=/century/sensor/camera/left_front/image notified=1
+wall_sec=1777365253.466993 mono_ns=22269206037777 event=transport_to_dispatch_begin slow=0 node=MonitorReader2541657-20 channel=/century/sensor/camera/rear/image/compressed channel_id=18252597024424542795 seq=4516
+wall_sec=1777365253.544362 mono_ns=22269283411241 event=data_dispatch_filled slow=0 channel_id=12866899218109700873 channel=/century/sensor/camera/left_rear/image buffers=0
+wall_sec=1777365253.553351 mono_ns=22269292396527 event=data_notify_end slow=0 channel_id=1486890519566268418 channel=/century/sensor/camera/left_front/image
+wall_sec=1777365253.558690 mono_ns=22269297737241 event=transport_to_dispatch_end slow=0 node=MonitorReader2541657-22 channel=/century/sensor/camera/left_front/image/compressed channel_id=13798320131760453801 seq=4460
+wall_sec=1777365253.650493 mono_ns=22269389537858 event=data_dispatch_begin slow=0 channel_id=12866899218109700873 channel=/century/sensor/camera/left_rear/image
+wall_sec=1777365253.660736 mono_ns=22269399783281 event=data_notify_begin slow=0 channel_id=5038075964951187535 channel=/century/sensor/camera/rear/image callbacks=1
+wall_sec=1777365253.663042 mono_ns=22269402092579 event=data_dispatch_end slow=0 channel_id=9916490048958701896 channel=/century/sensor/camera/front/image/compressed notified=1
+wall_sec=1777365253.745401 mono_ns=22269484448579 event=transport_to_dispatch_begin slow=0 node=MonitorReader2541657-27 channel=/century/sensor/camera/right_rear/image channel_id=11267853878067913172 seq=4359
+wall_sec=1777365253.749991 mono_ns=22269489038918 event=data_dispatch_filled slow=0 channel_id=2954899879712469227 channel=/century/sensor/camera/left_rear/image/compressed buffers=0
+wall_sec=1777365253.763052 mono_ns=22269502098316 event=data_notify_end slow=0 channel_id=13798320131760453801 channel=/century/sensor/camera/left_front/image/compressed
+wall_sec=1777365253.854606 mono_ns=22269593659731 event=transport_to_dispatch_end slow=0 node=MonitorReader2541657-27 channel=/century/sensor/camera/right_rear/image channel_id=11267853878067913172 seq=4360
+wall_sec=1777365253.863934 mono_ns=22269602978011 event=data_dispatch_begin slow=0 channel_id=2954899879712469227 channel=/century/sensor/camera/left_rear/image/compressed
+wall_sec=1777365253.867805 mono_ns=22269606850105 event=data_notify_begin slow=0 channel_id=17916674421969449585 channel=/century/sensor/camera/right_rear/image/compressed callbacks=1
+wall_sec=1777365253.949947 mono_ns=22269688993175 event=data_dispatch_end slow=0 channel_id=5959044485100912018 channel=/century/sensor/camera/right_front/image notified=1
+wall_sec=1777365253.960820 mono_ns=22269699868651 event=transport_to_dispatch_begin slow=0 node=MonitorReader2541657-20 channel=/century/sensor/camera/rear/image/compressed channel_id=18252597024424542795 seq=4521
+wall_sec=1777365254.037843 mono_ns=22269776893314 event=data_dispatch_filled slow=0 channel_id=18333005677654975573 channel=/century/sensor/camera/front/image buffers=0
+wall_sec=1777365254.046649 mono_ns=22269785697030 event=data_notify_end slow=0 channel_id=5959044485100912018 channel=/century/sensor/camera/right_front/image
+wall_sec=1777365254.054043 mono_ns=22269793087967 event=transport_to_dispatch_end slow=0 node=MonitorReader2541657-24 channel=/century/sensor/camera/left_rear/image/compressed channel_id=2954899879712469227 seq=4399

@@ -1,0 +1,55 @@
+lidar_shm_bridge {
+  node_name: "lidar_shm_bridge"
+  tf_topic: "/tf"
+  tf_static_topic: "/tf_static"
+  lidar_pose_topic: "/century/loc/lidar_pose"
+  tf_frame_id: "world"
+  tf_child_frame_id: "localization"
+  default_log_dir: "/century/data/log/"
+  point_xyzirt_cloud_type: "century.drivers.PointXYZIRTCloud"
+  point_cloud_packed_type: "century.drivers.PointCloudPacked"
+  transform_stampeds_type: "century.transform.TransformStampeds"
+  localization_estimate_type: "century.localization.LocalizationEstimate"
+  pose_with_cov_type: "century.localization.PoseWithCov"
+  verbose_startup_log_count: 3
+  periodic_log_interval: 50
+  lidar_topic_config {
+    topic: "/lidar/bp/front_left"
+    child_frame_id: "lidar_bp_front_left"
+  }
+  lidar_topic_config {
+    topic: "/lidar/bp/front_right"
+    child_frame_id: "lidar_bp_front_right"
+  }
+  lidar_topic_config {
+    topic: "/lidar/bp/rear_left"
+    child_frame_id: "lidar_bp_rear_left"
+  }
+  lidar_topic_config {
+    topic: "/lidar/bp/rear_right"
+    child_frame_id: "lidar_bp_rear_right"
+  }
+  lidar_topic_config {
+    topic: "/lidar/helios/front_left"
+    child_frame_id: "lidar_helios_front_left"
+  }
+  lidar_topic_config {
+    topic: "/lidar/helios/rear_right"
+    child_frame_id: "lidar_helios_rear_right"
+  }
+}
+
+shm_reader {
+  mode_tf: "tf"
+  mode_tf_static: "tf_static"
+  mode_cloud: "cloud"
+  mode_compare: "compare"
+  mode_all: "all"
+  mode_rate: "rate"
+  arg_topic: "topic"
+  arg_duration_sec: "duration_sec"
+  arg_preview_count: "preview_count"
+  default_preview_point_count: 5
+  default_preview_transform_count: 5
+  default_duration_sec: 5.0
+}

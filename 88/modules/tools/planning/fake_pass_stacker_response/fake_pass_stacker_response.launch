@@ -1,0 +1,7 @@
+<cyber>
+    <module>
+        <name>fake_prediction</name>
+        <dag_conf>/century/modules/tools/planning/fake_pass_stacker_response/fake_pass_stacker_response.dag</dag_conf>
+        <process_name></process_name>
+    </module>
+</cyber>

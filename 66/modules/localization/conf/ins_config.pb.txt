@@ -1,0 +1,7 @@
+loc_config_path: "/century/vehicle_config/loc_config.yaml"
+
+#ins_pva_topic: "/century/sensor/gnss/insx"
+ins_pos_thresh: 0.3
+ins_atti_thresh: 1.0
+ins_z_vel_thresh: 0.8
+sync_time_thresh: 0.05

@@ -1,0 +1,7 @@
+syntax = "proto2";
+
+package century.cyber.proto;
+
+message RtpsWhitelistConf {
+  repeated string whitelist_channels = 1;
+}

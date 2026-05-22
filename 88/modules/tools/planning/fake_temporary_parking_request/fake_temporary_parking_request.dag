@@ -1,0 +1,10 @@
+module_config {
+    module_library : "/century/bazel-bin/modules/tools/planning/fake_temporary_parking_request/libfake_temporary_parking_request_component.so"
+    timer_components {
+        class_name : "FakeTemporaryParkingRequestComponent"
+        config {
+            name: "fake_temporary_parking_request"
+            interval: 10
+        }
+    }
+}

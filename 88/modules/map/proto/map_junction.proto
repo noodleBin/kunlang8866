@@ -1,0 +1,64 @@
+syntax = "proto2";
+
+package century.hdmap;
+
+import "modules/map/proto/map_id.proto";
+import "modules/map/proto/map_geometry.proto";
+
+// A junction is the junction at-grade of two or more roads crossing.
+message Junction {
+  optional Id id = 1;
+
+  optional Polygon polygon = 2;
+
+  repeated Id overlap_id = 3;
+  enum Type {
+    UNKNOWN = 0;
+    IN_ROAD = 1;
+    CROSS_ROAD = 2;
+    FORK_ROAD = 3;
+    MAIN_SIDE = 4;
+    DEAD_END = 5;
+    TRAFFICLIGHT_INTER = 6;
+    STOP_SIGN = 7;
+    COMMON_JUNCTION = 8;
+    GATE_AREA = 9;
+    DRIVE_AREA = 10;
+    PARKING_LOT = 11;
+    BLOCKING_AREA_J1 = 12;
+    BLOCKING_AREA_J2J3 = 13;
+    BLOCKING_AREA_J4 = 14;
+    T4 = 15;
+    T5 = 16;
+    J4_EAST = 17;
+    J4_WEST = 18;
+    T4_T5_T8 = 19;
+    J1_EAST = 20;
+    J1_WEST = 21;
+    J2_EAST = 22;
+    J2_WEST = 23;
+    J3_EAST = 24;
+    J3_WEST = 25;
+    J4_1 = 26;
+    DongJiaZhen_B1 = 27;
+    DongJiaZhen_CD = 28;
+    DongJiaZhen_Gate = 29;
+    DongJiaZhen_Middle_Gate = 30;
+    DongJiaZhen_D_WEST = 31;
+    DongJiaZhen_B1_EXPRESSWAY = 32;
+    DongJiaZhen_C_EXPRESSWAY = 33;
+    DongJiaZhen_D1_EXPRESSWAY = 34;
+    DongJiaZhen_D2_EXPRESSWAY = 35;
+    DongJiaZhen_Danger_1 = 36;
+    DongJiaZhen_Danger_2 = 37;
+    DongJiaZhen_Danger_3 = 38;
+    J4_2_EXPRESSWAY = 39;
+    G_AREA = 40;
+    J4_1_MIDDLE = 41;
+    T6_T7_W1_W2 = 42;
+    M2H_M1_AREA = 43;
+    M3H_M2L_AREA = 44;
+    D_M3L_AREA = 45;
+  };
+  optional Type type = 4;
+}

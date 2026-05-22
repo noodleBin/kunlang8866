@@ -1,0 +1,10 @@
+module_config {
+    module_library : "/century/bazel-bin/modules/tools/planning/fake_blocking_area_response/libfake_blocking_area_response_component.so"
+    timer_components {
+        class_name : "FakeBlockingAreaResponseComponent"
+        config {
+            name: "fake_blocking_area_response"
+            interval: 10000
+        }
+    }
+}

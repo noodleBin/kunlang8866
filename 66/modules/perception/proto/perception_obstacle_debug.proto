@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package century.perception;
+
+import "modules/drivers/proto/pointcloud.proto";
+import "modules/perception/proto/perception_obstacle.proto";
+
+message PerceptionObstacleDebugMsg {
+    optional PerceptionObstacles obstacles = 1;
+    optional drivers.PointCloud raw_pointcloud = 2; // PointCloud from drivers
+    optional drivers.PointCloud seg_pointcloud = 3; // PointCloud from drivers
+    optional Affine3dProto lidar2world = 4;
+}

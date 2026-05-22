@@ -1,0 +1,114 @@
+syntax = "proto2";
+
+package century.drivers.camera.config;
+
+enum IOMethod {
+  IO_METHOD_UNKNOWN = 0;
+  IO_METHOD_READ = 1;
+  IO_METHOD_MMAP = 2;
+  IO_METHOD_USERPTR = 3;
+}
+
+enum OutputType {
+  YUYV = 0;
+  RGB = 1;
+}
+
+enum CropMode {
+  TOP = 0;
+  CENTER = 1;
+  BOTTOM = 2;
+}
+
+message Config {
+  message PlatformConfig {
+    message CameraPowerGpioConfig {
+      repeated string power_value_paths = 1;
+    }
+
+    optional string horizon_j5dev_path = 1;
+    optional string nvidia_config_path = 2;
+    optional string generic_config_path = 3;
+    optional CameraPowerGpioConfig camera_power_gpio = 4;
+  }
+
+  message V4l2TimingConfig {
+    optional uint32 init_device_delay_ms = 1 [default = 1000];
+    optional uint32 clear_buffer_timeout_ms = 2 [default = 100];
+    optional uint32 first_capture_delay_ms = 3 [default = 5];
+    optional uint32 start_capture_retry_delay_ms = 4 [default = 20];
+    optional uint32 poll_min_timeout_ms = 5 [default = 50];
+    optional uint32 poll_max_timeout_ms = 6 [default = 500];
+    optional uint32 grab_failure_retry_delay_ms = 7 [default = 5];
+  }
+
+  message ChannelCpuAffinity {
+    optional uint32 channel = 1;
+    optional uint32 core = 2;
+  }
+
+  message V4l2ThreadConfig {
+    optional bool enable_realtime_scheduling = 1 [default = true];
+    optional int32 realtime_priority = 2 [default = 90];
+    optional bool enable_cpu_affinity = 3 [default = true];
+    optional uint32 cpu_affinity_core_count = 4 [default = 6];
+    repeated ChannelCpuAffinity channel_cpu_affinities = 5;
+  }
+
+  optional string camera_dev = 1;
+  optional string frame_id = 2;
+  // v4l pixel format
+  optional string pixel_format = 3 [default = "yuyv"];
+  // mmap, userptr, read
+  optional IOMethod io_method = 4;
+  optional uint32 width = 5;
+  optional uint32 height = 6;
+  optional uint32 frame_rate = 7;
+  optional bool monochrome = 8 [default = false];
+
+  optional int32 brightness = 9 [default = -1];
+  optional int32 contrast = 10 [default = -1];
+  optional int32 saturation = 11 [default = -1];
+  optional int32 sharpness = 12 [default = -1];
+  optional int32 gain = 13 [default = -1];
+
+  optional bool auto_focus = 14 [default = false];
+  optional int32 focus = 15 [default = -1];
+  optional bool auto_exposure = 16 [default = true];
+  optional int32 exposure = 17 [default = 100];
+  optional bool auto_white_balance = 18 [default = true];
+  optional int32 white_balance = 19 [default = 4000];
+  optional uint32 bytes_per_pixel = 20 [default = 3];
+  optional uint32 trigger_internal = 21 [default = 0];
+  optional uint32 trigger_fps = 22 [default = 30];
+  optional string channel_name = 23;
+  // wait time when camera select timeout
+  optional uint32 device_wait_ms = 24 [default = 2000];
+  // camera select spin time
+  optional uint32 spin_rate = 25 [default = 200];
+  optional OutputType output_type = 26;
+
+  message CompressConfig {
+    optional string output_channel = 1;
+    optional uint32 image_pool_size = 2 [default = 20];
+    optional uint32 jpeg_quality = 3 [default = 90];
+  }
+
+  message TopicConfig {
+    optional uint32 video_index = 1;
+    optional string raw_output_channel = 2;
+    optional string compressed_output_channel = 3;
+    optional string frame_id = 4;
+  }
+
+  optional CompressConfig compress_conf = 27;
+  repeated TopicConfig topic_configs = 28;
+  optional string hb_j5dev_path = 29;
+  optional bool output_raw = 30 [default = false];
+  optional CropMode crop_mode = 31 [default = TOP];
+  optional PlatformConfig platform_config = 32;
+  optional uint32 v4l2_buffer_count = 33 [default = 2];
+  optional V4l2TimingConfig v4l2_timing_config = 34;
+  optional V4l2ThreadConfig v4l2_thread_config = 35;
+  optional uint32 enabled_camera_mask = 36 [default = 63];
+}

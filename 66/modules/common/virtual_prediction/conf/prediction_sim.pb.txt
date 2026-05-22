@@ -1,0 +1,88 @@
+prediction_topic: "/century/prediction"
+localization_topic: "/century/localization/pose"
+mock_obstacles {
+  id: 1
+  is_static: false
+  velocity: 4
+  acc: 0.0
+  start_point: {
+    x: 249.0
+    y: -110.0
+    z: 0
+  }
+  end_point: {
+    x: -46.0
+    y: -118.0
+    z: 0
+  }
+  bbox_size: {
+    x: 2
+    y: 2
+    z: 2
+  }
+  obstacle_type: VEHICLE
+  distance_condition: 15
+  position_condition: {
+    x: 0
+    y: 0
+    z: 0
+  }
+}
+
+mock_obstacles {
+  id: 2
+  is_static: false
+  velocity: 0.5
+  acc: 0.0
+  start_point: {
+    x: 131.47
+    y: -300.71
+    z: 0
+  }
+  end_point: {
+    x: 130.82
+    y: -200.55
+    z: 0
+  }
+  bbox_size: {
+    x: 2
+    y: 2
+    z: 2
+  }
+  obstacle_type: VEHICLE
+  distance_condition: 10
+  position_condition: {
+    x: 0
+    y: 0
+    z: 0
+  }
+}
+
+mock_obstacles {
+  id: 3
+  is_static: true
+  velocity: 0.0
+  acc: 0.0
+  start_point: {
+    x: 132.47
+    y: -320.71
+    z: 0
+  }
+  end_point: {
+    x: 132.82
+    y: -300.55
+    z: 0
+  }
+  bbox_size: {
+    x: 2
+    y: 2
+    z: 2
+  }
+  obstacle_type: VEHICLE
+  distance_condition: 1000000
+  position_condition: {
+    x: 0
+    y: 0
+    z: 0
+  }
+}

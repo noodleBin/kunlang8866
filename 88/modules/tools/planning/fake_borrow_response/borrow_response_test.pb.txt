@@ -1,0 +1,8 @@
+header {
+  timestamp_sec: 0
+  module_name: "borrow_response"
+  sequence_num: 0
+}
+has_response: true
+response_type: ACCEPT #REFUSE ACCEPT UNTREATED
+

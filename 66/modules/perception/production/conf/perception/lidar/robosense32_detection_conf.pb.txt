@@ -1,0 +1,27 @@
+sensor_name: "helios_bp_32"
+detector_name: "LidarObstacleDetector"
+enable_hdmap: true
+output_channel_name: "/century/inner/perception/obstacles"
+use_map_manager: true
+use_viz_debug: false
+use_filter_bank: true
+use_pose_query: true
+pose_query_offset: -0.05
+use_point_interpolation: false
+cluster_name: "BevOccupancyCluster"
+version: "perception version 1.0.1"
+
+input_channel_name: "/century/perception/inner/lidar_bp_front_left_segmentation"
+input_channel_name: "/century/perception/inner/lidar_bp_rear_right_segmentation"
+input_channel_name: "/century/perception/inner/lidar_helios_front_left_segmentation"
+input_channel_name: "/century/perception/inner/lidar_helios_rear_right_segmentation"
+
+around_ego_output_channel_name: "/century/perception/around_ego/obstalces"
+debug_output_channel_name: "/century/debug/perception/obstacles"
+debug_around_output_channel_name: "/century/debug/perception/around/obstacles"
+localization_topic: "/century/loc/pose"
+
+input_channel_name: "/century/perception/inner/lidar_bp_front_right_segmentation"
+input_channel_name: "/century/perception/inner/lidar_bp_rear_left_segmentation"
+# input_channel_name: "/century/perception/inner/lidar_m1_front_segmentation"
+# input_channel_name: "/century/perception/inner/lidar_m1_rear_segmentation"

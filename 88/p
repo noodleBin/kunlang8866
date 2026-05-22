@@ -1,0 +1,14 @@
+wall_sec=1778138765.643309 mono_ns=25821373896801 event=transport_to_dispatch_end slow=0 node=MonitorReader2722636-45 channel=/century/sensor/camera/right_front/image channel_id=5959044485100912018 seq=45044
+wall_sec=1778138765.645025 mono_ns=25821375606995 event=data_dispatch_begin slow=0 channel_id=5038075964951187535 channel=/century/sensor/camera/rear/image
+wall_sec=1778138765.649660 mono_ns=25821380252869 event=data_notify_begin slow=0 channel_id=14176855520724004216 channel=/century/sensor/camera/right_front/image/compressed callbacks=1
+wall_sec=1778138765.742977 mono_ns=25821473557118 event=data_dispatch_end slow=0 channel_id=11267853878067913172 channel=/century/sensor/camera/right_rear/image notified=1
+wall_sec=1778138765.746072 mono_ns=25821476654911 event=transport_to_dispatch_begin slow=0 node=MonitorReader2722636-44 channel=/century/sensor/camera/right_rear/image/compressed channel_id=17916674421969449585 seq=45045
+wall_sec=1778138765.749975 mono_ns=25821480558152 event=data_dispatch_filled slow=0 channel_id=9916490048958701896 channel=/century/sensor/camera/front/image/compressed buffers=0
+wall_sec=1778138765.842025 mono_ns=25821572617396 event=data_notify_end slow=0 channel_id=11267853878067913172 channel=/century/sensor/camera/right_rear/image
+wall_sec=1778138765.846258 mono_ns=25821576839136 event=transport_to_dispatch_end slow=0 node=MonitorReader2722636-49 channel=/century/sensor/camera/left_front/image/compressed channel_id=13798320131760453801 seq=45046
+wall_sec=1778138765.853749 mono_ns=25821584328240 event=data_dispatch_begin slow=0 channel_id=2954899879712469227 channel=/century/sensor/camera/left_rear/image/compressed
+wall_sec=1778138765.945196 mono_ns=25821675790389 event=data_notify_begin slow=0 channel_id=5038075964951187535 channel=/century/sensor/camera/rear/image callbacks=1
+wall_sec=1778138765.953941 mono_ns=25821684523314 event=data_dispatch_end slow=0 channel_id=18252597024424542795 channel=/century/sensor/camera/rear/image/compressed notified=1
+wall_sec=1778138766.047942 mono_ns=25821778524082 event=transport_to_dispatch_begin slow=0 node=MonitorReader2722636-45 channel=/century/sensor/camera/right_front/image channel_id=5959044485100912018 seq=45048
+wall_sec=1778138766.048967 mono_ns=25821779544637 event=data_dispatch_filled slow=0 channel_id=12866899218109700873 channel=/century/sensor/camera/left_rear/image buffers=0
+wall_sec=1778138766.050115 mono_ns=25821780697641 event=data_notify_end slow=0 channel_id=17916674421969449585 channel=/century/sensor/camera/right_rear/image/compressed

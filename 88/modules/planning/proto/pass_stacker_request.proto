@@ -1,0 +1,19 @@
+syntax = "proto2";
+package century.planning;
+
+import "modules/common/proto/header.proto";
+
+enum PassStackerRequestType {
+  PASS_DEFAULT = 0;
+  PASS_READY = 1;
+  PASSING = 2;
+  PASSED = 3;
+}
+
+message PassStackerRequest {
+  optional century.common.Header header = 1;
+  optional bool request_for_pass_stacker = 2 [default = false];
+  optional string stacker_id = 3;
+  optional PassStackerRequestType request_type = 4;
+  optional string message_id = 5;
+}

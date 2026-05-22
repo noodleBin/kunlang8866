@@ -1,0 +1,7 @@
+syntax = "proto2";
+
+package century.image_decompress;
+
+message Config {
+  optional string channel_name = 1;
+}

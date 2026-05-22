@@ -1,0 +1,15 @@
+# Define all coms in DAG streaming.
+module_config {
+    module_library : "/century/bazel-bin/modules/drivers/gnss/libgnss_component.so"
+
+    components {
+      class_name : "GnssDriverComponent"
+      config {
+        name : "gnss"
+        # config_file_path : "/century/modules/drivers/gnss/conf/gnss_conf.pb.txt"
+        config_file_path : "/century/vehicle_config/gnss_conf.pb.txt"
+      }
+    }
+}
+
+

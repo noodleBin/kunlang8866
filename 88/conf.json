@@ -1,0 +1,16 @@
+{
+    "channel": [
+        {
+            "name": "/century/canbus/chassis",
+            "process": "mainboard -d /century/modules/planning/dag/canbus.dag"
+        },
+        {
+            "name": "/century/control",
+            "process": "mainboard -d /century/modules/planning/dag/control.dag"
+        },
+        {
+            "name": "/century/planning",
+            "process": "mainboard -d /century/modules/drivers/lidar/robosense/dag/rs32_front.dag -s drivers"
+        }
+    ]
+}

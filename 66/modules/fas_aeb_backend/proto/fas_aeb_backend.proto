@@ -1,0 +1,41 @@
+syntax = "proto2";
+
+package century.fas_aeb_backend;
+
+import "modules/common/proto/header.proto";
+
+message ModifyConfig{
+  optional string key = 1;
+  optional string value = 2;
+  optional string password = 3;
+  optional bool is_short = 4;
+  optional string password_longth = 5;
+}
+
+message ModifyPassword{
+  optional string old_password = 1;
+  optional string new_password = 2;
+}
+
+message Request {
+  enum Type {
+      MODIFY_PASSWORD = 0;
+      MODIFY_CONFIG = 1;
+      MODIFY_CONFIG_CLOUD = 2;
+  }
+  optional Type type = 1;
+  optional ModifyConfig modify_config = 2;
+  optional ModifyPassword modify_password = 3;
+}
+
+
+message Response {
+  optional bool result = 1;
+  optional string message = 2;
+}
+
+message FasAebInfo {
+  optional century.common.Header header = 1;
+  optional bool fas_aeb_switch = 2;
+  optional double last_modify_time = 3;
+}

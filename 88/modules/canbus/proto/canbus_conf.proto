@@ -1,0 +1,81 @@
+syntax = "proto2";
+
+package century.canbus;
+
+import "modules/drivers/canbus/proto/can_card_parameter.proto";
+import "modules/canbus/proto/vehicle_parameter.proto";
+
+message CanbusConf {
+
+  enum WalkingMode {
+  VELOCITY_MODE = 0 ;
+  TORQUE_MODE = 1 ;
+  POSITION_MODE = 2 ;
+  }
+
+  enum GearPosition {
+  GEAR_PARKING = 0 ;
+  GEAR_REVERSE = 1 ;
+  GEAR_NEUTRAL = 2 ;
+  GEAR_DRIVE = 3 ;
+
+  }
+  optional VehicleParameter vehicle_parameter = 1;
+  optional century.drivers.canbus.CANCardParameter can_card_parameter = 2;
+  optional bool enable_debug_mode = 3 [default = false];
+  optional bool enable_receiver_log = 4 [default = false];
+  optional bool enable_sender_log = 5 [default = false];
+  //  Brake setting（0~250）
+  optional uint32 debug_guide1_brake = 6 [default = 0];
+  // Target distance (cm, it is sent without change until it is in place, after it is in place, it needs to send 0 first and then send a new position)
+  optional uint32 debug_guide1_target_distance = 7 [default = 0];
+  // Target gear (0: P gear 1: R gear 2: N gear 3: D gear)
+  optional GearPosition debug_guide1_gear = 8 [default = GEAR_PARKING];
+  // double_flash
+  optional uint32 debug_guide1_double_flash = 9 [default = 0];
+  // left_light
+  optional uint32 debug_guide1_left_light = 10 [default = 0];
+  // right_light
+  optional uint32 debug_guide1_right_light = 11 [default = 0];
+  // horn
+  optional uint32 debug_guide1_horn = 12 [default = 0];
+  // estop
+  optional uint32 debug_guide1_estop = 13 [default = 0];
+
+  // driving_light
+  optional uint32 debug_guide1_driving_light = 14 [default = 0];
+  // clearance_light
+  optional uint32 debug_guide1_clearance_light = 15 [default = 0];
+  // standby_mode
+  optional uint32 debug_guide1_navigation_standby_mode = 16 [default = 0];
+  // reset
+  optional uint32 debug_guide1_reset = 17 [default = 0];
+  // lowpower_mode
+  optional uint32 debug_guide1_lowpower_mode = 18 [default = 0];
+
+  // 2-axis target speed (m/s, torque Nm when torque mode is selected)
+  optional double debug_guide1_target_torque_2_axis = 19 [default = 0];
+  // 1 axis center equivalent target Angle (degree)
+  optional double debug_guide1_target_steering_angle_1axis = 20 [default = 0];
+  // 3-axis target speed (m/s, torque Nm when torque mode is selected)
+  optional double debug_guide1_target_torque_3_axis = 21 [default = 0];
+  // 4 axis center equivalent target Angle (degree)
+  optional double debug_guide1_target_steering_angle_4_axis = 22 [default = 0];
+
+
+
+  optional uint32 debug_guide1_voice_num = 23 [default = 0];
+  optional uint32 debug_guide1_voice_volue = 24 [default = 0];
+
+  optional uint32 debug_guide1_f_low_beam_light = 25 [default = 0];
+  optional uint32 debug_guide1_f_lhigh_beam_light = 26 [default = 0];
+  optional uint32 debug_guide1_r_low_beam_light = 27 [default = 0];
+  optional uint32 debug_guide1_r_high_beam_light = 28 [default = 0];
+  optional uint32 debug_guide1_fog_light = 29 [default = 0];
+  optional uint32 debug_guide1_unload_lamp = 30 [default = 0];
+  optional uint32 debug_guide1_loading_lamp = 31 [default = 0];
+  optional uint32 debug_guide1_loaded_lamp = 32 [default = 0];
+  optional uint32 debug_guide1_zhuanxiang_mode = 33 [default = 0];
+  optional bool debug_AEB_Enable = 34 [default = false];
+
+}

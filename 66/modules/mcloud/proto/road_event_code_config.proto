@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+package century.mcloud;
+
+message RoadEventCodeItem {
+  optional string name = 1;
+  optional string code = 2;
+  optional string level = 3;
+}
+
+message RoadEventCodeConfig {
+  repeated RoadEventCodeItem monitor = 1;
+  repeated RoadEventCodeItem planning = 2;
+  repeated RoadEventCodeItem decision = 3;
+}

@@ -1,0 +1,35 @@
+syntax = "proto2";
+package century.planning;
+
+import "modules/common/proto/header.proto";
+import "modules/routing/proto/routing.proto";
+
+enum StackerType {
+  STACKER = 0;
+  FORKLIFT_STACKER = 1;
+  WHEELCRANE = 2;
+}
+enum WorkingStatus {
+  WORKING = 0;
+  STANDBY = 1;
+}
+
+message StackerPoint {
+  optional double x = 1 [default = 0.0];  
+  optional double y = 2 [default = 0.0]; 
+  optional double heading = 3 [default = 0.0]; 
+}
+
+message StackerInfo {
+  optional string stacker_id = 1;
+  optional StackerPoint stacker_point = 2;
+  optional double speed = 3 [default = 0.0];
+  optional StackerType stacker_type = 4[default = STACKER];
+  optional century.routing.TaskType task_type = 9[default = DEFAULT];
+  optional century.common.Header header = 10;
+}
+
+message StackersInfo {
+  optional century.common.Header header = 1;
+  repeated StackerInfo stacker_info = 2;
+}

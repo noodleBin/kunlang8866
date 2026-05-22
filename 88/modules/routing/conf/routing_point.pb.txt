@@ -1,0 +1,550 @@
+# -------------------------------------------QDG------------------------------------------------
+# rerouting: special areas require two rerouting, such as J1、J2、J3、J4 dead end roads
+fixed_points {
+  id: "rerouting_J4_EAST"
+  pose {
+    x: -2551.42039938
+    y: 2197.68012949
+  }
+}
+
+fixed_points {
+  id: "rrouting_J4_EAST"
+  pose {
+    x: -2563.47353633
+    y: 2199.67904507
+  }
+}
+
+fixed_points {
+  id: "rerouting_J4_WEST"
+  pose {
+    x: -3098.44022094
+    y: 2279.84881821
+    }
+}
+
+fixed_points {
+  id: "rerouting_J4"
+  pose {
+    x: -2533.56321181
+    y: 2195.01707146
+  }
+}
+
+fixed_points {
+  id: "rerouting_J1_EAST"
+  pose {
+    x: -2552.18
+    y: 2245.59
+  }
+}
+
+fixed_points {
+  id: "rerouting_J1_WEST"
+  pose {
+    x: -3245.82
+    y: 2348.20
+  }
+}
+
+fixed_points {
+  id: "rerouting_J2_EAST"
+  pose {
+    x: -2510.09
+    y: 2222.80
+  }
+}
+
+fixed_points {
+  id: "rerouting_J2_WEST"
+  pose {
+    x: -3249.69
+    y: 2333.49
+  }
+}
+
+fixed_points {
+  id: "rerouting_J3_EAST"
+  pose {
+    x: -2509.58
+    y: 2208.15
+  }
+}
+
+fixed_points {
+  id: "rerouting_J3_WEST"
+  pose {
+    x: -3202.83
+    y: 2312.07
+  }
+}
+
+fixed_points {
+  id: "rerouting_J4_1_MIDDLE"
+  pose {
+    x: -2885.77053942
+    y: 2248.08778216
+  }
+  pose {
+    x: -2840.75466264
+    y: 2241.27699599
+  }
+}
+
+fixed_points {
+  id: "rerouting_DJZ_D_WEST"
+  pose {
+    x: 965.84995214
+    y: 390.49256941
+  }
+}
+# LOOP: loop Running
+fixed_points {
+  id: "LOOP_RUN_QDG"
+  pose {
+    x: -2874.29727775
+    y: 2133.06847371
+  }
+  pose {
+    x: -2643.35735792
+    y: 2102.48585011
+  }
+}
+
+fixed_points {
+  id: "LOOP_QDG_D7"
+  pose {
+    x: -3173.01411954
+    y: 2235.25695134
+  }
+}
+# BLOCK: special treatment, blocking some lanes through point positions
+fixed_points {
+  id: "BLOCK_T4_T5_T8"
+  pose {
+    x: -3014.05742679
+    y: 2250.57632196
+  }
+  pose {
+    x: -2745.67915789
+    y: 2210.49056833
+  }
+  pose {
+    x: -3144.00354644
+    y: 2270.46615794
+  }
+}
+
+fixed_points {
+  id: "BLOCK_J4_EAST"
+  pose {
+    x: -2533.86356235
+    y: 2194.51386043
+  }
+}
+
+fixed_points {
+  id: "BLOCK_D7_11"
+  pose {
+    x: -3178.78157756
+    y: 2237.36151503
+  }
+}
+
+fixed_points {
+  id: "BLOCK_D7_J4W"
+  pose {
+    x: -3165.10908651
+    y: 2275.94601088
+  }
+}
+
+fixed_points {
+  id: "MAX_BLOCK_RIGHT_REVERSE"
+  pose {
+    x: -2971.47060530
+    y: 2145.75211347
+  }
+  pose {
+    x: -2972.05696476
+    y: 2142.48525192
+  }
+  pose {
+    x: -2798.92154901
+    y: 2123.14817691
+  }
+  pose {
+    x: -2810.84879389
+    y: 2121.28671600
+  }
+}
+
+fixed_points {
+  id: "MIN_BLOCK_RIGHT_REVERSE"
+  pose {
+    x: -3044.31102199
+    y: 2155.69399091
+  }
+  pose {
+    x: -3053.59000936
+    y: 2153.51069990
+  }
+  pose {
+    x: -3086.40760727
+    y: 2157.67259853
+  }
+  pose {
+    x: -2872.11054659
+    y: 2132.64906875
+  }
+  pose {
+    x: -2879.41928598
+    y: 2130.24082258
+  }
+  pose {
+    x: -2592.86861947
+    y: 2107.07208245
+  }
+  pose {
+    x: -2589.60616524
+    y: 2103.98597638
+  }
+  pose {
+    x: -2532.43773114
+    y: 2171.82398576
+  }
+}
+
+
+# huaman_shaped => HS
+fixed_points {
+  id: "HS_J4_1"
+  pose {
+    x: -2523.56537504
+    y: 2193.61730214
+  }
+  pose {
+    x: -3231.23625097
+    y: 2300.19318070
+  }
+}
+
+fixed_points {
+  id: "HS_J4_1_temp"
+  pose {
+    x: -2523.56537504
+    y: 2193.61730214
+  }
+  pose {
+    x: -3131.79367215
+    y: 2284.81796613
+  }
+}
+
+fixed_points {
+  id: "HS_J4_3"
+  pose {
+    x: -2465.79542349
+    y: 2177.11704491
+  }
+  pose {
+    x: -3232.65803904
+    y: 2292.40181571
+  }
+}
+
+fixed_points {
+  id: "HS_J4_5"
+  pose {
+    x: -2523.46778794
+    y: 2177.33376171
+  }
+  pose {
+    x: -3132.39170866
+    y: 2268.90081867
+  }
+}
+
+# Wheel Crane Projection Lane points
+fixed_points {
+  id: "WHOLE_J4_1"
+  pose {
+    x: -2462.39146345
+    y: 2184.44566954
+  }
+  pose {
+    x: -3234.44743982
+    y: 2300.74473050
+  }
+}
+
+# Straight Lane Check: used to detect if target lane is straight by searching nearby lanes
+fixed_points {
+  id: "STRAIGHT_CHECK_GENERAL"
+  pose {
+    x: -3140.68764309
+    y: 2169.53480560
+  }
+}
+# -------------------------------------------QDG------------------------------------------------
+# -------------------------------------------DJZ------------------------------------------------
+# fixed_points_[FixedPointArea::DJZ_move + kFixedAreaOffset].reserve(2);
+fixed_points {
+  id: "DJZ_move"
+  pose {
+    x: 1421.88973163
+    y: 316.40551930
+  }
+  pose {
+    x: 1425.25628317
+    y: 376.73085221
+  }
+}
+
+# fixed_points_[FixedPointArea::DJZ_fix + kFixedAreaOffset].reserve(1);
+fixed_points {
+  id: "DJZ_fix"
+  pose {
+    x: 517.01663088
+    y: 375.51315482
+  }
+}
+
+# c1-down、c1-up、B1-midlle-up、D2-up、D2-down、D1-down B1-left-down
+# fixed_points_[FixedPointArea::DJZ_dead_end_enter + kFixedAreaOffset] 
+fixed_points {
+  id: "DJZ_dead_end_enter"
+  pose {
+    x: 543.14760331
+    y: 409.66162293
+  }
+  pose {
+    x: 543.61067858
+    y: 421.21776432
+  }
+  pose {
+    x: 1032.59677704
+    y: 353.16403742
+  }
+  pose {
+    x: 975.01550658
+    y: 384.47694602
+  }
+  pose {
+    x: 975.01550903
+    y: 373.65140734
+  }
+  pose {
+    x: 1449.33195171
+    y: 369.82541109
+  }
+  pose {
+    x: 516.07812639
+    y: 370.68497366
+  }
+}
+
+# fixed_points_[FixedPointArea::DJZ_enter + kFixedAreaOffset]
+fixed_points {
+  id: "DJZ_enter"
+  pose {
+    x: 598.91315074
+    y: 405.88888843
+  }
+  pose {
+    x: 597.28793765
+    y: 417.50397390
+  }
+  pose {
+    x: 1052.40369397
+    y: 351.87885543
+  }
+  pose {
+    x: 1033.52680840
+    y: 380.44714005
+  }
+  pose {
+    x: 1005.27497841
+    y: 371.45644610
+  }
+  pose {
+    x: 1415.11667957
+    y: 372.03594393
+  }
+  pose {
+    x: 553.07339665
+    y: 367.90717221
+  }
+}
+
+# fixed_points_[FixedPointArea::DJZ_other_dead_end_enter + kFixedAreaOffset]
+fixed_points {
+  id: "DJZ_other_dead_end_enter"
+  pose {
+    x: 904.65942397
+    y: 385.94057876
+  }
+  pose {
+    x: 905.23208605
+    y: 397.13126330
+  }
+  pose {
+    x: 1445.95934761
+    y: 326.24618231
+  }
+  pose {
+    x: 1447.75146698
+    y: 353.56440991
+  }
+  pose {
+    x: 1447.90595725
+    y: 342.59472309
+  }
+  pose {
+    x: 980.64480999
+    y: 400.35740238
+  }
+  pose {
+    x: 1495.76186251
+    y: 306.28057534
+  }
+}
+
+
+# c1-down、B1-right-up、D2-down、B1-right-down、D2-up、D1-down、c1-up
+# fixed_points_[FixedPointArea::DJZ_dead_end_exit + kFixedAreaOffset]
+fixed_points {
+  id: "DJZ_dead_end_exit"
+  pose {
+    x: 543.37240043
+    y: 409.66384389
+  }
+  pose {
+    x: 1446.01183721
+    y: 326.17912466
+  }
+  pose {
+    x: 1446.65548313
+    y: 342.66487241
+  }
+  pose {
+    x: 1496.20791976
+    y: 306.33879835
+  }
+  pose {
+    x: 1447.97065370
+    y: 353.45571727
+  }
+  pose {
+    x: 978.04778956
+    y: 400.82390847
+  }
+  pose {
+    x: 535.03167487
+    y: 422.49264302
+  }
+}
+
+# fixed_points_[FixedPointArea::DJZ_exit + kFixedAreaOffset]
+fixed_points {
+  id: "DJZ_exit"
+  pose {
+    x: 606.19893644
+    y: 405.34174918
+  }
+  pose {
+    x: 1417.70444697
+    y: 327.95881549
+  }
+  pose {
+    x: 1424.96594414
+    y: 344.13038198
+  }
+  pose {
+    x: 1406.42129778
+    y: 312.20081893
+  }
+  pose {
+    x: 1420.69764662
+    y: 355.22341246
+  }
+  pose {
+    x: 1010.41612913
+    y: 398.33403557
+  }
+  pose {
+    x: 559.12141435
+    y: 420.92880612
+  }
+}
+
+# fixed_points_[FixedPointArea::DJZ_other_dead_end_exit + kFixedAreaOffset]
+fixed_points {
+  id: "DJZ_other_dead_end_exit"
+  pose {
+    x: 903.15189654
+    y: 385.92810438
+  }
+  pose {
+    x: 1025.82111936
+    y: 353.47805778
+  }
+  pose {
+    x: 979.14244662
+    y: 373.19999834
+  }
+  pose {
+    x: 517.20316899
+    y: 370.32337554
+  }
+  pose {
+    x: 978.96386687
+    y: 383.75651607
+  }
+  pose {
+    x: 1449.42773292
+    y: 369.94965816
+  }
+  pose {
+    x: 904.74068439
+    y: 397.16980402
+  }
+}
+
+# DEMO: selection of fixed points for Dongjia Town demonstration route
+fixed_points {
+  id: "DJZ_DEMO"
+  pose {
+    x: 529.06499029
+    y: 369.18016322
+  }
+  pose {
+    x: 1415.92014720
+    y: 311.42405855
+  }
+  pose {
+    x: 545.63209614
+    y: 420.89601291
+  }
+  pose {
+    x: 897.70524947
+    y: 397.67570317
+  }
+  pose {
+    x: 534.22560730
+    y: 374.85726613}
+  pose {
+    x: 1434.09081985
+    y: 315.88454600
+  }
+  pose {
+    x: 581.49899473
+    y: 412.92201625
+  }
+  pose {
+    x: 904.82670856
+    y: 391.64653638
+  }
+}
+# -------------------------------------------DJZ------------------------------------------------

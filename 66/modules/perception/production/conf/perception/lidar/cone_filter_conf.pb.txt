@@ -1,0 +1,5 @@
+grid_range: 80
+grid_size: 0.2
+appera_count: 3
+disappear_count: 30
+match_distance: 0.5

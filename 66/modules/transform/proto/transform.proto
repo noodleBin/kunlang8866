@@ -1,0 +1,22 @@
+syntax = "proto2";
+
+package century.transform;
+
+import "modules/common/proto/header.proto";
+import "modules/common/proto/geometry.proto";
+
+message Transform {
+  optional century.common.Point3D translation = 1;
+  optional century.common.Quaternion rotation = 2;
+}
+
+message TransformStamped {
+  optional century.common.Header header = 1;
+  optional string child_frame_id = 2;
+  optional Transform transform = 3;
+}
+
+message TransformStampeds {
+  optional century.common.Header header = 1;
+  repeated TransformStamped transforms = 2;
+}

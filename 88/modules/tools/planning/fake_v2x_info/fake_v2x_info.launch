@@ -1,0 +1,7 @@
+<cyber>
+    <module>
+        <name>fake_v2x</name>
+        <dag_conf>/century/modules/tools/planning/fake_v2x_info/fake_v2x_info.dag</dag_conf>
+        <process_name></process_name>
+    </module>
+</cyber>

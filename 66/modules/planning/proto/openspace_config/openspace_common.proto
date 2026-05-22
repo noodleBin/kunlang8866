@@ -1,0 +1,27 @@
+syntax = "proto2";
+
+import "modules/common/proto/geometry.proto";
+
+package century.planning;
+
+enum SpecialAreaType {
+  NONE_SPECIAL_AREA = 0;
+  G_AREA = 1;
+  M_AREA = 2;
+  D_AREA = 3;
+}
+
+message SpecialAreaPolygonInfos {
+  optional SpecialAreaType area_type = 1;
+  optional century.common.Polygon area_polygon = 2;
+}
+
+message OpenspaceCommonConfig {
+  optional bool enable_check_error_states = 1 [default = false];
+
+  optional int32 max_search_depth = 10 [default = 4];
+  optional double lateral_error_threshold = 11 [default = 0.5];  // meter
+  optional double heading_angle_error_threshold = 12 [default = 30.0]; // degree
+
+  repeated SpecialAreaPolygonInfos special_areas = 50;
+}

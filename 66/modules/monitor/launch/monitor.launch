@@ -1,0 +1,7 @@
+<cyber>
+    <module>
+        <name>monitor</name>
+        <dag_conf>/century/modules/monitor/dag/monitor.dag</dag_conf>
+        <process_name>monitor_sched</process_name>
+    </module>
+</cyber>

@@ -1,0 +1,12 @@
+syntax = "proto2";
+package century.perception.lidar;
+
+message ObjectSubType {
+  optional int32 in_key = 1;
+  optional int32 out_key = 2;
+  optional string label_name = 3;
+}
+
+message ObjectSubTypeMapping {
+  repeated ObjectSubType subtype_mapping = 1;
+}

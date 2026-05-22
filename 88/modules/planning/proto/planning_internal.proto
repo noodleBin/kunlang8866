@@ -1,0 +1,441 @@
+syntax = "proto2";
+
+package century.planning_internal;
+
+import "modules/common/proto/geometry.proto";
+import "modules/common/proto/header.proto";
+import "modules/canbus/proto/chassis.proto";
+import "modules/common/proto/pnc_point.proto";
+import "modules/localization/proto/localization.proto";
+import "modules/dreamview/proto/chart.proto";
+import "modules/map/relative_map/proto/navigation.proto";
+import "modules/routing/proto/routing.proto";
+import "modules/perception/proto/traffic_light_detection.proto";
+import "modules/planning/proto/sl_boundary.proto";
+import "modules/planning/proto/decision.proto";
+import "modules/planning/proto/planning_config.proto";
+import "modules/perception/proto/perception_obstacle.proto";
+
+message Debug {
+  optional PlanningData planning_data = 2;
+}
+
+message SpeedPlan {
+  optional string name = 1;
+  repeated century.common.SpeedPoint speed_point = 2;
+}
+
+message StGraphBoundaryDebug {
+  enum StBoundaryType {
+    ST_BOUNDARY_TYPE_UNKNOWN = 1;
+    ST_BOUNDARY_TYPE_STOP = 2;
+    ST_BOUNDARY_TYPE_FOLLOW = 3;
+    ST_BOUNDARY_TYPE_YIELD = 4;
+    ST_BOUNDARY_TYPE_OVERTAKE = 5;
+    ST_BOUNDARY_TYPE_KEEP_CLEAR = 6;
+    ST_BOUNDARY_TYPE_DRIVABLE_REGION = 7;
+  }
+  optional string name = 1;
+  repeated century.common.SpeedPoint point = 2;
+  optional StBoundaryType type = 3;
+}
+
+message SLFrameDebug {
+  optional string name = 1;
+  repeated double sampled_s = 2;
+  repeated double static_obstacle_lower_bound = 3;
+  repeated double dynamic_obstacle_lower_bound = 4;
+  repeated double static_obstacle_upper_bound = 5;
+  repeated double dynamic_obstacle_upper_bound = 6;
+  repeated double map_lower_bound = 7;
+  repeated double map_upper_bound = 8;
+  repeated century.common.SLPoint sl_path = 9;
+  repeated double aggregated_boundary_s = 10;
+  repeated double aggregated_boundary_low = 11;
+  repeated double aggregated_boundary_high = 12;
+}
+
+message STGraphDebug {
+  message STGraphSpeedConstraint {
+    repeated double t = 1;
+    repeated double lower_bound = 2;
+    repeated double upper_bound = 3;
+  }
+  message STGraphKernelCuiseRef {
+    repeated double t = 1;
+    repeated double cruise_line_s = 2;
+  }
+  message STGraphKernelFollowRef {
+    repeated double t = 1;
+    repeated double follow_line_s = 2;
+  }
+
+  optional string name = 1;
+  repeated StGraphBoundaryDebug boundary = 2;
+  repeated century.common.SpeedPoint speed_limit = 3;
+  repeated century.common.SpeedPoint speed_profile = 4;
+  optional STGraphSpeedConstraint speed_constraint = 5;
+  optional STGraphKernelCuiseRef kernel_cruise_ref = 6;
+  optional STGraphKernelFollowRef kernel_follow_ref = 7;
+}
+
+message SignalLightDebug {
+  message SignalDebug {
+    optional string light_id = 1;
+    optional century.perception.TrafficLight.Color color = 2;
+    optional double light_stop_s = 3;
+    optional double adc_stop_deceleration = 4;
+    optional bool is_stop_wall_created = 5;
+    optional double confidence = 6 [default = 1.0];
+  }
+  optional double adc_speed = 1;
+  optional double adc_front_s = 2;
+  repeated SignalDebug signal = 3;
+}
+
+message DecisionTag {
+  optional string decider_tag = 1;
+  optional century.planning.ObjectDecisionType decision = 2;
+}
+
+message ObstacleDebug {
+  optional string id = 1;
+  optional century.planning.SLBoundary sl_boundary = 2;
+  repeated DecisionTag decision_tag = 3;
+  repeated double vertices_x_coords = 4;
+  repeated double vertices_y_coords = 5;
+  optional string slow_breaking_tag = 6;
+}
+
+message ReferenceLineDebug {
+  optional string id = 1;
+  optional double length = 2;
+  optional double cost = 3;
+  optional bool is_change_lane_path = 4;
+  optional bool is_drivable = 5;
+  optional bool is_protected = 6;
+  optional bool is_offroad = 7;
+  optional double minimum_boundary = 8;
+  optional double average_kappa = 9 [deprecated = true];
+  optional double average_dkappa = 10 [deprecated = true];
+  optional double kappa_rms = 11;
+  optional double dkappa_rms = 12;
+  optional double kappa_max_abs = 13;
+  optional double dkappa_max_abs = 14;
+  optional double average_offset = 15;
+}
+
+message SampleLayerDebug {
+  repeated century.common.SLPoint sl_point = 1;
+}
+
+message DpPolyGraphDebug {
+  repeated SampleLayerDebug sample_layer = 1;
+  repeated century.common.SLPoint min_cost_point = 2;
+}
+
+message ScenarioDebug {
+  optional century.planning.ScenarioConfig.ScenarioType scenario_type = 1;
+  optional century.planning.ScenarioConfig.StageType stage_type = 2;
+  optional string msg = 3;
+}
+
+message Trajectories {
+  repeated century.common.Trajectory trajectory = 1;
+}
+
+//---------------------------------------------------------------------------
+// Hybrid A Star WeiHuaShen
+message HybridPointDebug {
+  optional double x = 1;
+  optional double y = 2;
+  optional double phi = 3;
+}
+
+message HybridObsLineSegment2d {
+  repeated double x = 1;
+  repeated double y = 2;
+}
+
+message HybridXYboundsInfo {
+  optional double x0 = 1;
+  optional double x1 = 2;
+  optional double y0 = 3;
+  optional double y1 = 4;
+  optional bool is_send_xy_bounds = 10 [default = false];
+}
+
+message HybridDebugResult {
+  //---------------------------------------------------------------------------
+  // Hybrid A Star WeiHuaShen 20221212
+  optional uint64 run_node_num = 1 [default = 0];
+  optional uint64 search_rs_num = 2 [default = 0];
+  optional uint64 explored_node_num = 3 [default = 0];
+  optional double rs_time = 4 [default = 0.0];
+  optional double heuristic_time = 5 [default = 0.0];
+  optional double cyber_time = 6 [default = 0.0];
+  optional double astar_time = 7 [default = 0.0];
+  optional uint64 result_size = 8 [default = 0];
+  // heuristic_type:0-dp_map,1-a_star,2-Euler,3-Manhattan,4-ReedSheep,
+  // 5-RS And AStar
+  optional uint32 heuristic_type = 9 [default = 0];
+  optional uint32 rs_num_peroid = 10 [default = 1];
+  optional bool is_hybrid_update_cost = 11 [default = false];
+  //---------------------------------------------------------------------------
+  // Added for Hybrid a star Collision detection safety distance
+  optional double xy_grid_resolution = 20 [default = 0.2];
+  optional double hybrid_a_star_node_radius = 21 [default = 0.5];
+  optional double hybrid_a_star_bounds_radius = 22 [default = 0.5];
+  optional bool is_hybrid_a_star_bounds_check = 23 [default = false];
+  //---------------------------------------------------------------------------
+  // Grid a star for heuristic
+  optional double grid_a_star_xy_resolution = 30 [default = 0.5];
+  optional double grid_a_star_node_radius = 31 [default = 0.5];
+  // Add boundary check
+  optional bool is_convert_to_grid_coordinates = 32 [default = true];
+  optional bool is_xy_bounds_check = 33 [default = false];
+  optional double grid_a_star_bounds_radius = 34 [default = 0.5];
+  // A Star Heuristic Type And Update OpenSet G And F
+  // a_star_heuristic_type:0-Manhattan,1-Diagonal,2-Euclid
+  optional uint32 a_star_heuristic_type = 35 [default = 0];
+  optional bool is_astar_update_cost = 36 [default = false];
+  // 0-cmp F; 1-cmp G;
+  optional uint32 a_star_update_type = 37 [default = 0];
+  //---------------------------------------------------------------------------
+  // Hybrid a star buffer
+  optional double astar_first_long_buffer = 100 [default = 0.0];
+  optional double astar_first_lat_buffer = 101 [default = 0.0];
+  //---------------------------------------------------------------------------
+  optional double search_near_dest_x_threshold = 150;
+  optional double search_near_dest_y_threshold = 151;
+  optional double search_near_dest_angle_threshold = 152;
+
+  // time threshold
+  optional double astar_max_time_first = 200;
+  optional double astar_max_time_second = 201;
+}
+//---------------------------------------------------------------------------
+
+message HybridRSDebug {
+  optional bool is_rs_succeed = 1 [default = false];
+  optional double use_rs_dis = 2;
+  // current node AnalyticExpansion Succeed in getting RS. weihuashen
+  optional century.planning_internal.HybridPointDebug hybrid_rs_start_point = 3;
+}
+
+message HybridSearchInfo {
+  optional century.common.TrajectoryPoint roi_shift_point = 1;
+  optional century.common.PointENU origin_point = 2;  // meter
+  optional double origin_heading_rad = 3;
+  optional bool is_send_start_end_point = 4 [default = false];
+  optional century.planning_internal.HybridPointDebug hybrid_start_point = 5;
+  optional century.planning_internal.HybridPointDebug hybrid_end_point = 6;
+  optional century.common.TrajectoryPoint start_point = 7;
+  optional century.common.TrajectoryPoint end_point = 8;
+
+  optional century.planning_internal.Trajectories partitioned_trajectories = 50;
+  optional century.planning_internal.Trajectories chosen_trajectory = 51;
+  optional bool is_fallback_trajectory = 52;
+  optional century.common.TrajectoryPoint future_collision_point = 53;
+  optional century.planning_internal.Trajectories fallback_trajectory = 54;
+  optional century.common.TrajectoryPoint trajectory_stitching_point = 55;
+}
+
+message HybridAStarOptimizationInfo {
+  repeated double warm_start_dual_lambda = 1;
+  repeated double warm_start_dual_miu = 2;
+  repeated double optimized_dual_lambda = 3;
+  repeated double optimized_dual_miu = 4;
+  optional century.common.VehicleMotion warm_start_trajectory = 25;
+  optional century.common.VehicleMotion smoothed_trajectory = 26;
+}
+
+message HybridBidirectionSearchInfo {
+  // TODO
+}
+
+message OpenSpaceDebug {
+  optional century.planning_internal.Trajectories trajectories = 1;
+
+  repeated double xy_boundary = 8;
+  repeated century.planning_internal.ObstacleDebug obstacles = 9;
+  repeated HybridPointDebug result_points = 18;
+  optional double time_latency = 19 [default = 0.0];  // ms
+
+  optional bool is_use_last_frame = 22 [default = false];
+  optional bool is_plan_success = 23 [default = false];
+  optional bool teb_planning_timeout = 24 [default = false];
+
+  optional HybridAStarOptimizationInfo astar_optimization_info = 80;
+
+  //---------------------------------------------------------------------------
+  // Hybrid A Star WeiHuaShen 20221212
+  repeated HybridPointDebug hybrid_debug = 100;
+  optional HybridDebugResult hybrid_debug_result = 102;
+  // rs debug info
+  optional HybridRSDebug hybrid_rs_debug = 103;
+
+  optional bool is_first_hybrid_debug = 105 [default = false];
+  optional bool is_predictied_obstacle_in_trajectory = 106;
+  //---------------------------------------------------------------------------
+  // A Star Path
+  optional bool is_use_a_star_path = 200 [default = false];
+  repeated HybridPointDebug a_star_path = 201;
+  optional double a_star_path_cost = 202 [default = 0.0];
+  // A Star Path Nearby point by weihuashen
+  optional double a_star_path_distance_threshold = 203 [default = 0.0];
+  optional uint32 a_star_explored_node_num = 204 [default = 0];
+  //---------------------------------------------------------------------------
+  repeated HybridObsLineSegment2d hybrid_obs_line2d = 300;
+  // Hybrid A Star Start Point And End Point
+  optional HybridSearchInfo hybrid_search_info = 350;
+  //---------------------------------------------------------------------------
+  // Hybrid A Star XYbounds
+  optional HybridXYboundsInfo hybrid_xy_bounds_info = 400;
+  //---------------------------------------------------------------------------
+  // hybrid a star bidirection search debug
+  optional HybridBidirectionSearchInfo bidirection_search_info = 500;
+}
+
+message SmootherDebug {
+  enum SmootherType {
+    SMOOTHER_NONE = 1;
+    SMOOTHER_CLOSE_STOP = 2;
+  }
+  optional bool is_smoothed = 1;
+
+  optional SmootherType type = 2 [default = SMOOTHER_NONE];
+  optional string reason = 3;
+}
+
+message PullOverDebug {
+  optional century.common.PointENU position = 1;
+  optional double theta = 2;
+  optional double length_front = 3;
+  optional double length_back = 4;
+  optional double width_left = 5;
+  optional double width_right = 6;
+}
+
+message PathDeciderDebug {
+  optional double reference_line_path_max_kappa_diff = 1  [default = 0.0];
+  optional double previous_max_kappa = 2  [default = 0.0];
+  optional double previous_max_centripetal_acceleration = 3  [default = 0.0];
+  optional double current_max_kappa = 4  [default = 0.0];
+  optional double current_max_centripetal_acceleration = 5  [default = 0.0];
+  optional double adc_speed = 6  [default = 0.0];
+  optional double max_kappa_diff = 7  [default = 0.0];
+  optional double max_centripetal_acceleration_diff = 8  [default = 0.0];
+  optional bool is_headbang_path = 9 [default = false];
+}
+
+message LaneBorrowDebug {
+  enum LaneBorrowFsmStatus {
+    DEFAULT = 0;
+    PREPARE = 1;
+    LEFTBORROW = 2;
+    RIGHTBORROW = 3;
+    RETURN = 4;
+    FINISH = 5;
+  }
+  optional LaneBorrowFsmStatus laneborrow_fsm_status = 1 [default = DEFAULT];
+  optional double last_using_lateral = 2 [default = 0.0];
+  optional string pick_path_label = 3;
+}
+
+// next ID: 30
+message PlanningData {
+  // input
+  optional century.localization.LocalizationEstimate adc_position = 7;
+  optional century.canbus.Chassis chassis = 8;
+  optional century.routing.RoutingResponse routing = 9;
+  optional century.common.TrajectoryPoint init_point = 10;
+
+  repeated century.common.Path self_path = 1;
+  repeated century.common.Path lanechange_path = 2;
+  repeated century.common.Path left_borrow_path = 3;
+  repeated century.common.Path right_borrow_path = 4;
+  repeated century.common.Path path = 6;
+
+  repeated SpeedPlan speed_plan = 13;
+  repeated STGraphDebug st_graph = 14;
+  repeated SLFrameDebug sl_frame = 15;
+
+  optional century.common.Header prediction_header = 16;
+  optional SignalLightDebug signal_light = 17;
+
+  repeated ObstacleDebug obstacle = 18;
+  repeated ReferenceLineDebug reference_line = 19;
+  optional DpPolyGraphDebug dp_poly_graph = 20;
+  optional LatticeStTraining lattice_st_image = 21;
+  optional century.relative_map.MapMsg relative_map = 22;
+  optional AutoTuningTrainingData auto_tuning_training_data = 23;
+  optional double front_clear_distance = 24;
+  repeated century.dreamview.Chart chart = 25;
+  optional ScenarioDebug scenario = 26;
+  optional OpenSpaceDebug open_space = 27;
+  optional SmootherDebug smoother = 28;
+  optional PullOverDebug pull_over = 29;
+  optional HybridModelDebug hybrid_model = 30;
+  optional PathDeciderDebug path_decider = 31;
+  optional LaneBorrowDebug valid_path_info = 32;
+}
+
+message LatticeStPixel {
+  optional int32 s = 1;
+  optional int32 t = 2;
+  optional uint32 r = 3;
+  optional uint32 g = 4;
+  optional uint32 b = 5;
+}
+
+message LatticeStTraining {
+  repeated LatticeStPixel pixel = 1;
+  optional double timestamp = 2;
+  optional string annotation = 3;
+  optional uint32 num_s_grids = 4;
+  optional uint32 num_t_grids = 5;
+  optional double s_resolution = 6;
+  optional double t_resolution = 7;
+}
+
+message CostComponents {
+  repeated double cost_component = 1;
+}
+
+message AutoTuningTrainingData {
+  optional CostComponents teacher_component = 1;
+  optional CostComponents student_component = 2;
+}
+
+message CloudReferenceLineRequest {
+  repeated century.routing.LaneSegment lane_segment = 1;
+}
+
+message CloudReferenceLineRoutingRequest {
+  optional century.routing.RoutingResponse routing = 1;
+}
+
+message CloudReferenceLineResponse {
+  repeated century.common.Path segment = 1;
+}
+
+message HybridModelDebug {
+  optional bool using_learning_model_output = 1 [default = false];
+  optional double learning_model_output_usage_ratio = 2;
+  optional string learning_model_output_fail_reason = 3;
+  optional century.common.Path evaluated_path_reference = 4;
+}
+
+message PathPointsForTest {
+  repeated century.common.PathPoint path_point = 1;
+}
+
+message XYPoint {
+  optional double x = 1 [default = 0.0];
+  optional double y = 2 [default = 0.0];
+}
+
+message STPointsForTest {
+  repeated XYPoint st_point = 1;
+}

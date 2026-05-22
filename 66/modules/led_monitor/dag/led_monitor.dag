@@ -1,0 +1,41 @@
+# Define all coms in DAG streaming.
+module_config {
+    module_library : "/century/bazel-bin/modules/led_monitor/libled_monitor_component.so"
+
+    components {
+      class_name : "LedMonitorComponent"
+      config {
+        name : "front_led_monitor"
+        config_file_path : "/century/modules/led_monitor/conf/front_led_monitor_config.pb.txt"
+        # flag_file_path: "/century/modules/led_monitor/conf/front_led_monitor.conf"
+        readers: [
+          {
+            channel: "/century/planning"
+            qos_profile: {
+              depth : 10
+            }
+            pending_queue_size: 50
+          }
+        ]
+      }
+    }
+
+    components {
+      class_name : "LedMonitorComponent"
+      config {
+        name : "rear_led_monitor"
+        config_file_path : "/century/modules/led_monitor/conf/rear_led_monitor_config.pb.txt"
+        # flag_file_path: "/century/modules/led_monitor/conf/rear_led_monitor.conf"
+        readers: [
+          {
+            channel: "/century/planning"
+            qos_profile: {
+              depth : 10
+            }
+            pending_queue_size: 50
+          }
+        ]
+      }
+    }
+}
+

@@ -1,0 +1,18 @@
+header {
+  timestamp_sec: 0
+  module_name: "stackers_info"
+  sequence_num: 0
+}
+stacker_info{
+  stacker_id: "616"
+  stacker_point{
+  x: -2678.34
+  y: 2216.73
+  heading: 1.51
+  }
+  speed: 0
+  stacker_type: WHEELCRANE
+}
+
+
+

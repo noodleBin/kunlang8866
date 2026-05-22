@@ -1,0 +1,10 @@
+module_config {
+    module_library : "/century/bazel-bin/modules/fas_aeb_backend/lib_fas_aeb_backend.so"
+    timer_components {
+        class_name : "FAS_AEB_BACKEND"
+        config {
+            name: "fas_aeb_backend"
+            interval: 20
+        }
+    }
+}

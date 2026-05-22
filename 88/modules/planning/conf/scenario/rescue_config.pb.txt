@@ -1,0 +1,231 @@
+scenario_type: RESCUE
+rescue_config: {
+  front_obstacle_buffer: 10.0
+  heading_buffer: 0.3
+  min_dist_to_dest: 10.0
+  max_steering_percentage_when_cruise: 75.0
+  enable_early_finish_rescue: true
+  early_cruise_dis_threshold: 10.0
+  early_cruise_heading_threshold: 45.0
+  early_cruise_lat_threshold: 1.0
+  operation_remain_dis_threshold: 0.8
+}
+
+stage_type: RESCUE_ADJUST
+stage_type: RESCUE_PRE_CRUISE
+stage_type: RESCUE_CRUISE
+
+
+stage_config:{
+  stage_type: RESCUE_ADJUST
+  enabled: true
+  task_type: OPEN_SPACE_ROI_DECIDER
+  task_type: OPEN_SPACE_TRAJECTORY_PROVIDER
+  task_type: TEB_TRAJECTORY_PARTITION
+  task_type: OPEN_SPACE_FALLBACK_DECIDER
+  task_config: {
+    task_type: OPEN_SPACE_ROI_DECIDER
+    open_space_roi_decider_config {
+      roi_type: RESCUE
+      roi_line_segment_min_angle: 0.08
+      roi_line_segment_length: 0.2
+      end_pose_s_distance: 10.0
+      roi_longitudinal_range_start : 10.0
+      roi_longitudinal_range_end : 100.0
+      enable_perception_obstacles: true
+      roi_electric_fence_search_radius: 50.0
+      enable_electric_fence_roi: true
+
+      perception_obstacle_buffer: 0.3
+      roi_longitudinal_rescue_range: 20.0
+      perception_obstacle_filtering_distance: 50.0
+      rescue_config {
+        enable_expand_neighbor_lane: false
+        rescue_hybrid_start_distance: 15.0
+        rescue_hybrid_end_distance: 70.0
+        rescue_hybrid_lon_sample_interval: 1.5
+        reach_end_point_dis_threshold: 5.0
+        expand_boundary_offset_dis: 8.5 #6.0
+      }
+    }
+  }
+  task_config: {
+    task_type: OPEN_SPACE_TRAJECTORY_PROVIDER
+    open_space_trajectory_provider_config {
+      open_space_trajectory_optimizer_config {
+        planner_open_space_config {
+          iterative_anchoring_smoother_config {
+            s_curve_config {
+              acc_weight: 1.0
+              jerk_weight: 1.0
+              kappa_penalty_weight: 100.0
+              ref_s_weight: 100.0
+              ref_v_weight: 0.0
+            }
+          }
+        }
+      }
+    }
+  }
+  task_config: {
+    task_type: TEB_TRAJECTORY_PARTITION
+      teb_trajectory_partition_config {
+        gear_shift_max_t: 3.0
+        gear_shift_unit_t: 0.02
+        gear_shift_period_duration: 2.0
+        interpolated_pieces_num: 10
+        initial_gear_check_horizon: 15
+        heading_search_range: 0.61
+        heading_track_range: 1.57
+        distance_search_range: 3.3
+        heading_offset_to_midpoint: 0.79
+        lateral_offset_to_midpoint: 0.5
+        longitudinal_offset_to_midpoint: 0.52
+        vehicle_box_iou_threshold_to_midpoint: 0.6
+        linear_velocity_threshold_on_ego: 0.1
+        up_dist_threshold_on_ego: 1.5
+        down_dist_threshold_on_ego: 0.1
+        slow_down_min_speed: 0.3
+        switch_trace_thr_s: 0.5 # 0.1
+        switch_trace_thr_dis: 0.6 # 0.5
+        switch_trace_thr_v: 0.5 # 0.2
+        use_new_trajectory_partition: true
+        use_new_trajectory_speed_cal: true
+        teb_trajectory_near_end: 1.5
+        teb_max_speed_limit: 2.0
+        teb_mid_speed_limit: 1.0
+        teb_min_speed_limit: 1.0
+        min_dis_for_speed_limit: 0.5
+        mid_dis_for_speed_limit: 1.0
+        max_dis_for_speed_limit: 1.5
+        s_step_for_speed_limit: 0.5
+        reduction_ratio: 0.5
+        speed_buffer: 0.2
+        deceleration_buffer: 0.1
+        teb_min_curve_thr:0.06
+        teb_max_curve_thr:0.26
+        teb_max_curve_speed_limit:0.8
+        flu_up_dist_threshold_on_ego:1.5
+        min_start_up_lon_collision_buffer: 0.2
+        min_start_up_lat_collision_buffer: 0.2
+        max_start_up_lon_collision_buffer: 0.4
+        max_start_up_lat_collision_buffer: 0.4
+        distance_for_start_up_min_buffer: 3.0
+        distance_for_start_up_max_buffer: 6.0
+        enable_teb_polyfit: true
+        enable_precise_curvature: true
+    }
+  }
+  task_config: {
+    task_type: OPEN_SPACE_FALLBACK_DECIDER
+  }
+}
+
+stage_config:{
+  stage_type: RESCUE_PRE_CRUISE
+  enabled: true
+  task_type: OPEN_SPACE_ROI_DECIDER
+  task_type: OPEN_SPACE_TRAJECTORY_PROVIDER
+  task_type: OPEN_SPACE_TRAJECTORY_PARTITION
+  task_type: OPEN_SPACE_FALLBACK_DECIDER
+  task_config: {
+    task_type: OPEN_SPACE_ROI_DECIDER
+    open_space_roi_decider_config {
+      roi_type: RESCUE
+      end_pose_s_distance: 5.0
+
+      perception_obstacle_buffer: 0.3
+      roi_longitudinal_rescue_range: 20.0
+      perception_obstacle_filtering_distance: 25.0
+    }
+  }
+  task_config: {
+    task_type: OPEN_SPACE_TRAJECTORY_PROVIDER
+    open_space_trajectory_provider_config {
+      open_space_trajectory_optimizer_config {
+        planner_open_space_config {
+          iterative_anchoring_smoother_config {
+            s_curve_config {
+              acc_weight: 1.0
+              jerk_weight: 1.0
+              kappa_penalty_weight: 100.0
+              ref_s_weight: 100.0
+              ref_v_weight: 0.0
+            }
+          }
+        }
+      }
+    }
+  }
+  task_config: {
+    task_type: OPEN_SPACE_TRAJECTORY_PARTITION
+  }
+  task_config: {
+    task_type: OPEN_SPACE_FALLBACK_DECIDER
+  }
+}
+
+stage_config:{
+  stage_type: RESCUE_CRUISE
+  enabled: true
+  task_type: PATH_LANE_BORROW_DECIDER
+  task_type: PATH_BOUNDS_DECIDER
+  task_type: PIECEWISE_JERK_PATH_OPTIMIZER
+  task_type: PATH_ASSESSMENT_DECIDER
+  task_type: PATH_DECIDER
+  task_type: RULE_BASED_STOP_DECIDER
+  # task_type: ST_BOUNDS_DECIDER
+  task_type: SPEED_BOUNDS_PRIORI_DECIDER
+  task_type: SPEED_HEURISTIC_OPTIMIZER
+  task_type: SPEED_DECIDER
+  task_type: SPEED_BOUNDS_FINAL_DECIDER
+  task_type: PIECEWISE_JERK_SPEED_OPTIMIZER
+  task_type: RSS_DECIDER
+  task_config: {
+    task_type: PATH_LANE_BORROW_DECIDER
+  }
+  task_config: {
+    task_type: PATH_BOUNDS_DECIDER
+  }
+  task_config: {
+    task_type: PIECEWISE_JERK_PATH_OPTIMIZER
+  }
+  task_config: {
+    task_type: PATH_ASSESSMENT_DECIDER
+  }
+  task_config: {
+    task_type: PATH_DECIDER
+    path_decider_config{
+      static_obstacle_buffer: 0.2
+      min_adc_speed: 2.0
+      path_distance_threshold: 12.0
+      max_reference_line_path_kappa_threshold: 0.01
+      max_kappa_threshold: 0.1
+      max_centripetal_acceleration_threshold: 0.35
+    }
+  }
+  task_config: {
+    task_type: SPEED_BOUNDS_PRIORI_DECIDER
+  }
+  task_config: {
+    task_type: SPEED_BOUNDS_FINAL_DECIDER
+  }
+  task_config: {
+    task_type: SPEED_HEURISTIC_OPTIMIZER
+  }
+  task_config: {
+    task_type: SPEED_DECIDER
+  }
+  task_config: {
+    task_type: PIECEWISE_JERK_SPEED_OPTIMIZER
+  }
+  task_config: {
+    task_type: RSS_DECIDER
+  }
+  task_config: {
+    task_type: RULE_BASED_STOP_DECIDER
+  }
+  task_config: {
+    task_type: ST_BOUNDS_DECIDER
+  }
+}

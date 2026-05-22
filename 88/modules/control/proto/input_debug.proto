@@ -1,0 +1,12 @@
+syntax = "proto2";
+package century.control;
+
+import "modules/common/proto/header.proto";
+
+message InputDebug {
+  optional century.common.Header localization_header = 1;
+  optional century.common.Header canbus_header = 2;
+  optional century.common.Header trajectory_header = 3;
+  optional century.common.Header latest_replan_trajectory_header = 4;
+  optional century.common.Header aeb_header = 5;
+}

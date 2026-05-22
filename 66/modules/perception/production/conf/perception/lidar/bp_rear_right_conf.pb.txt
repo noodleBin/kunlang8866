@@ -1,0 +1,6 @@
+sensor_name: "lidar_bp_rear_right"
+detector_name: "PointCloudPreprocessor"
+enable_hdmap: true
+lidar_query_tf_offset: 0
+lidar2novatel_tf2_child_frame_id: "lidar_bp_rear_right"
+output_channel_name: "/century/perception/inner/lidar_bp_rear_right_segmentation"

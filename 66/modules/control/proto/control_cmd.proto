@@ -1,0 +1,462 @@
+syntax = "proto2";
+package century.control;
+
+import "modules/canbus/proto/chassis.proto";
+import "modules/common/proto/drive_state.proto";
+import "modules/common/proto/header.proto";
+import "modules/common/proto/pnc_point.proto";
+import "modules/common/proto/vehicle_signal.proto";
+import "modules/control/proto/input_debug.proto";
+import "modules/control/proto/pad_msg.proto";
+
+enum TurnSignal {
+TURN_NONE = 0 ;
+TURN_LEFT = 1 ;
+TURN_RIGHT = 2 ;
+}
+enum AebWarningLevel {
+    WARNING_LEVEL_NONE = 0;
+    WARNING_LEVEL_LOW = 1;
+    WARNING_LEVEL_MEDIUM = 2;
+    WARNING_LEVEL_HIGH = 3;
+}
+
+enum VoiceBroadcastScenario
+{
+  VOICE_BROADCAST_NOT_REQUIRED = 0;
+  VOICE_BROADCAST_DEPART = 1;
+  VOICE_BROADCAST_BRAKE = 2;
+  VOICE_BROADCAST_TURN_LEFT = 3;
+  VOICE_BROADCAST_TURN_RIGHT = 4;
+  VOICE_BROADCAST_OBSTACLE_AHEAD = 5;
+  VOICE_BROADCAST_OBSTACLE_LEFT = 6;
+  VOICE_BROADCAST_OBSTACLE_RIGHT = 7;
+  VOICE_BROADCAST_ARRIVE_STATION = 8;
+  VOICE_BROADCAST_LOADING_REQUEST = 9;
+  VOICE_BROADCAST_UNLOADING_REQUEST = 10;
+  VOICE_BROADCAST_PASS_REQUEST = 11;
+  VOICE_BROADCAST_POWER_ALARM = 12;
+  VOICE_BROADCAST_PRESSURE_REQUEST = 13;
+  VOICE_BROADCAST_OBSTACLE_STOP = 14;
+  VOICE_BROADCAST_OBSTACLE_COLLISION = 15;
+  VOICE_BROADCAST_VEHICLE_STOP = 16;
+  VOICE_BROADCAST_PEDESTRIAN_STOP = 17;
+  VOICE_BROADCAST_REVERSE_DRIVE = 18;
+  VOICE_BROADCAST_CROSS_DIAGNAL = 19;
+  VOICE_BROADCAST_DANGER_STAY_AWAY = 20;
+  VOICE_BROADCAST_BACKGROUND_MUSIC = 30;
+  VOICE_BROADCAST_BACKGROUND_MUSIC_02 = 31;
+  VOICE_BROADCAST_BACKGROUND_MUSIC_03 = 32;
+  VOICE_BROADCAST_BACKGROUND_MUSIC_04 = 33;
+  VOICE_BROADCAST_BACKGROUND_MUSIC_05 = 34;
+  VOICE_BROADCAST_BACKGROUND_MUSIC_06 = 35;
+  VOICE_BROADCAST_BACKGROUND_MUSIC_07 = 36;
+  VOICE_BROADCAST_BACKGROUND_MUSIC_08 = 37;
+  VOICE_BROADCAST_BACKGROUND_MUSIC_09 = 38;
+  VOICE_BROADCAST_BACKGROUND_MUSIC_10 = 39;
+}
+
+enum ControlState {
+  DEFAULT = 0;            // default
+  EMERGENCY_STOP = 1;     // for laser
+  POSE_LOSSED = 2;        // waiting topic
+  TRAJECTORY_LOSSED = 3;  // waiting topic
+  TRAJECTORY_ERROR = 4;   // waiting topic
+  GUARD = 5;
+  NEAREST_POINT_NOT_FIND = 6;
+  TARGET_ACHIEVE = 7;
+  FEEDBACK_CONTROL = 8;
+  DESIRE_SPEED_TOO_LOW = 9;
+  SLOPE_START = 10;
+  DOWNHILL_START = 11;
+  SYSTEM_ERROR = 12;
+  CHASSIS_ERROR = 13;
+  ESTOP = 14;
+  LOCALIZATION_NOT_OK = 15;
+  MONITOR_LEVEL1 = 16;
+  MONITOR_LEVEL2 = 17;
+  MINIMUM_DISTANCE_OVERSHOOT = 18;
+  LOCATION_POOR_OVERTIME = 19;
+  TRAJECTORY_POINT_ANOMALY = 20;
+};
+
+enum MonitorState {
+  DEFAULT_MONITOR = 0;  // default
+  INFO_MONITOR = 1;
+  WARNING_MONITOR = 2;
+  EMERGENCY_LEVEL_3 = 3;  //
+  EMERGENCY_LEVEL_4 = 4;  //
+};
+
+
+message LatencyStats {
+optional double total_time_ms = 1 ;
+repeated double controller_time_ms = 2 ;
+optional bool total_time_exceeded = 3 ;
+}
+
+enum RemoteTakeoverCause {
+  REMOTE_TAKEOVER_NO_REQUEST = 0;
+  REMOTE_TAKEOVER_VEHICLE_SHAKING = 1;
+};
+enum ControlBrakeScenario {
+  CONTROL_BRAKE_NORMAL = 0;
+  CONTROL_BRAKE_ABNORMAL_INPUT = 1;
+  CONTROL_BRAKE_DEVIATION_TRAJECTORY = 2;
+  CONTROL_BRAKE_FALLBACK_TRAJECTORY = 3;
+  CONTROL_BRAKE_LOCATION_POOR = 4;
+};
+
+enum ControlSteeringMode {
+  STEERINGMODE_FIGURE_EIGHT  = 0;
+  STEERINGMODE_DIAGONAL  = 1;
+  STEERINGMODE_FRONT_HALF_FIGURE_EIGHT  = 2;
+  STEERINGMODE_REAR_HALF_FIGURE_EIGHT  = 3;
+
+};
+// next id : 51
+message ControlCommand {
+optional century.common.Header header = 1 ;
+
+// target engine torque request in N*M
+optional double target_torque_2axis = 3 ;
+optional double target_torque_3axis = 4 ;
+
+// target non-directional steering rate, in percentage of full scale per
+// second [0, 100]
+optional double aeb_enable = 5 ;
+optional double steering_rate = 6 ;
+
+// target steering angle, in percentage of full scale [-100, 100]
+optional double steering_target = 7 ;
+
+// parking brake engage. true: engaged
+optional bool parking_brake = 8 ;
+
+optional double velocity_compensation_coefficient = 9 ;
+
+  // target acceleration in m`s^-2
+  optional double acceleration = 10;
+
+  // model reset
+  optional bool reset_model = 16 [deprecated = true];
+  // engine on/off, true: engine on
+  optional bool engine_on_off = 17;
+  // completion percentage of trajectory planned in last cycle
+  optional double trajectory_fraction = 18;
+  optional century.canbus.Chassis.DrivingMode driving_mode = 19
+      [deprecated = true];
+  optional century.canbus.Chassis.GearPosition gear_location = 20;
+
+  optional Debug debug = 22;
+  optional century.common.VehicleSignal signal = 23;
+
+   // target throttle in percentage [0, 100]
+  optional double throttle = 24;
+
+  // target brake in percentage [0, 100]
+  optional double brake = 25;
+
+  optional century.common.EngageAdvice engage_advice = 26;
+  optional bool is_in_safe_mode = 27 [default = false];
+
+  // deprecated fields
+  optional bool left_turn = 13 [deprecated = true];
+  optional bool right_turn = 14 [deprecated = true];
+  optional bool high_beam = 11 [deprecated = true];
+  optional bool low_beam = 12 [deprecated = true];
+  optional bool horn = 15 [deprecated = true];
+  optional TurnSignal turnsignal = 21 [deprecated = true];
+
+  optional uint32 guide1_left_light = 28;
+  optional uint32 guide1_right_light = 29;
+  optional uint32 guide1_Horn = 30;
+  optional uint32 guide1_estop = 31;
+  optional uint32 guide1_driving_light = 32;
+
+  //marker lights
+  optional uint32 guide1_clearance_light = 33;
+
+  //state 
+  optional uint32 guide1_navigation_standby_mode = 34 [default = 0];
+
+  // high-voltage power switch
+  optional uint32 HVC = 35;
+
+  // navigate error reset flag
+  optional uint32 guide1_reset = 36;
+
+  //low power cosumption mode 
+  optional uint32 lowpower_mode = 37;
+
+  //equivalent target steering wheels angle in aixs 1;
+  optional double target_steering_angle_1axis = 38;
+
+  //equivalent target steering wheels angle in aixs 4;
+  optional double target_steering_angle_4axis = 39;
+
+  // target brake in percentage [0, 100]
+
+  optional uint32 guide1_brake = 40;
+ 
+optional LatencyStats latency_stats = 41 ;
+optional PadMessage pad_msg =42 ;
+/*
+//set out request mode ,0 in volecity 1 in torque, 2 in position mode
+  optional century.canbus.Chassis.WalkingMode guide1_xingzou_mode= 43;
+
+  //gear popsition ,0 parking,1 reverse, 2 neutral, 3 drive
+  optional century.canbus.Chassis.GearPosition guide1_gear = 44;
+*/
+//flash light
+optional uint32 guide1_double_flash = 45 ;
+// target speed, in m/s
+optional double speed = 46;
+
+optional bool waiting_steering_flag = 47 [default = false] ;
+
+optional ControlState control_state = 48 [default = DEFAULT];
+optional MonitorState monitor_state = 49 [default = DEFAULT_MONITOR];
+optional MonitorState monitor_aarch_state = 50 [default = DEFAULT_MONITOR];
+
+optional uint32 guide1_voice_num = 51 [default = 0];
+optional uint32 guide1_voice_volue = 52 [default = 0];
+
+optional uint32 guide1_f_low_beam_light = 53 [default = 0];
+optional uint32 guide1_f_lhigh_beam_light = 54 [default = 0];
+optional uint32 guide1_r_low_beam_light = 55 [default = 0];
+optional uint32 guide1_r_high_beam_light = 56 [default = 0];
+optional uint32 guide1_fog_light = 57 [default = 0];
+optional uint32 guide1_unload_lamp = 58 [default = 0];
+optional uint32 guide1_loading_lamp = 59 [default = 0];
+optional uint32 guide1_loaded_lamp = 60 [default = 0];
+
+optional VoiceBroadcastScenario voice_broadcast_scenario = 61 [default = VOICE_BROADCAST_NOT_REQUIRED];
+
+optional ControlSteeringMode guide1_zhuanxiang_mode = 62 [default = STEERINGMODE_FIGURE_EIGHT];
+
+optional bool manual_click_brake_enable = 63 [default = false];
+
+}
+
+message SimpleLongitudinalDebug {
+  optional double station_reference = 1;
+  optional double station_error = 2;
+  optional double station_error_limited = 3;
+  optional double preview_station_error = 4;
+  optional double speed_reference = 5;
+  optional double speed_error = 6;
+  optional double speed_controller_input_limited = 7;
+  optional double preview_speed_reference = 8;
+  optional double preview_speed_error = 9;
+  optional double preview_acceleration_reference = 10;
+  optional double acceleration_cmd_closeloop = 11;
+  optional double acceleration_cmd = 12;
+  optional double mass_update = 13;
+  optional double speed_feedback = 14;
+  optional double calibration_value = 15;
+  optional AebWarningLevel aeb_warning_level = 16;
+  optional double brake_cmd = 17;
+  optional bool is_full_stop = 18;
+  optional double slope_offset_compensation = 19;
+  optional double current_station = 20;
+  optional double path_remain = 21;
+  optional int32 pid_saturation_status = 22;
+  optional int32 leadlag_saturation_status = 23;
+  optional double speed_offset = 24;
+  optional double current_speed = 25;
+  optional double acceleration_reference = 26;
+  optional double current_acceleration = 27;
+  optional double acceleration_error = 28;
+  optional double jerk_reference = 29;
+  optional double current_jerk = 30;
+  optional double jerk_error = 31;
+  
+
+  optional century.common.TrajectoryPoint current_matched_point = 32;
+  optional century.common.TrajectoryPoint current_reference_point = 33;
+  optional century.common.TrajectoryPoint preview_reference_point = 34;
+
+  optional double kp_torq = 35;
+  optional double ki_torq = 36;
+
+  optional double torq_s = 37;
+  optional double torq_p = 38;
+  optional double torq_i = 39;
+  optional double ego_acceleration = 40;
+  optional double gain_velocity =41;
+
+  optional double traj_length_front_total = 42;
+  optional bool vehicle_short_traj_follower_flag = 43;
+  optional bool flag_vehicle_takeoff = 44;
+}
+
+message SimpleLateralDebug {
+  optional double lateral_error = 1;
+  optional double ref_heading = 2;
+  optional double heading = 3;
+  optional double heading_error = 4;
+  optional double heading_error_rate = 5;
+  optional double lateral_error_rate = 6;
+  optional double curvature = 7;
+  optional double steer_angle = 8;
+  optional double steer_angle_feedforward = 9;
+  optional double steer_angle_lateral_contribution = 10;
+  optional double steer_angle_lateral_rate_contribution = 11;
+  optional double steer_angle_heading_contribution = 12;
+  optional double steer_angle_heading_rate_contribution = 13;
+  optional double steer_angle_feedback = 14;
+  optional double steering_position = 15;
+  optional double ref_speed = 16;
+  optional double steer_angle_limited = 17;
+
+  // time derivative of lateral error rate, in m/s^2
+  optional double lateral_acceleration = 18;
+  // second time derivative of lateral error rate, in m/s^3
+  optional double lateral_jerk = 19;
+
+  optional double ref_heading_rate = 20;
+  optional double heading_rate = 21;
+
+  // heading_acceleration, as known as yaw acceleration, is the time derivative
+  // of heading rate,  in rad/s^2
+  optional double ref_heading_acceleration = 22;
+  optional double heading_acceleration = 23;
+  optional double heading_error_acceleration = 24;
+
+  // heading_jerk, as known as yaw jerk, is the second time derivative of
+  // heading rate, in rad/s^3
+  optional double ref_heading_jerk = 25;
+  optional double heading_jerk = 26;
+  optional double heading_error_jerk = 27;
+
+  // modified lateral_error and heading_error with look-ahead or look-back
+  // station, as the feedback term for control usage
+  optional double lateral_error_feedback = 28;
+  optional double heading_error_feedback = 29;
+
+  // current planning target point
+  optional century.common.TrajectoryPoint current_target_point = 30;
+
+  // Augmented feedback control term in addition to LQR control
+  optional double steer_angle_feedback_augment = 31;
+
+// Mrac control status and feedback states for steer control
+optional MracDebug steer_mrac_debug = 32 ;
+optional bool steer_mrac_enable_status = 33 ;
+
+optional double preview_s_velocity = 34 ;
+optional double preview_s_curvature = 35 ;
+optional double preview_s_lateral_error = 36 ;
+optional double preview_s_heading_error = 37 ;
+optional double preview_s = 38 ;
+optional double ld_filter = 39 ;
+optional double alpha_filter = 40 ;
+optional double steer_angle_lat_error = 41 ;
+optional double steer_angle_heading_error = 42 ;
+optional double preview_lateral_error = 43;
+optional double steer_angle_limit_rate = 44;
+optional double curvature_rate = 45;
+optional double final_preview_time = 46;
+optional double matrix_q_lat = 47;
+optional double matrix_q_heading = 48;
+optional double curvature_preview = 49;
+optional double diagonal_heading_error = 50;
+optional double diagonal_heading_error_compensate = 51;
+optional double diagonal_lateral_error = 52;
+optional double diagonal_lateral_error_compensate = 53;
+optional double heading_adc_point = 54;
+optional double kappa_adc_point = 55;
+optional double query_relative_time = 56;
+optional double curvature_preview_time = 57;
+optional double final_preview_time_cur = 58;
+optional double lqr_kp_lateral = 59;
+
+
+
+}
+
+message SimpleMPCDebug {
+  optional double lateral_error = 1;
+  optional double ref_heading = 2;
+  optional double heading = 3;
+  optional double heading_error = 4;
+  optional double heading_error_rate = 5;
+  optional double lateral_error_rate = 6;
+  optional double curvature = 7;
+  optional double steer_angle = 8;
+  optional double steer_angle_feedforward = 9;
+  optional double steer_angle_lateral_contribution = 10;
+  optional double steer_angle_lateral_rate_contribution = 11;
+  optional double steer_angle_heading_contribution = 12;
+  optional double steer_angle_heading_rate_contribution = 13;
+  optional double steer_angle_feedback = 14;
+  optional double steering_position = 15;
+  optional double ref_speed = 16;
+  optional double steer_angle_limited = 17;
+  optional double station_reference = 18;
+  optional double station_error = 19;
+  optional double speed_reference = 20;
+  optional double speed_error = 21;
+  optional double acceleration_reference = 22;
+  optional bool is_full_stop = 23;
+  optional double station_feedback = 24;
+  optional double speed_feedback = 25;
+  optional double acceleration_cmd_closeloop = 26;
+  optional double acceleration_cmd = 27;
+  optional double acceleration_lookup = 28;
+  optional double speed_lookup = 29;
+  optional double calibration_value = 30;
+  optional double steer_unconstrained_control_diff = 31;
+  optional double steer_angle_feedforward_compensation = 32;
+  repeated double matrix_q_updated = 33;  // matrix_q_updated_ size = 6
+  repeated double matrix_r_updated = 34;  // matrix_r_updated_ size = 2
+
+  // time derivative of lateral error rate, in m/s^2
+  optional double lateral_acceleration = 35;
+  // second time derivative of lateral error rate, in m/s^3
+  optional double lateral_jerk = 36;
+
+  optional double ref_heading_rate = 37;
+  optional double heading_rate = 38;
+
+  // heading_acceleration, as known as yaw acceleration, is the time derivative
+  // of heading rate,  in rad/s^2
+  optional double ref_heading_acceleration = 39;
+  optional double heading_acceleration = 40;
+  optional double heading_error_acceleration = 41;
+
+  // heading_jerk, as known as yaw jerk, is the second time derivative of
+  // heading rate, in rad/s^3
+  optional double ref_heading_jerk = 42;
+  optional double heading_jerk = 43;
+  optional double heading_error_jerk = 44;
+
+  optional double acceleration_feedback = 45;
+  optional double acceleration_error = 46;
+  optional double jerk_reference = 47;
+  optional double jerk_feedback = 48;
+  optional double jerk_error = 49;
+}
+
+message MracDebug {
+  optional int32 mrac_model_order = 1;
+  repeated double mrac_reference_state = 2;
+  repeated double mrac_state_error = 3;
+  optional MracAdaptiveGain mrac_adaptive_gain = 4;
+  optional int32 mrac_reference_saturation_status = 5;
+  optional int32 mrac_control_saturation_status = 6;
+}
+
+message MracAdaptiveGain {
+  repeated double state_adaptive_gain = 1;
+  repeated double input_adaptive_gain = 2;
+  repeated double nonlinear_adaptive_gain = 3;
+}
+
+message Debug {
+  optional SimpleLongitudinalDebug simple_lon_debug = 1;
+  optional SimpleLateralDebug simple_lat_debug = 2;
+  optional InputDebug input_debug = 3;
+  optional SimpleMPCDebug simple_mpc_debug = 4;
+}

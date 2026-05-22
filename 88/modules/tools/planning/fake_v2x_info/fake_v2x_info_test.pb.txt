@@ -1,0 +1,16 @@
+header {
+  timestamp_sec: 0
+  module_name: "v2x_info"
+  sequence_num: 0
+}
+vehicle_info{
+  id: "KL009"
+  x: -2747.81
+  y: 2216.19
+  heading: -0.12
+  speed: 0
+  driving_mode: COMPLETE_AUTO_DRIVE
+
+}
+
+

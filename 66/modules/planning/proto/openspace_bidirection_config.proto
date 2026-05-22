@@ -1,0 +1,62 @@
+syntax = "proto2";
+
+package century.planning;
+
+message SearchCostConfig {
+  // heuristic cost
+  optional double rs_weight = 1 [default = 1.0];       // main heuristic weight
+  optional double lateral_weight = 2 [default = 1.0];  // lateral error weight
+  optional double heading_weight = 3 [default = 0.6];  // heading error weight
+  optional double obs_weight = 4 [default = 0.3];      // obstacle guide weight
+}
+
+message OpenSpaceBidirectionConfig {
+  optional double min_astar_long_buffer = 1;
+  optional double min_astar_lat_buffer = 2;
+  optional double same_direction_force_distance = 3;
+  optional double min_buff_adjustment_distance = 4;
+  optional double max_buff_adjustment_distance = 5;
+  optional double use_bestest_rs = 6;
+  optional double astar_max_time_second = 7;
+  optional double bidirection_astar_search_time_threshold = 8;
+  optional double traj_kappa_contraint_ratio = 9;
+  optional double phi_grid_resolution = 10;
+  optional double hybrid_use_rs_dis = 11;
+  optional double is_hybrid_debug = 12;
+
+  optional double near_obs_dist_cost = 23;
+  optional double near_obs_dist = 24;
+  optional double goal_dist_cost = 25;
+  optional double search_near_destination_theta_threshold = 26;
+  optional double search_near_destination_y_threshold = 27;
+  optional double search_near_destination_x_threshold = 28;
+
+  optional double traj_end_heading_error_penalty = 40;
+  optional double traj_steer_change_penalty = 41;
+  optional double traj_steer_penalty = 42;
+  // for bidirectional search,
+  // this penalty should be set to 0 or small as possible
+  optional double traj_gear_switch_penalty = 43 [default = 1.0];
+  optional double traj_back_penalty = 44;
+  optional double traj_forward_penalty = 45;
+  optional double delta_t = 46;
+  optional double xy_grid_resolution = 47;
+  optional double step_size = 48;
+  optional double next_node_num = 49;
+  optional double force_forward_init = 50;
+
+  optional int32 rs_connect_max_num = 100 [default = 20];
+  optional double min_close_dis_threshold = 101 [default = 0.0];
+  optional double meet_distance_threshold = 102 [default = 1.5];
+  optional double meet_angle_threshold = 103 [default = 0.2];
+  optional double meet_x_diff_threshold = 104 [default = 0.5];
+  optional double meet_y_diff_threshold = 105 [default = 0.5];
+  optional double meet_distance_intersection_threshold = 106 [default = 0.3];
+  optional double goal_distance_threshold = 107 [default = 0.5];
+  optional double goal_angle_threshold = 108 [default = 0.1]; // rad
+
+
+  optional double heuristic_switch_dist = 120 [default = 8.0]; // 5~15 m
+
+  optional SearchCostConfig search_cost_config = 150;
+}

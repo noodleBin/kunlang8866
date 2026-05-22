@@ -1,0 +1,11 @@
+module_config {
+    module_library : "/century/bazel-bin/modules/map/relative_map/librelative_map_component.so"
+    timer_components {
+        class_name : "RelativeMapComponent"
+        config {
+            name: "relative_map"
+            flag_file_path:  "/century/modules/map/relative_map/conf/relative_map.conf"
+            interval: 100
+      }
+   }
+}

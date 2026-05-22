@@ -1,0 +1,76 @@
+extrinsic_file {
+    frame_id: "vehicle"
+    child_frame_id: "imu"
+    file_path: "/century/modules/perception/data/params/imu_vehicle_extrinsics.yaml"
+    enable: true
+}
+
+extrinsic_file {
+    frame_id: "imu"
+    child_frame_id: "lidar_helios_front_left"
+    file_path: "/century/modules/perception/data/params/helios_front_left_extrinsics.yaml"
+    enable: true
+}
+
+extrinsic_file {
+    frame_id: "imu"
+    child_frame_id: "lidar_helios_rear_right"
+    file_path: "/century/modules/perception/data/params/helios_rear_right_extrinsics.yaml"
+    enable: true
+}
+
+extrinsic_file {
+    frame_id: "imu"
+    child_frame_id: "lidar_bp_front_left"
+    file_path: "/century/modules/perception/data/params/bp_front_left_extrinsics.yaml"
+    enable: true
+}
+
+extrinsic_file {
+    frame_id: "imu"
+    child_frame_id: "lidar_bp_rear_right"
+    file_path: "/century/modules/perception/data/params/bp_rear_right_extrinsics.yaml"
+    enable: true
+}
+
+extrinsic_file {
+    frame_id: "imu"
+    child_frame_id: "lidar_bp_front_right"
+    file_path: "/century/modules/perception/data/params/bp_front_right_extrinsics.yaml"
+    enable: true
+}
+
+extrinsic_file {
+    frame_id: "imu"
+    child_frame_id: "lidar_bp_rear_left"
+    file_path: "/century/modules/perception/data/params/bp_rear_left_extrinsics.yaml"
+    enable: true
+}
+
+extrinsic_file {
+    frame_id: "imu"
+    child_frame_id: "lidar_m1_front"
+    file_path: "/century/modules/perception/data/params/m1_front_extrinsics.yaml"
+    enable: true
+}
+
+extrinsic_file {
+    frame_id: "imu"
+    child_frame_id: "lidar_m1_rear"
+    file_path: "/century/modules/perception/data/params/m1_rear_extrinsics.yaml"
+    enable: true
+}
+
+extrinsic_file {
+    frame_id: "imu"
+    child_frame_id: "lidar_hesai_at128p_front"
+    file_path: "/century/modules/perception/data/params/hesai_at128p_front_extrinsics.yaml"
+    enable: true
+}
+
+extrinsic_file {
+    frame_id: "imu"
+    child_frame_id: "lidar_hesai_at128p_rear"
+    file_path: "/century/modules/perception/data/params/hesai_at128p_rear_extrinsics.yaml"
+    enable: true
+}

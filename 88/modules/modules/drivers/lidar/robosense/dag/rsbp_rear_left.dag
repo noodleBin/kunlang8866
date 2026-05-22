@@ -1,0 +1,10 @@
+module_config {
+    module_library : "/century/bazel-bin/modules/drivers/lidar/robosense/librobosense_driver_component.so"
+    components {
+        class_name : "RobosenseComponent"
+        config {
+          name : "RSbp_Driver_rear_left"
+          config_file_path : "/century/modules/drivers/lidar/robosense/conf/rsbp_rear_left.pb.txt"
+        }
+    }
+}

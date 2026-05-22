@@ -1,0 +1,227 @@
+monitor {
+  name: "LOW_FREQ_LOCALIZATION"
+  code: "0x400"
+  level: "0x03"
+}
+monitor {
+  name: "NO_FREQ_LOCALIZATION"
+  code: "0x401"
+  level: "0x03"
+}
+monitor {
+  name: "LOCALIZATION_STATUS_ABNORMAL"
+  code: "0x402"
+  level: "0x03"
+}
+monitor {
+  name: "LOW_FREQ_PERCEPTION"
+  code: "0x410"
+  level: "0x03"
+}
+monitor {
+  name: "NO_FREQ_PERCEPTION"
+  code: "0x411"
+  level: "0x03"
+}
+monitor {
+  name: "LOW_FREQ_PLANNING"
+  code: "0x420"
+  level: "0x03"
+}
+monitor {
+  name: "NO_FREQ_PLANNING"
+  code: "0x421"
+  level: "0x03"
+}
+monitor {
+  name: "LOW_FREQ_CONTROL"
+  code: "0x430"
+  level: "0x03"
+}
+monitor {
+  name: "NO_FREQ_CONTROL"
+  code: "0x431"
+  level: "0x03"
+}
+monitor {
+  name: "LOW_FREQ_PREDICTION"
+  code: "0x440"
+  level: "0x03"
+}
+monitor {
+  name: "NO_FREQ_PREDICTION"
+  code: "0x441"
+  level: "0x03"
+}
+monitor {
+  name: "NO_FREQ_TRAFFICLIGHT"
+  code: "0x450"
+  level: "0x03"
+}
+monitor {
+  name: "LOW_FREQ_CHASSIS"
+  code: "0x460"
+  level: "0x03"
+}
+monitor {
+  name: "NO_FREQ_CHASSIS"
+  code: "0x461"
+  level: "0x03"
+}
+monitor {
+  name: "EXCEEDING_TIME_DIFF"
+  code: "0x470"
+  level: "0x03"
+}
+
+planning {
+  name: "PLANNING_ERROR"
+  code: "0x100"
+  level: "0x03"
+}
+planning {
+  name: "PLANNING_ERROR_NOT_READY"
+  code: "0x101"
+  level: "0x03"
+}
+planning {
+  name: "PLANNING_ERROR_NEED_RESTART"
+  code: "0x102"
+  level: "0x03"
+}
+
+decision {
+  name: "STOP_REASON_HEAD_VEHICLE"
+  code: "0x200"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_DESTINATION"
+  code: "0x201"
+  level: "0x00"
+}
+decision {
+  name: "STOP_REASON_PEDESTRIAN"
+  code: "0x202"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_OBSTACLE"
+  code: "0x203"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_PREPARKING"
+  code: "0x204"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_SPEED"
+  code: "0x205"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_STACKER"
+  code: "0x206"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_WEIGHING_POINT"
+  code: "0x207"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_WHEEL_CRANE"
+  code: "0x208"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_TEMPORARY_PARKING"
+  code: "0x209"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_LINE_UP_STOP_POINT"
+  code: "0x20A"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_SIGNAL"
+  code: "0x20B"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_STOP_SIGN"
+  code: "0x20C"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_YIELD_SIGN"
+  code: "0x20D"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_CLEAR_ZONE"
+  code: "0x20E"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_CROSSWALK"
+  code: "0x20F"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_CREEPER"
+  code: "0x210"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_REFERENCE_END"
+  code: "0x211"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_YELLOW_SIGNAL"
+  code: "0x212"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_PULL_OVER"
+  code: "0x213"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_SIDEPASS_SAFETY"
+  code: "0x214"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_PRE_OPEN_SPACE_STOP"
+  code: "0x215"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_LANE_CHANGE_URGENCY"
+  code: "0x216"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_EMERGENCY"
+  code: "0x217"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_SLOW_BREAKING"
+  code: "0x218"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_LOW_RIGHT"
+  code: "0x219"
+  level: "0x02"
+}
+decision {
+  name: "STOP_REASON_ELECTRIC_FENCE"
+  code: "0x21A"
+  level: "0x02"
+}

@@ -1,0 +1,4 @@
+topic_name: "/century/perception/obstacles"
+bind_port: 55556
+proto_name: "PerceptionObstacles"
+enable_timeout: false

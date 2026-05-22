@@ -1,0 +1,45 @@
+syntax = "proto2";
+
+package century.drivers.hesai;
+
+import "modules/drivers/lidar/proto/hesai.proto";
+
+message Config {
+  optional Model model = 1;
+  optional string ip = 2 [default = "192.168.20.13"];
+  optional uint32 lidar_recv_port = 3;
+  optional uint32 gps_recv_port = 4;
+  optional uint32 start_angle = 5;
+  optional string pointcloud_channel = 6;
+  optional uint32 time_zone = 7;
+  optional string frame_id = 8;
+  optional string scan_channel = 9;
+  optional bool is_online_calibration = 11 [default = true];
+  optional string calibration_file = 12;
+  optional uint32 tcp_cmd_port = 13 [default = 9347];
+  // Multiplier applied to the model-specific packet count when sizing the
+  // reusable packet buffer.
+  optional uint32 packet_buffer_capacity_multiplier = 14 [default = 10];
+  // Warning threshold for a single packet receive call, in milliseconds.
+  optional uint32 packet_recv_warn_threshold_ms = 15 [default = 50];
+  // Maximum azimuth jump allowed between consecutive blocks before the
+  // parser treats the packet as a new frame boundary.
+  optional uint32 azimuth_gap_threshold = 16 [default = 600];
+  // Minimum valid point distance in meters. If omitted, a model-specific
+  // default is used.
+  optional double min_distance = 17;
+  // Maximum valid point distance in meters.
+  optional double max_distance = 18 [default = 200.0];
+  // Number of reusable raw pointcloud messages kept in the parser pool.
+  optional uint32 raw_pointcloud_pool_size = 19 [default = 8];
+  // Reserved point capacity for each raw pointcloud message.
+  optional uint32 raw_pointcloud_reserve_size = 20 [default = 70000];
+  // Number of reusable HesaiScan messages kept by the driver.
+  optional uint32 scan_buffer_size = 21 [default = 10];
+  // Minimum packet count required before a frame end is accepted.
+  optional uint32 min_packets = 22;
+  // Maximum packet count allowed before a frame is forced to end.
+  optional uint32 max_packets = 23;
+  // Warning threshold for packet time drift versus host time, in seconds.
+  optional double packet_time_diff_warn_threshold_sec = 24 [default = 0.1];
+}

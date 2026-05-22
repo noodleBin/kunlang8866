@@ -1,0 +1,7 @@
+# Default lidar startup set: 2 RSHELIOS lidars and 4 RSBP lidars.
+/century/modules/drivers/lidar/robosense/dag/rs32_rear.dag
+/century/modules/drivers/lidar/robosense/dag/rs32_front.dag
+/century/modules/drivers/lidar/robosense/dag/rsbp_rear.dag
+/century/modules/drivers/lidar/robosense/dag/rsbp_front.dag
+/century/modules/drivers/lidar/robosense/dag/rsbp_rear_left.dag
+/century/modules/drivers/lidar/robosense/dag/rsbp_front_right.dag

@@ -1,0 +1,1 @@
+channel_name: "/century/sensor/camera/front_12mm/image"

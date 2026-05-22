@@ -1,0 +1,3 @@
+# RSM1 startup set: front and rear RSM1 lidars.
+/century/modules/drivers/lidar/robosense/dag/rsm1_rear.dag
+/century/modules/drivers/lidar/robosense/dag/rsm1_front.dag

@@ -1,0 +1,43 @@
+header {
+    timestamp_sec: 0
+    module_name: "routing_request_to_work"
+    sequence_num: 52
+}
+#J4_EAST
+waypoint {
+  pose {
+    x: -3171.92265106
+    y: 2238.64435575
+  }
+  heading: 1.45
+}
+#J4_WEST
+#waypoint {
+#  pose {
+#    x: -3283.16
+#    y: 2354.08
+#  }
+#  heading: -0.12
+#}
+#J4_EAST
+waypoint {
+  pose {
+    x: -2950.78527324
+    y: 2140.11523458
+  }
+  heading: -1.64
+}
+#J4_WEST
+#waypoint {
+#  pose {
+#     x: -3317.74
+#     y: 2359.12
+#    x: -3305.90
+#    y: 2368.45
+#  }
+#  heading: -0.13
+#}
+#task_type: LOADING_OPERATIONAREA_SAMEDIRECTION_1
+task_type: RAILWAY_OPERATIONAREA_DYNAMIC
+#tiny_adjustment_distance: 10.0
+#tiny_adjustment_type: STACKER_ADIUSTMENT

@@ -1,0 +1,3 @@
+wall_sec=1777365357.653284 mono_ns=22373392330265 event=transport_to_dispatch_end slow=0 node=LidarObstacleDetection channel=/century/sensor/camera/right_front/image channel_id=5959044485100912018 seq=5517
+wall_sec=1777365357.944121 mono_ns=22373683165116 event=transport_to_dispatch_end slow=0 node=LidarObstacleDetection channel=/century/sensor/camera/left_rear/image channel_id=12866899218109700873 seq=5420
+wall_sec=1777365358.142195 mono_ns=22373881246921 event=transport_to_dispatch_end slow=0 node=LidarObstacleDetection channel=/century/sensor/camera/left_front/image channel_id=1486890519566268418 seq=5475

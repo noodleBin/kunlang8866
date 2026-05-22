@@ -1,0 +1,17 @@
+syntax = "proto2";
+package century.planning;
+
+import "modules/common/proto/header.proto";
+
+enum ResponseType {
+  UNTREATED = 0;
+  ACCEPT = 1;
+  REFUSE = 2;
+}
+
+message BorrowResponse {
+  optional century.common.Header header = 1;
+  optional bool has_response = 2 [default = false];
+  optional string block_obs_id = 3;
+  optional ResponseType response_type = 4 [default = UNTREATED];
+}

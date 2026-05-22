@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package century.perception.onboard;
+
+message MotionService {
+  optional string camera_names = 1 [default = "front_6mm"];
+  optional string input_camera_channel_names = 2
+      [default = "/century/sensor/camera/front_6mm/image"];
+  optional string input_localization_channel_name = 3
+      [default = "/century/localization/pose"];
+  optional string output_topic_channel_name = 4
+      [default = "/century/perception/motion_service"];
+}

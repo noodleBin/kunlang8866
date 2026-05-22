@@ -1,0 +1,21 @@
+header {
+    timestamp_sec: 0
+    module_name: "routing_request_to_xugong"
+    sequence_num: 1
+}
+waypoint {
+  id: "67013"
+  s: 1.6842056599070854
+  pose {
+    x: 108.11368980834294
+    y: -154.48773404281928
+  }
+}
+waypoint {
+  id: "67042"
+  s: 18.693200156878721
+  pose {
+    x: -63.204146075802512
+    y: -118.72956284231915
+  }
+}

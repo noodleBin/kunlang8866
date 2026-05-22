@@ -1,0 +1,6 @@
+header {
+  timestamp_sec: 0
+  module_name: "temporary_parking_request"
+  sequence_num: 0
+}
+need_stop: true

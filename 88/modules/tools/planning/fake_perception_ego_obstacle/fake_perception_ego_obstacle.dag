@@ -1,0 +1,10 @@
+module_config {
+    module_library : "/century/bazel-bin/modules/tools/planning/fake_perception_ego_obstacle/libfake_perception_ego_obstacle_component.so"
+    timer_components {
+        class_name : "FakePerceptionEgoObstacleComponent"
+        config {
+            name: "fake_perception_ego_obstacle"
+            interval: 100
+        }
+    }
+}

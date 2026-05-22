@@ -1,0 +1,5 @@
+is_sim: true
+loc_config_path: "/century/vehicle_config/loc_config.yaml"
+lidar_pose_topic: "/century/loc/lidar_pose"
+fusion_pose_topic: "/century/loc/fusion_pose"
+sync_time_thresh: 0.05

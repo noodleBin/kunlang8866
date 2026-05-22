@@ -1,0 +1,27 @@
+enable_check_error_states: false
+
+max_search_depth: 1
+lateral_error_threshold: 1.2 # meter
+heading_angle_error_threshold: 45.0 # degree
+
+special_areas {
+ area_type: G_AREA
+area_polygon: {
+   point: {
+     x: -2836.72
+     y: 2098.38
+   }
+   point: {
+      x: -2939.14
+      y: 1992.21
+   }
+   point: {
+     x: -3013.05
+     y: 2062.99
+   }
+   point: {
+     x: -2960.69
+     y: 2117.89
+   }
+  }
+}

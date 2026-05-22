@@ -1,0 +1,80 @@
+subtype_mapping {
+  in_key: 0
+  out_key: 3
+  label_name: "PEDESTRIAN"
+}
+subtype_mapping {
+  in_key: 1
+  out_key: 4
+  label_name: "CAR"
+}
+subtype_mapping {
+  in_key: 2
+  out_key: 5
+  label_name: "IGV_FULL"
+}
+subtype_mapping {
+  in_key: 3
+  out_key: 6
+  label_name: "TRUCK"
+}
+subtype_mapping {
+  in_key: 4
+  out_key: 7
+  label_name: "TRAILER_EMPTY"
+}
+subtype_mapping {
+  in_key: 5
+  out_key: 8
+  label_name: "TRAILER_FULL"
+}
+subtype_mapping {
+  in_key: 6
+  out_key: 9
+  label_name: "IGV_EMPTY"
+}
+subtype_mapping {
+  in_key: 7
+  out_key: 10
+  label_name: "CRANE"
+}
+subtype_mapping {
+  in_key: 8
+  out_key: 11
+  label_name: "OTHER_VEHICLE"
+}
+subtype_mapping {
+  in_key: 9
+  out_key: 12
+  label_name: "CONE"
+}
+subtype_mapping {
+  in_key: 10
+  out_key: 13
+  label_name: "CONTAINER_FORKLIFT"
+}
+subtype_mapping {
+  in_key: 11
+  out_key: 14
+  label_name: "FORKLIFT"
+}
+subtype_mapping {
+  in_key: 12
+  out_key: 15
+  label_name: "LORRY"
+}
+subtype_mapping {
+  in_key: 13
+  out_key: 16
+  label_name: "CONSTRUCTION_VEHICLE"
+}
+subtype_mapping {
+  in_key: 14
+  out_key: 17
+  label_name: "WHEELCRANE"
+}
+subtype_mapping {
+  in_key: -1
+  out_key: 0
+  label_name: "UNKNOWN"
+}

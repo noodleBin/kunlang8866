@@ -1,0 +1,81 @@
+syntax = "proto2";
+
+package century.control;
+
+import "modules/control/proto/gain_scheduler_conf.proto";
+import "modules/control/proto/leadlag_conf.proto";
+import "modules/control/proto/mrac_conf.proto";
+
+// simple optimal steer control param
+
+message LatControllerConf {
+  optional double ts = 1;  // sample time (dt) 0.01 now, configurable
+  // preview window n, preview time = preview window * ts
+  optional int32 preview_window = 2;
+  optional double cf = 3;
+  optional double cr = 4;  // N/rad
+  optional int32 mass_fl = 5;
+  optional int32 mass_fr = 6;
+  optional int32 mass_rl = 7;
+  optional int32 mass_rr = 8;
+  optional double eps = 9;        // converge threshold for lqr solver
+  repeated double matrix_q = 10;  // matrix_q size = 4 + preview_window
+  // matrix_q size = 4 + preview_window for reverse gear
+  repeated double reverse_matrix_q = 11;
+  optional int32 cutoff_freq = 12;              // cutoff frequency
+  optional int32 mean_filter_window_size = 13;  // window size of mean filter
+  // for a normal car, it should be in range[16, 18]
+  optional int32 max_iteration = 14;  // maximum iteration for lqr solve
+  optional double max_lateral_acceleration = 15;  // limit aggressive steering
+  optional century.control.GainScheduler lat_err_gain_scheduler = 16;
+  optional century.control.GainScheduler heading_err_gain_scheduler = 17;
+  optional LeadlagConf reverse_leadlag_conf = 18;
+  optional bool enable_reverse_leadlag_compensation = 19 [default = false];
+  optional bool enable_look_ahead_back_control = 20 [default = false];
+  optional double lookahead_station = 21 [default = 0.0];
+  optional double lookback_station = 22 [default = 0.0];
+  optional MracConf steer_mrac_conf = 23;
+  optional bool enable_steer_mrac_control = 24 [default = false];
+  optional double lookahead_station_high_speed = 25 [default = 0.0];
+  optional double lookback_station_high_speed = 26 [default = 0.0];
+  optional double steer_limit = 27 [default = 0.0];
+  optional double minimum_radius = 28 [default = 5.0];
+  optional double min_lookahead_station = 29 [default = 1.0];
+  optional double velocity_ratio = 30 [default = 0.0];
+  optional double curvature_ratio = 31 [default = 0.0];
+  optional double lateral_error_ratio = 32 [default = 0.0];
+  optional double long_ld_lateral_error_threshold = 33 [default = 0.5];
+  optional double heading_error_ratio = 34 [default = 0.0];
+  optional double angular_velocity_threshold = 35 [default = 15];
+  optional double heading_weight = 36 [default = 0.0];
+  optional double min_threshold_abnormal_data_detection_lat = 37
+      [default = 0.1];
+  optional double min_q0 = 38 [default = 0.02];
+  optional double q0_offset = 39 [default = 0.01];
+  optional double lateral_error_threshold = 40 [default = 0.3];
+  optional double max_centripetal_acceleration_rate = 41 [default = 0.35];
+  optional int32 mean_secondary_filter_window_size = 42 [default = 20];
+  optional int32 mean_secondary_filter_window_size_curve = 43 [default = 15];
+  repeated double matrix_q_openspace = 44;
+  optional double curvature_feedforward_coefficient = 45 [default = 0.6];
+  optional double min_preview_distance_lat = 46 [default = 0.3];
+  optional double min_preview_distance_lat_teb = 47 [default = 0.20];
+  optional double preview_time_openspace = 48 [default = 0.4];
+  optional double detection_curvature = 49 [default = 0.002];
+  optional double lateral_error_threshold_straightaway = 50 [default = 0.10];
+  optional double steer_limit_velocity_threshold = 51 [default = 3.0];
+  optional double curvature_preview = 52 [default = 0.4];
+  optional double min_preview_distance_cur = 53 [default = 0.3];
+  optional double min_curvature_threshold = 54 [default = 0.015];
+  optional double max_curvature_threshold = 55 [default = 0.05];
+  optional int32 heading_rate_filter_window_size = 56;  // window size of mean filter
+  optional double diagonal_lateral_error_kp = 57 [default = 0.05];
+  optional double diagonal_heading_error_kp = 58 [default = 1.435];
+  optional double heading_error_tiny_Threshold = 59 [default = 0.003];
+  optional double heading_error_discount = 60 [default = 0.9];
+  optional double maxsteer_ratio_limit = 61 [default = 1.0];
+  optional double little_l_error_threshold = 62 [default = 0.1];
+  optional double little_heading_error_threshold = 63 [default = 0.1];
+  optional int32 lateral_rate_filter_window_size = 65;
+  
+}

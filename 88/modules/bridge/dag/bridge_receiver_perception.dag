@@ -1,0 +1,12 @@
+module_config {
+    module_library: "/century/bazel-bin/modules/bridge/libudp_bridge_receiver_component.so"
+
+    components {
+
+        class_name: "UDPBridgeReceiverComponent<perception::PerceptionObstacles>"
+        config {
+            name: "bridge_receiver_perception1"
+            config_file_path: "/century/modules/bridge/conf/udp_bridge_receiver_perception.pb.txt"
+      }
+   }
+}

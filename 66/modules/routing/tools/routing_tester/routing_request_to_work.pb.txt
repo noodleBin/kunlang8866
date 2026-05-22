@@ -1,0 +1,32 @@
+header {
+    timestamp_sec: 0
+    module_name: "routing_request_to_work"
+    sequence_num: 52
+}
+waypoint {
+  pose {
+    x: -3171.75570965
+    y: 2239.06082871
+  }
+  heading: 1.43
+}
+#J4_WEST
+#waypoint {
+#  pose {
+#    x: -3283.16
+#    y: 2354.08
+#  }
+#  heading: -0.12
+#}
+#J4_EAST
+waypoint {
+  pose {
+    x: -2891.80190350
+    y: 2237.77420859
+  }
+  heading: 0.39
+}
+#task_type: LOADING_OPERATIONAREA_SAMEDIRECTION_1
+task_type: RAILWAY_OPERATIONAREA_DYNAMIC
+#tiny_adjustment_distance: 10.0
+#tiny_adjustment_type: STACKER_ADIUSTMENT

@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+package century.cyber.proto;
+
+message UserThread {
+  optional string name = 1;
+  optional string cpuset = 2;
+  optional string policy = 3;
+  optional uint32 prio = 4 [default = 0];
+}
+
+message ThreadlibConfig {
+  repeated UserThread threads = 1;
+}

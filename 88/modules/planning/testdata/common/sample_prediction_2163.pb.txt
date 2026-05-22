@@ -1,0 +1,392 @@
+header {
+  timestamp_sec: 1487029724.22
+  module_name: "prediction"
+  sequence_num: 9338
+}
+
+prediction_obstacle {
+  perception_obstacle {
+    id: 2163
+    position {
+      x: 14.0
+      y: 13.0
+      z: 1.0
+    }
+    theta: 1.5708
+    velocity {
+      x: 1.3
+      y: 0.0
+      z: 0.0
+    }
+    length: 4.0
+    width: 2.0
+    height: 1.0
+    polygon_point {
+      x: 13.0
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.0
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.0
+      y: 15.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 13.0
+      y: 15.0
+      z: 1.0
+    }
+    tracking_time: 0
+    type: UNKNOWN
+    timestamp: 0
+  }
+}
+
+prediction_obstacle {
+  perception_obstacle {
+    id: 2163
+    position {
+      x: 14.1
+      y: 13.0
+      z: 1.0
+    }
+    theta: 1.5708
+    velocity {
+      x: 1.2
+      y: 0.0
+      z: 0.0
+    }
+    length: 4.0
+    width: 2.0
+    height: 1.0
+    polygon_point {
+      x: 13.1
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.1
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.1
+      y: 15.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 13.1
+      y: 15.0
+      z: 1.0
+    }
+    tracking_time: 0
+    type: UNKNOWN
+    timestamp: 0
+  }
+}
+
+prediction_obstacle {
+  perception_obstacle {
+    id: 2163
+    position {
+      x: 14.2
+      y: 13.0
+      z: 1.0
+    }
+    theta: 1.5708
+    velocity {
+      x: 1.1
+      y: 0.0
+      z: 0.0
+    }
+    length: 4.0
+    width: 2.0
+    height: 1.0
+    polygon_point {
+      x: 13.2
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.2
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.2
+      y: 15.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 13.2
+      y: 15.0
+      z: 1.0
+    }
+    tracking_time: 0
+    type: UNKNOWN
+    timestamp: 0
+  }
+}
+
+prediction_obstacle {
+  perception_obstacle {
+    id: 2163
+    position {
+      x: 14.3
+      y: 13.0
+      z: 1.0
+    }
+    theta: 1.5708
+    velocity {
+      x: 1.0
+      y: 0.0
+      z: 0.0
+    }
+    length: 4.0
+    width: 2.0
+    height: 1.0
+    polygon_point {
+      x: 13.3
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.3
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.3
+      y: 15.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 13.3
+      y: 15.0
+      z: 1.0
+    }
+    tracking_time: 0
+    type: UNKNOWN
+    timestamp: 0
+  }
+}
+
+prediction_obstacle {
+  perception_obstacle {
+    id: 2163
+    position {
+      x: 14.4
+      y: 13.0
+      z: 1.0
+    }
+    theta: 1.5708
+    velocity {
+      x: 0.9
+      y: 0.0
+      z: 0.0
+    }
+    length: 4.0
+    width: 2.0
+    height: 1.0
+    polygon_point {
+      x: 13.4
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.4
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.4
+      y: 15.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 13.4
+      y: 15.0
+      z: 1.0
+    }
+    tracking_time: 0
+    type: UNKNOWN
+    timestamp: 0
+  }
+}
+
+prediction_obstacle {
+  perception_obstacle {
+    id: 2163
+    position {
+      x: 14.5
+      y: 13.0
+      z: 1.0
+    }
+    theta: 1.5708
+    velocity {
+      x: 0.8
+      y: 0.0
+      z: 0.0
+    }
+    length: 4.0
+    width: 2.0
+    height: 1.0
+    polygon_point {
+      x: 13.5
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.5
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.5
+      y: 15.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 13.5
+      y: 15.0
+      z: 1.0
+    }
+    tracking_time: 0
+    type: UNKNOWN
+    timestamp: 0
+  }
+}
+
+prediction_obstacle {
+  perception_obstacle {
+    id: 2163
+    position {
+      x: 14.6
+      y: 13.0
+      z: 1.0
+    }
+    theta: 1.5708
+    velocity {
+      x: 1.2
+      y: 0.0
+      z: 0.0
+    }
+    length: 4.0
+    width: 2.0
+    height: 1.0
+    polygon_point {
+      x: 13.6
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.6
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.6
+      y: 15.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 13.6
+      y: 15.0
+      z: 1.0
+    }
+    tracking_time: 0
+    type: UNKNOWN
+    timestamp: 0
+  }
+}
+
+prediction_obstacle {
+  perception_obstacle {
+    id: 2163
+    position {
+      x: 14.7
+      y: 13.0
+      z: 1.0
+    }
+    theta: 1.5708
+    velocity {
+      x: 1.4
+      y: 0.0
+      z: 0.0
+    }
+    length: 4.0
+    width: 2.0
+    height: 1.0
+    polygon_point {
+      x: 13.7
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.7
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.7
+      y: 15.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 13.7
+      y: 15.0
+      z: 1.0
+    }
+    tracking_time: 0
+    type: UNKNOWN
+    timestamp: 0
+  }
+}
+
+prediction_obstacle {
+  perception_obstacle {
+    id: 2163
+    position {
+      x: 14.8
+      y: 13.0
+      z: 1.0
+    }
+    theta: 1.5708
+    velocity {
+      x: 1.6
+      y: 0.0
+      z: 0.0
+    }
+    length: 4.0
+    width: 2.0
+    height: 1.0
+    polygon_point {
+      x: 13.8
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.8
+      y: 11.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 15.8
+      y: 15.0
+      z: 1.0
+    }
+    polygon_point {
+      x: 13.8
+      y: 15.0
+      z: 1.0
+    }
+    tracking_time: 0
+    type: UNKNOWN
+    timestamp: 0
+  }
+}

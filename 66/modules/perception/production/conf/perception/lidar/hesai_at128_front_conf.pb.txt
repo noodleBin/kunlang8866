@@ -1,0 +1,6 @@
+sensor_name: "lidar_hesai_at128_front"
+detector_name: "PointCloudPreprocessor"
+enable_hdmap: true
+lidar_query_tf_offset: 0
+lidar2novatel_tf2_child_frame_id: "lidar_hesai_at128_front"
+output_channel_name: "/century/perception/inner/lidar_hesai_at128_front_segmentation"

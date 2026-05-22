@@ -1,0 +1,12 @@
+# Define all coms in DAG streaming.
+module_config {
+    module_library : "/century/bazel-bin/modules/camera_monitor/libcamera_monitor_component.so"
+
+    components {
+      class_name : "CameraMonitorComponent"
+      config {
+        name : "camera_monitor"
+      }
+    }
+}
+

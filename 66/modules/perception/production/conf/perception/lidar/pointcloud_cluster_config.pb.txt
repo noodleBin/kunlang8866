@@ -1,0 +1,23 @@
+euclidean_min_size: 3
+euclidean_max_size: 25000
+euclidean_tolerance: 0.9
+euclidean_leaf_size: 0.1
+
+dbscan_min_size: 3
+dbscan_max_size: 25000
+dbscan_tolerance: 2
+dbscan_max_neighbor: 50
+use_map_manager: true
+
+graph_seg_row_num: 32
+graph_seg_col_num: 1800
+graph_seg_f_up: 15.f
+graph_seg_f_down: -16.f
+graph_seg_phi_v: 1.0
+graph_seg_phi_h: 0.2
+graph_seg_sigma_v: 0.08
+graph_seg_sigma_h: 0.03
+graph_seg_horizontal_search_angle: 20
+graph_seg_vertical_search_angle: 10
+graph_seg_min_points_size: 3
+bev_resolution: 0.3

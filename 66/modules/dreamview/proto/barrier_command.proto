@@ -1,0 +1,17 @@
+syntax = "proto2";
+
+package century.dreamview;
+
+import "modules/common/proto/header.proto";
+
+message BarrierCommand {
+  enum CommandType {
+    COMMAND_TYPE_UNKNOWN = 0;
+    FORCE_OPEN = 1;
+    FORCE_CLOSE = 2;
+  }
+
+  optional century.common.Header header = 1;
+  optional bool enabled = 2 [default = false];
+  optional CommandType command = 3 [default = COMMAND_TYPE_UNKNOWN];
+}

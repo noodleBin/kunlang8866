@@ -1,0 +1,16 @@
+module_config {
+  module_library : "/century/bazel-bin/modules/perception/onboard/component/libperception_component_lidar.so"
+
+  # helios_front_left_conf
+  components {
+    class_name : "LidarCameraVisualComponent"
+    config {
+      name: "PerceptionVisualizer"
+      config_file_path: "/century/modules/perception/production/conf/perception/visualizer/visualizer.conf"
+      flag_file_path: "/century/modules/perception/production/conf/perception/perception_common.flag"
+      readers {
+        channel: "/century/debug/perception/obstacles"
+      }
+    }
+  }
+}

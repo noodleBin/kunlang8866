@@ -1,0 +1,107 @@
+syntax = "proto2";
+
+package century.planning;
+
+import "modules/common/proto/geometry.proto";
+import "modules/common/proto/header.proto";
+import "modules/perception/proto/perception_obstacle.proto";
+
+enum AebWarningLevel {
+  WARNING_LEVEL_NONE = 0;
+  WARNING_LEVEL_LOW = 1;
+  WARNING_LEVEL_MEDIUM = 2;
+  WARNING_LEVEL_HIGH = 3;
+}
+
+message MinDistanceObstacleInfo {
+  optional string obstacle_id = 1;
+  optional double min_distance = 2;
+  optional century.common.Point3D position = 3;
+}
+
+message SelectedObstacleDebug {
+  repeated string selected_id = 1;
+  optional MinDistanceObstacleInfo min_distance_obstacle_info = 2;
+  optional century.perception.PerceptionObstacle stop_obstacle = 3;
+}
+
+message TTCInfos {
+  optional float d_lon = 1;
+  optional float d_lat = 2;
+  optional float v_lon = 3;
+  optional float v_lat = 4;
+  optional float min_ttc = 5;
+  optional float min_lateral_ttc = 6;
+  optional float min_long_ttc = 7;
+}
+
+message ClosestObstacleDistance {
+  optional double x = 1;
+  optional double y = 2;
+}
+
+message ClosestObstacleInfo {
+  optional int32 id = 1;
+  optional bool is_stop_by_closest_obstacle = 2;
+  optional ClosestObstacleDistance closest_distance = 3;
+  optional century.common.Point3D position = 4;
+  optional double theta = 5;
+  optional century.common.Point3D velocity = 6;  // obstacle velocity.
+  // Size of obstacle bounding box.
+  optional double length = 7;  // obstacle length.
+  optional double width = 8;   // obstacle width.
+  optional double height = 9;  // obstacle height.
+  repeated century.common.Point3D polygon_point = 10;
+}
+
+enum SpecialJunction {
+  NO_JUNCTION = 0;
+  DONGJIAZHEN_GATE = 1;
+}
+
+message SpecialJunctionInfo {
+  optional SpecialJunction special_junction = 1 [default = NO_JUNCTION];
+  optional int32 obstacle_id = 2;
+  optional century.common.Point3D filter_point = 3;
+  optional century.common.Point3D position = 4;
+}
+
+message AutoEnableAebInfo {
+  optional bool ready_to_enable_aeb = 1;
+  optional int32 has_not_obs_around_counter = 2;
+}
+
+message AEBDebug {
+  optional double time = 1;
+  // input
+  repeated century.perception.PerceptionObstacle input_obstacles = 5;
+
+  // processed
+  optional ClosestObstacleInfo closest_obstacle_info = 9;
+  optional SelectedObstacleDebug selected_obstacles = 10;
+  optional TTCInfos ttc_infos = 11;
+  optional bool calc_dis_is_overlap = 12;
+  optional bool calc_dis_is_both_overlap = 13;
+  optional SpecialJunctionInfo special_junction_info = 14;
+
+  // auto enable aeb info
+  optional AutoEnableAebInfo auto_enable_aeb_info = 20;
+
+  // error
+  optional string error_info = 30;
+}
+
+message MinTTCInfo {
+  optional double lateral_ttc = 1;
+  optional double longitudinal_ttc = 2;
+}
+
+message AebResult {
+  optional century.common.Header header = 1;
+  optional AebWarningLevel warning_level = 2 [default = WARNING_LEVEL_NONE];
+  optional MinTTCInfo min_ttc_info = 3;
+  // true: enable
+  optional bool ready_to_enable_aeb = 4 [default = false];
+
+  optional AEBDebug aeb_debug = 20;
+}

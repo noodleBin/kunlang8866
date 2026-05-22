@@ -1,0 +1,34 @@
+[
+  {
+    "vehicleType": 1,
+    "vehicleId": "KL901",
+    "taskType": 2,
+    "speed": 2.5,
+    "driveMode": 1,
+    "lng": 121.4737,
+    "lat": 31.2304,
+    "heading": 1.57,
+    "gear": 1,
+    "timestamp": 1740998400000
+  },
+  {
+    "vehicleType": 2,
+    "vehicleId": "STACKER_A",
+    "lng": 121.4738,
+    "lat": 31.2305,
+    "heading": 0.78,
+    "speed": 1.2,
+    "taskType": 3,
+    "timestamp": 1740998401000
+  },
+  {
+    "vehicleType": 4,
+    "vehicleId": "WHEELCRANE_B",
+    "lng": 121.4739,
+    "lat": 31.2306,
+    "heading": 0.12,
+    "speed": 0.8,
+    "taskType": 4,
+    "timestamp": 1740998402000
+  }
+]

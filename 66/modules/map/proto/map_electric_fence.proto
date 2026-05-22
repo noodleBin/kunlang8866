@@ -1,0 +1,28 @@
+syntax = "proto2";
+
+package century.hdmap;
+
+import "modules/map/proto/map_id.proto";
+import "modules/map/proto/map_geometry.proto";
+
+message ElectricFence {
+  optional Id id = 1;
+
+  optional Polygon polygon = 2;
+
+  enum Type {
+    UNKNOWN = 0;
+    NOT_DRIVABLE = 1;
+    DRIVABLE = 2;
+  };
+  optional Type type = 3;
+
+  enum AreaType {
+    NONE = 0;
+    GLOBAL = 1;
+    RAILWAY = 2;
+    CONTAINERYARD = 3;
+    OTHER = 4;
+  }
+  optional AreaType area_type = 4;
+}

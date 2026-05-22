@@ -1,0 +1,49 @@
+syntax = "proto2";
+
+package century.perception.onboard;
+
+message LidarDetectionComponentConfig {
+  optional string sensor_name = 1;
+  optional string detector_name = 2;
+  optional bool enable_hdmap = 3;
+  optional double lidar_query_tf_offset = 4;
+  optional string lidar2novatel_tf2_child_frame_id = 5;
+  optional string output_channel_name = 6 [default = "/century/inner/perception/obstacles"];
+  optional bool use_map_manager = 7 [default = false];
+  repeated string input_channel_name = 8;
+  optional bool use_viz_debug = 9;
+  optional string cluster_name = 10;
+  optional bool use_filter_bank = 11;
+  optional bool use_pose_query = 12;
+  optional double pose_query_offset = 13;
+  optional bool use_point_interpolation = 14;
+  optional string version = 15;
+  optional string around_ego_output_channel_name = 16;
+  optional string localization_topic = 17;
+  optional string debug_output_channel_name = 18;
+  optional string debug_around_output_channel_name = 19;
+  optional double freespace_mask_resolution = 20 [default = 0.4];
+  optional double freespace_mask_x_min = 21 [default = -50.0];
+  optional double freespace_mask_x_max = 22 [default = 50.0];
+  optional double freespace_mask_y_min = 23 [default = -50.0];
+  optional double freespace_mask_y_max = 24 [default = 50.0];
+  optional double freespace_obstacle_inflate = 25 [default = 0.0];
+  optional bool freespace_use_hdmap_road = 26 [default = false];
+  optional int32 freespace_min_points_per_cell = 27 [default = 3];
+  optional bool freespace_show_ray_source = 28 [default = false];
+  optional bool enable_freespace_mask = 29 [default = true];
+  optional string image_format = 30 [default = "compressed"];
+  optional bool use_camera = 31 [default = false];
+  optional string post_detection_frame_output_channel_name = 32;
+  optional bool publish_post_detection_frame = 33 [default = false];
+  optional bool freespace_use_cuda = 34 [default = true];
+  optional bool freespace_enable_temporal_filter = 35 [default = false];
+  optional double freespace_temporal_expand_alpha = 36 [default = 0.35];
+  optional double freespace_temporal_max_expand = 37 [default = 1.2];
+  optional double freespace_temporal_source_shift_reset = 38 [default = 2.0];
+}
+
+message LidarRecognitionComponentConfig {
+  optional string main_sensor_name = 1;
+  optional string output_channel_name = 2;
+}

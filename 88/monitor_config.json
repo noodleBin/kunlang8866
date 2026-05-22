@@ -1,0 +1,32 @@
+{
+  "channel": [
+    {
+      "name": "/tf_static",
+      "process": "mainboard -d /century/modules/transform/dag/static_transform.dag"
+    },
+    {
+      "name": "/lidar/helios/rear_right",
+      "process": "mainboard -d /century/modules/drivers/lidar/robosense/dag/rs32_rear.dag -s drivers"
+    },
+    {
+      "name": "/lidar/helios/front_left",
+      "process": "mainboard -d /century/modules/drivers/lidar/robosense/dag/rs32_front.dag -s drivers"
+    },
+    {
+      "name": "/lidar/bp/rear_right",
+      "process": "mainboard -d /century/modules/drivers/lidar/robosense/dag/rsbp_rear.dag -s drivers"
+    },
+    {
+      "name": "/lidar/bp/front_left",
+      "process": "mainboard -d /century/modules/drivers/lidar/robosense/dag/rsbp_front.dag -s drivers"
+    },
+    {
+      "name": "/lidar/bp/rear_left",
+      "process": "mainboard -d /century/modules/drivers/lidar/robosense/dag/rsbp_rear_left.dag -s drivers"
+    },
+    {
+      "name": "/lidar/bp/front_right",
+      "process": "mainboard -d /century/modules/drivers/lidar/robosense/dag/rsbp_front_right.dag -s drivers"
+    }
+  ]
+}

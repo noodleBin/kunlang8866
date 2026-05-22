@@ -1,0 +1,25 @@
+header {
+    timestamp_sec: 0
+    module_name: "dead_end"
+    sequence_num: 3
+}
+waypoint {
+    pose {
+        x: 626211.008384208
+        y: 3422519.461487737
+    }
+}
+waypoint {
+    pose {
+        x: 626215.504178035
+        y: 3422492.872081149
+    }
+}
+
+dead_end_info {
+  dead_end_routing_type: ROUTING_IN
+  target_point {
+        x: 626218.94
+        y: 3422502.62 
+  }
+}

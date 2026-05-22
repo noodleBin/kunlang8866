@@ -1,0 +1,76 @@
+syntax = "proto2";
+package century.perception.lidar;
+
+message Float2Size {
+  optional float width = 1 [default = 0.0];
+  optional float height = 2 [default = 0.0];
+}
+
+message Float2 {
+  optional float x = 1 [default = 0.0];
+  optional float y = 2 [default = 0.0];
+}
+
+message Float3 {
+  optional float x = 1 [default = 0.0];
+  optional float y = 2 [default = 0.0];
+  optional float z = 3 [default = 0.0];
+}
+
+message Int3 {
+  optional int32 x = 1;
+  optional int32 y = 2;
+  optional int32 z = 3;
+}
+
+message NormParam {
+  optional Float2Size input_image_size = 1;
+  optional Float2Size output_image_size = 2;
+  optional int32 camera_num = 3 [default = 6];
+  optional float resize_limit = 4 [default = 0.48];
+}
+
+message VoxelParam {
+  optional Float3 min_range = 1;
+  optional Float3 max_range = 2;
+  optional Float3 voxel_size = 3;
+  optional int32 max_points_per_voxel = 4 [default = 10];
+  optional int32 max_voxels = 5 [default = 160000];
+  optional int32 max_points = 6 [default = 300000];
+  optional int32 num_feature = 7 [default = 5];
+  optional string lidar_backbone_onnx_path = 8;
+  optional string precision_type = 9 [default = "int8"];
+}
+
+message GeometryParam {
+  optional Float3 x_bound = 1;
+  optional Float3 y_bound = 2;
+  optional Float3 z_bound = 3;
+  optional Float3 d_bound = 4;
+
+  optional Float2Size input_image_size = 5;
+  optional Float2Size feature_size = 6;
+  optional int32 camera_num = 7;
+  optional Int3 dim = 8;
+}
+
+message TransBBoxParam {
+  optional int32 out_size_factor = 1;
+  optional Float2 pc_range = 2;
+  optional Float3 post_center_range_start = 3;
+  optional Float3 post_center_range_end = 4;
+  optional Float2 voxel_size = 5;
+  optional string head_bbox_plan_path = 6;
+  optional float confidence_threshold = 7 [default = 0.12];
+  optional bool sorted_bboxes = 8 [default = true];
+}
+
+message BevFusionDetectionConfig {
+  optional NormParam norm_param = 1;
+  optional VoxelParam voxel_param = 2;
+  optional GeometryParam geometry_param = 3;
+  optional TransBBoxParam trans_bbox_param = 4;
+  optional string model_path = 5;
+  optional bool enable_camera = 6;
+  optional bool enable_timer = 7 [default = true];
+}

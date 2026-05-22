@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package century.msf;
+
+message MsfConfig {
+  bool is_sim = 1;
+  string loc_config_path = 2;
+  int32 msf_loc_rate = 3;
+  float sync_time_thresh = 4;
+  float non_recv_time_thresh = 5;
+}

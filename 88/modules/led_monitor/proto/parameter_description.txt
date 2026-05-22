@@ -1,0 +1,14 @@
+参数说明：
+is_front: boolean
+    true: 前屏幕 
+    false: 后屏幕
+
+post_process: boolean
+    true: 合并一些显示信息（例如左前行归为左转等） 
+    false: 不合并显示信息,planning发过来什么直接显示什么
+
+ip: string 
+    led屏幕的ip地址,按照实际配置的信息填写即可
+    
+topic_config: string
+    保留

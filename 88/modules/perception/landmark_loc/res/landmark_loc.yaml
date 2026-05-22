@@ -1,0 +1,39 @@
+camera_type:
+  - 0
+  - 1
+  - 2
+
+lidar_type:
+  - 2
+  - 3
+
+res_folder: "/century/data/data/"
+debug_folder: "/century/data/log/"
+max_particle_num: 5000
+min_particle_num: 1000
+z_hit: 0.99
+particle_cov:
+  - 0.5
+  - 0.5
+  - 0.07
+z_rand: 0.01
+sigma_hit: 0.01
+segmentation_thres: 0.4
+fused_map_dump: 0
+visualize: 1
+recorder_amcl: 0
+recorder_predicted: 1
+enable_odom_receive: 1
+enable_pose_safety_check: 0
+safety_dis: 0.25
+force_update: 1
+use_delayed_ekf: 0
+delayed_ekf_initial_cov:
+  - 1e-4
+  - 1e-4
+  - 7.6e-5
+delayed_ekf_control_cov:
+  - 1e-2
+  - 1e-2
+  - 1e-4
+using_imu_chassis: 0

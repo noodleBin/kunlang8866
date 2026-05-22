@@ -1,0 +1,14 @@
+module_config {
+    module_library : "/century/bazel-bin/modules/drivers/lidar/velodyne/fusion/libvelodyne_fusion_component.so"
+
+    components {
+      class_name : "PriSecFusionComponent"
+      config {
+        name : "velodyne_fusion"
+        config_file_path : "/century/modules/drivers/lidar/velodyne/conf/velodyne_fusion_conf.pb.txt"
+        readers {
+          channel: "/century/sensor/rsbp/PointCloud2"
+        }
+      }
+    }
+}

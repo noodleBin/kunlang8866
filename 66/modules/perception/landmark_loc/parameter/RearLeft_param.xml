@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<param>
+	<cx>964.4005975212307</cx>
+	<cy>770.3898263723365</cy>
+	<fx>1012.5165107860738</fx>
+	<fy>1012.4510039803653</fy>
+	<image_height>1536</image_height>
+	<image_width>1920</image_width>
+	<k1>-0.056789542869177805</k1>
+	<k2>-0.010299361596128603</k2>
+	<k3>0.000856531495134896</k3>
+	<k4>-0.0013343344940996904</k4>
+	<k5>2.955676</k5>
+	<k6>0.410565</k6>
+	<model_type>FISHEYE</model_type>
+	<p1>-0.001519</p1>
+	<p2>0.0</p2>
+	<source>calibration</source>
+</param>

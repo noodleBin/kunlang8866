@@ -1,0 +1,117 @@
+module_config {
+  module_library : "/century/bazel-bin/modules/perception/onboard/component/libperception_component_lidar.so"
+
+  # helios_front_left_conf
+  components {
+    class_name : "LidarSegmentationComponent"
+    config {
+      name: "HeliosFrontLeft"
+      config_file_path: "/century/modules/perception/production/conf/perception/lidar/helios_front_left_conf.pb.txt"
+      flag_file_path: "/century/modules/perception/production/conf/perception/perception_common.flag"
+      readers {
+        channel: "/lidar/helios/front_left"
+      }
+    }
+  }
+
+  # helios_rear_right_conf
+  components {
+    class_name : "LidarSegmentationComponent"
+    config {
+      name: "HeliosRearRight"
+      config_file_path: "/century/modules/perception/production/conf/perception/lidar/helios_rear_right_conf.pb.txt"
+      flag_file_path: "/century/modules/perception/production/conf/perception/perception_common.flag"
+      readers {
+        channel: "/lidar/helios/rear_right"
+      }
+    }
+  }
+
+  # bp_front_left_conf
+  components {
+    class_name : "LidarSegmentationComponent"
+    config {
+      name: "BpFrontLeft"
+      config_file_path: "/century/modules/perception/production/conf/perception/lidar/bp_front_left_conf.pb.txt"
+      flag_file_path: "/century/modules/perception/production/conf/perception/perception_common.flag"
+      readers {
+        channel: "/lidar/bp/front_left"
+      }
+    }
+  }
+
+  # bp_front_right_conf
+  components {
+    class_name : "LidarSegmentationComponent"
+    config {
+      name: "BpFrontRight"
+      config_file_path: "/century/modules/perception/production/conf/perception/lidar/bp_front_right_conf.pb.txt"
+      flag_file_path: "/century/modules/perception/production/conf/perception/perception_common.flag"
+      readers {
+        channel: "/lidar/bp/front_right"
+      }
+    }
+  }
+
+  # bp_rear_left_conf
+  components {
+    class_name : "LidarSegmentationComponent"
+    config {
+      name: "BpRearLeft"
+      config_file_path: "/century/modules/perception/production/conf/perception/lidar/bp_rear_left_conf.pb.txt"
+      flag_file_path: "/century/modules/perception/production/conf/perception/perception_common.flag"
+      readers {
+        channel: "/lidar/bp/rear_left"
+      }
+    }
+  }
+
+  # bp_rear_right_conf
+  components {
+    class_name : "LidarSegmentationComponent"
+    config {
+      name: "BpRearRight"
+      config_file_path: "/century/modules/perception/production/conf/perception/lidar/bp_rear_right_conf.pb.txt"
+      flag_file_path: "/century/modules/perception/production/conf/perception/perception_common.flag"
+      readers {
+        channel: "/lidar/bp/rear_right"
+      }
+    }
+  }
+
+  # m1_front_conf
+  # components {
+  #   class_name : "LidarSegmentationComponent"
+  #   config {
+  #     name: "M1Front"
+  #     config_file_path: "/century/modules/perception/production/conf/perception/lidar/m1_front_conf.pb.txt"
+  #     flag_file_path: "/century/modules/perception/production/conf/perception/perception_common.flag"
+  #     readers {
+  #       channel: "/lidar/m1/front"
+  #     }
+  #   }
+  # }
+
+  # m1_rear_conf
+  # components {
+  #   class_name : "LidarSegmentationComponent"
+  #   config {
+  #     name: "M1Rear"
+  #     config_file_path: "/century/modules/perception/production/conf/perception/lidar/m1_rear_conf.pb.txt"
+  #     flag_file_path: "/century/modules/perception/production/conf/perception/perception_common.flag"
+  #     readers {
+  #       channel: "/lidar/m1/rear"
+  #     }
+  #   }
+  # }
+
+  # for point cloud detection
+  components {
+    class_name : "LidarDetectorComponent"
+    config {
+      name: "LidarObstacleDetection"
+      config_file_path: "/century/modules/perception/production/conf/perception/lidar/robosense32_detection_conf.pb.txt"
+      flag_file_path: "/century/modules/perception/production/conf/perception/perception_common.flag"
+    }
+  }
+}

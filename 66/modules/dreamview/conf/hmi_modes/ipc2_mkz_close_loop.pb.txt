@@ -1,0 +1,15 @@
+cyber_modules {
+  key: "Computer"
+  value: {
+    dag_files: "/century/modules/planning/dag/planning.dag"
+    dag_files: "/century/modules/prediction/dag/prediction.dag"
+    process_group: "compute_sched"
+  }
+}
+cyber_modules {
+  key: "Controller"
+  value: {
+    dag_files: "/century/modules/control/dag/control.dag"
+    process_group: "control_sched"
+  }
+}

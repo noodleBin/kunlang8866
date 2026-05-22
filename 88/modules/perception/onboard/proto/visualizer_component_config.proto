@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+package century.perception.onboard;
+
+message VisualizerComponentConfig {
+  optional bool use_viz_pcl = 1;
+  optional bool use_viz_pangolin = 2;
+  optional bool seg_viz = 3;
+  optional bool raw_viz = 4;
+  optional bool aeb_dis_viz = 5;
+  optional bool grid_viz = 6;
+  optional float vehicle_length = 7;
+  optional float vehicle_width = 8;
+  optional float vehicle_height = 9;
+  optional bool freespace_viz = 10 [default = true];
+}

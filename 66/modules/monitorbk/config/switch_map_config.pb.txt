@@ -1,0 +1,32 @@
+x86: {
+  map_config: {
+    name: "routing.dag"
+  }
+
+  map_config: {
+    name: "planning.dag"
+  }
+}
+
+orin: {
+  map_config: {
+    name: "dag_streaming_perception_fusion.dag"
+  }
+
+  map_config: {
+    name: "dag_streaming_perception_camera_inner.dag"
+  }
+  map_config: {
+    name: "dag_streaming_perception_mems.dag"
+  }
+
+  map_config: {
+    name: "dag_streaming_perception_centerpoint.dag"
+  }
+  map_config: {
+    name: "prediction.dag"
+  }
+  map_config: {
+    name: "rs_perception_and_localization.sh"
+  }
+}

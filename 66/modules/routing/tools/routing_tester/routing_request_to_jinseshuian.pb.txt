@@ -1,0 +1,17 @@
+header {
+    timestamp_sec: 0
+    module_name: "routing_request_to_jinseshuian"
+    sequence_num: 1
+}
+waypoint {
+    pose {
+        x: 624251.70
+        y: 3420683.66
+    }
+}
+waypoint {
+    pose {
+        x: 628095.02
+        y: 3422204.10
+    }
+}

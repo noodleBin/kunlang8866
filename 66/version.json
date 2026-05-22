@@ -1,0 +1,9 @@
+{
+    "system_name" : "autowin",
+    "build_type" : "release",
+    "composite_version" :  "1.6.1",
+    "build_data" : {
+        "date" : "2025-06-01",
+        "time" : "09:05:05"
+    }
+}

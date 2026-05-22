@@ -1,0 +1,29 @@
+max_fusion_distance : 0.1
+
+max_record_times: 15
+
+large_start_up_lat_speed: 0.4
+small_start_up_lat_speed: 0.2
+
+large_start_up_lat_speed_for_turn_path: 0.8
+small_start_up_lat_speed_for_turn_path: 0.4
+
+turn_path_front_buffer: 5.0
+turn_path_rear_buffer: 5.0
+adc_turn_path_threshold: 30.0
+obs_turn_path_threshold: 30.0
+
+start_up_lon_speed: 0.5
+
+vehicle_scope_range {
+    front_scope_dis: 20.0
+    rear_scope_dis: 0.0
+    left_scope_dis: 5.0
+    right_scope_dis: 5.0
+}
+unknown_scope_range {
+    front_scope_dis: 5.0
+    rear_scope_dis: 0.0
+    left_scope_dis: 4.0
+    right_scope_dis: 4.0
+}

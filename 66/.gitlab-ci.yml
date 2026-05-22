@@ -1,0 +1,110 @@
+variables:
+  GIT_DEPTH: "20"
+  GIT_CLEAN_FLAGS: "-ffdx -e .cache/ -e bazel-bin/ -e bazel-century/ -e bazel-out/ -e bazel-testlogs/"
+  mr_id: $CI_MERGE_REQUEST_IID
+  pipeline_id: $CI_PIPELINE_ID
+  job_id: $CI_JOB_ID
+  merge_branch: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+
+stages:
+  - check
+  - build
+
+before_script:
+  - echo "Running the pipeline for a merge request."
+
+after_script:
+  - echo "The pipeline for a merge request is done."
+
+coding_check_job:
+  stage: check
+  tags:
+    - docker_runner
+  image: python:3.0-slim
+  only:
+    - merge_requests
+  interruptible: true
+  script:
+    - echo "Checking modified files in Merge Request"
+    - git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    - MODIFIED_FILES=$(git diff --name-only origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD)
+    - echo "Modified files:" $MODIFIED_FILES
+    - python3 scripts/ci/check_chinese.py $MODIFIED_FILES
+
+build_x86_job:
+  stage: build
+  resource_group: group_x86
+  tags:
+    - docker_runner
+  cache:
+    key: '$CI_COMMIT_REF_NAME'
+    paths:
+      - .cache/
+  script:
+    - echo $CI_PIPELINE_SOURCE
+    - echo $mr_id
+    - echo $pipeline_id
+    - echo $job_id
+    - echo $merge_branch
+    - echo $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    - echo $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    - whoami
+    - pwd
+    # get modify file
+    # - modified_files=$(git diff --name-only $CI_COMMIT_SHA^ $CI_COMMIT_SHA)
+    # - for file in $modified_files; do echo $file; done
+    # - for file in $modified_files; do cp --parents $file /home/dell/; done
+    # - ln -sf /home/dell/.cache .cache
+    # - mkdir .cache
+    - if [ -d ".cache/" ]; then
+    - echo ".cache exists."
+    - ls .cache/
+    - rm -rf .cache/repos
+    - ls .cache/
+    - cp -r /home/repos/ .cache/
+    - ls .cache/
+    - else
+    - echo ".cache does not exist."
+    - mkdir .cache
+    - cp -r /home/repos/ .cache/
+    - ls .cache/
+    - fi
+    
+    #- git reset --hard HEAD
+    #- git clean -df
+    #- git checkout main
+    #- git pull origin main
+    - git log -3
+    #- git branch $merge_branch
+    #- git checkout $merge_branch
+    #- git branch
+    #- git pull origin $merge_branch
+    #- git log -3
+    - starttime=$(date +"%Y-%m-%d %H:%M:%S")
+    - bash docker/scripts/dev_start.sh -y
+    #- docker exec -u gitlab-runner century_dev_gitlab-runner bash /century/century.sh lint
+    - docker exec -u gitlab-runner century_dev_gitlab-runner bash /century/century.sh build
+    #- docker exec -u gitlab-runner century_dev_gitlab-runner bash /century/century.sh test
+    - endtime=$(date +"%Y-%m-%d %H:%M:%S")
+    - start_timestamp=$(date -d "$starttime" +%s)
+    - end_timestamp=$(date -d "$endtime" +%s)
+    - time_diff_build=$((end_timestamp - start_timestamp))
+    - echo "docker build cost $time_diff_build s"
+  only:
+    - merge_requests
+  timeout: 2h
+  interruptible: true
+
+build_aarch64_job:
+  stage: build
+  resource_group: group_arm
+  tags:
+    - docker_runner
+  cache: []
+  script:
+    - sshpass -p '123' rsync -avc --delete --exclude='.git/' --exclude='.cache/' --exclude='data/' --exclude='.century.bazelrc' --exclude='nohup.out' ./ corage@192.168.20.39:/century
+    - sshpass -p 123 ssh corage@192.168.20.39 'source ~/.bashrc;cd /century; source cyber/setup.bash; bash century.sh build'
+  only:
+    - merge_requests
+  timeout: 2h
+  interruptible: true

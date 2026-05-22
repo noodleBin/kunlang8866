@@ -1,0 +1,21 @@
+syntax = "proto2";
+
+package century.control.braketable;
+
+message ControlBrakeTable {
+  repeated ControlBrakeInfo brake_acce = 1;
+}
+
+message ControlBrakeInfo {
+  optional double deceleration = 1; //m/s^2
+  optional double open_deg = 2;   // %
+}
+
+message BrakeSpdTable {
+  repeated BrakeSpdInfo brake_spd = 1;
+}
+
+message BrakeSpdInfo {
+  optional double velocity = 1;  // m/s
+  optional double gain = 2;
+}

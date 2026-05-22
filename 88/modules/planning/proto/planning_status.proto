@@ -1,0 +1,361 @@
+syntax = "proto2";
+
+package century.planning;
+
+import "modules/common/proto/geometry.proto";
+import "modules/planning/proto/planning_config.proto";
+import "modules/routing/proto/routing.proto";
+
+/*
+  This file defines the data types that represents the internal state of the
+  planning module.
+  It will not be refreshed in each planning cycle.
+*/
+
+message BareIntersectionStatus {
+  optional string current_pnc_junction_overlap_id = 1;
+  optional string done_pnc_junction_overlap_id = 2;
+  optional uint32 clear_counter = 3;
+}
+
+message ChangeLaneStatus {
+  enum Status {
+    CHANGE_LANE_FINISHED = 1;  // during change lane state
+    CHANGE_LANE_FAILED = 2;    // change lane failed
+    IN_CHANGE_LANE = 3;        // change lane finished
+  }
+  optional Status status = 1;
+  // the id of the route segment that the vehicle is driving on
+  optional string path_id = 2;
+  // the time stamp when the state started.
+  optional double timestamp = 3;
+  // the starting position only after which lane-change can happen.
+  optional bool exist_lane_change_start_position = 4 [default = false];
+  optional century.common.Point3D lane_change_start_position = 5;
+  // the last time stamp when the lane-change planning succeed.
+  optional double last_succeed_timestamp = 6;
+  // if the current path and speed planning on the lane-change
+  // reference-line succeed.
+  optional bool is_current_opt_succeed = 7 [default = false];
+  // denotes if the surrounding area is clear for ego vehicle to
+  // change lane at this moment.
+  optional bool is_clear_to_change_lane = 8 [default = false];
+  optional bool is_success_change_lane_path = 9 [default = false];
+}
+
+message OvertakeStatus {
+  enum Status {
+    DEFAULT = 0;   // not overtake
+    LEFT = 1;      // overtake turn left
+    RIGHT = 2;     // overtake return right
+    OVERTAKE = 3;  // overtaking
+  }
+  optional bool history_overtake_signal = 1 [default = false];
+  optional bool need_return = 2 [default = false];
+  optional string overtake_obstacle_id = 3;
+  optional double turn_timestamp = 4;
+  optional bool complete_clear = 5 [default = false];
+  optional int32 safe_check_times = 6 [default = 0];
+  optional int32 slow_obs_keep_check_times = 7 [default = 0];
+  optional bool is_in_overtake_status = 8 [default = false];
+  repeated string preferred_lane_ids = 9;
+  repeated string all_route_lane_ids = 10;
+  optional Status overtake_status = 11;
+  optional int32 overtake_obstacle_perception_id = 12;
+  optional bool urgency_lane_change = 13 [default = false];
+  optional bool accelerated_mode = 15 [default = false];
+  optional bool stop_change_lane = 16 [default = false];
+  optional bool is_vehicle_type = 17 [default = false];
+  optional double start_stop_time = 18;
+}
+
+message LaneborrowStatus {
+  enum Status {
+    DEFAULT = 0;
+    PREPARE = 1;
+    LEFTBORROW = 2;
+    RIGHTBORROW = 3;
+    RETURN = 4;
+    FINISH = 5;
+  }
+  enum LaneborrowDirection {
+    NO_BORROW = 0;
+    LEFT_BORROW = 1;
+    RIGHT_BORROW = 2;
+  }
+  optional int32 slow_obs_keep_check_times = 1 [default = 0];
+  optional Status lane_borrow_status = 2 [default = DEFAULT];
+  optional string laneborrow_obstacle_id = 3;
+  optional int32 laneborrow_obstacle_perception_id = 4;
+  optional bool is_necessary_to_laneborrow = 5 [default = false];
+  optional bool is_left_borrowable = 6 [default = false];
+  optional bool is_right_borrowable = 7 [default = false];
+  optional bool is_in_laneborrow_status = 8 [default = false];
+  optional bool is_left_borrow_safe = 9 [default = false];
+  optional bool is_right_borrow_safe = 10 [default = false];
+  optional LaneborrowDirection laneborrow_direction = 11;
+  optional int32 slow_obs_disappear_check_times = 12 [default = 0];
+  optional bool is_able_to_self_borrow = 13 [default = false];
+  optional string lane_borrow_lane_id = 14;
+  optional bool is_need_to_laneborrow_in_play_street = 15 [default = false];
+  optional bool force_to_exit_laneborrow = 16 [default = false];
+  optional bool is_need_remote_request = 17 [default = false];
+  repeated string block_obstacle_id = 18;
+  optional int32 self_path_keep_straight_count = 19 [default = 0];
+  optional bool need_keep_self_path_straight = 20 [default = false];
+
+  // parameters used for auxiliary_road borrow.
+  optional bool is_need_laneborrow_in_auxiliary_road = 21 [default = false];
+  optional bool is_need_keep_self_path_straight_in_auxiliary_road = 22
+      [default = false];
+  optional int32 keep_self_path_straight_count_in_auxiliary_road = 23
+      [default = 0];
+  optional bool need_exit_laneborrow_in_auxiliary_road = 24 [default = false];
+}
+
+message MixedTraffic {
+  optional bool history_mixed_traffic = 1 [default = false];
+  optional double keep_timestamp = 2;
+}
+
+message CreepDeciderStatus {
+  optional uint32 creep_clear_counter = 1;
+}
+
+message StopTime {
+  optional string obstacle_id = 1;
+  // the timestamp when start stopping for the crosswalk
+  optional double stop_timestamp_sec = 2;
+}
+
+message CrosswalkStatus {
+  optional string crosswalk_id = 1;
+  // the timestamp when start stopping for the crosswalk
+  repeated StopTime stop_time = 2;
+  repeated string finished_crosswalk = 3;
+}
+
+message DestinationStatus {
+  optional bool has_passed_destination = 1 [default = false];
+  // to determine whether the planning module has reached the routing
+  // destination
+  optional bool has_reached_destination = 2 [default = false];
+  // to determine whether the planning module has reached the routing
+  // station
+  optional bool has_reached_station = 3 [default = false];
+  // to determine whether recv the cloud cmd to arrived station immediately
+  optional bool arrived_station_immediately = 4 [default = false];
+}
+
+message EmergencyStopStatus {
+  optional century.common.PointENU stop_fence_point = 1;
+}
+
+message OpenSpaceStatus {
+  repeated string partitioned_trajectories_index_history = 1;
+  optional bool position_init = 2 [default = false];
+}
+
+message ParkAndGoStatus {
+  optional century.common.PointENU adc_init_position = 1;
+  optional double adc_init_heading = 2;
+  optional bool in_check_stage = 3;
+  optional century.common.PointENU adc_adjust_end_pose = 4;
+}
+
+// Added By weihuashen
+message RescueStatus {
+  optional century.common.PointENU adc_init_position = 1;
+  optional double adc_init_heading = 2;
+  optional bool in_check_stage = 3;
+  optional century.common.PointENU adc_adjust_end_pose = 4;
+  //------------------------------------------------------
+
+  optional bool is_near_front_obstacle = 5 [default = false];
+  optional bool is_first_init = 6 [default = true];
+  optional double front_obstacle_buffer = 7 [default = 2.0];  // meter
+  optional double back_pose_distance = 8 [default = -2.0];    // meter
+  optional bool is_select_back_pose = 9 [default = false];
+
+  optional bool is_trajectory_blocked = 10 [default = false];
+
+  optional bool need_finished_stage = 11 [default = false];
+  optional string error_reason = 12;
+
+  optional double far_front_obstacle_buffer = 13 [default = 4.0];  // meter
+
+  optional bool is_far_front_obstacle = 14 [default = false];
+
+  optional bool reached_destination = 15 [default = false];
+
+  optional bool use_default_bound = 16 [default = false];
+
+  // buffer distance for perception obstacle
+  optional double back_perception_obstacle_buffer = 17 [default = 0.1];
+
+  optional bool is_switch_select_direction = 18 [default = false];
+
+  optional uint32 next_stitch_index = 19 [default = 5];
+
+  optional uint32 next_plan_ready_count = 20 [default = 5];
+
+  optional uint32 trajectory_stitching_preserved_points_num = 21 [default = 5];
+  optional double back_pose_distance_little = 22 [default = -0.5];  // meter
+
+  optional double front_obstacle_buffer_city = 23 [default = 3.0];  // meter
+  //------------------------------------------------------
+}
+
+message TebCommonStatus {
+  optional century.common.PointENU adc_init_position = 1;
+  optional double adc_init_heading = 2;
+}
+
+message PathDeciderStatus {
+  enum LaneBorrowDirection {
+    LEFT_BORROW = 1;   // borrow left neighbor lane
+    RIGHT_BORROW = 2;  // borrow right neighbor lane
+  }
+  optional int32 front_static_obstacle_cycle_counter = 1 [default = 0];
+  optional int32 able_to_use_self_lane_counter = 2 [default = 0];
+  optional int32 able_to_use_laneborrow_counter = 6 [default = 0];
+  optional int32 able_to_use_selfborrow_counter = 7 [default = 0];
+  optional double end_state = 8 [default = 0];
+  optional bool is_in_path_lane_borrow_scenario = 3 [default = false];
+  optional string front_static_obstacle_id = 4 [default = ""];
+  repeated LaneBorrowDirection decided_side_pass_direction = 5;
+  optional double previous_max_kappa = 9 [default = 0.0];
+  optional double previous_max_centripetal_acceleration = 10 [default = 0.0];
+  optional int32 path_failure_times = 11 [default = 0];
+  optional bool adc_located_in_junction = 12 [default = false];
+  optional bool need_loosen_path_constrain = 13 [default = false];
+  optional bool adc_will_be_blocked = 16 [default = false];
+  optional int32 adc_slow_down_block_times = 17 [default = 0];
+  optional bool adc_enter_narrow_area = 18 [default = false];
+  optional uint32 lane_borrow_path_fail_times = 21 [default = 0];
+
+  // parameters used for near junction laneborrow.
+  optional bool is_obs_near_junction = 22 [default = false];
+  optional int32 goleft_near_junction_check_count = 23 [default = 0];
+  optional int32 goback_near_junction_check_count = 24 [default = 0];
+  optional bool is_adc_near_junction = 25 [default = false];
+  optional string lane_borrow_lane_id = 26 [default = ""];
+  optional bool is_need_go_left_lane = 27 [default = false];
+  optional bool is_need_goback_reference_lane = 28 [default = false];
+  optional bool has_obs_in_reference_lane = 29 [default = false];
+  optional bool has_left_neighbor_routing_lane = 30 [default = false];
+  optional bool will_pass_merge_lane_area = 31 [default = false];
+  optional double keep_lane_borrow_end_state_l = 32 [default = 0.0];
+  optional int32 force_to_exit_laneborrow_count = 33 [default = 0];
+
+  optional double merge_lane_remain_dis = 34 [default = 100000.0];
+  optional int32 truck_check_count = 35 [default = 0];
+  optional bool has_truck_near_junction = 36 [default = false];
+  optional bool is_in_crowd_traffic = 37 [default = false];
+  optional sint32 crowd_traffic_check_count = 38 [default = 0];
+  optional int32 quit_reverse_shift_state_keep_times = 39 [default = 0];
+  optional bool is_in_reverse_avoid_state = 40 [default = false];
+  optional bool left_reverse_unsafe = 41 [default = false];
+  optional int32 caution_pedestrain_count_times = 42 [default = 0];
+
+  optional bool is_in_efficiency_bypass_state = 50 [default = false];
+  optional int32 efficiency_bypass_slow_obs_keep_times = 51 [default = 0];
+}
+
+message PullOverStatus {
+  enum PullOverType {
+    PULL_OVER = 1;            // pull-over upon destination arrival
+    EMERGENCY_PULL_OVER = 2;  // emergency pull-over
+  }
+  optional PullOverType pull_over_type = 1;
+  optional bool plan_pull_over_path = 2 [default = false];
+  optional century.common.PointENU position = 3;
+  optional double theta = 4;
+  optional double length_front = 5;
+  optional double length_back = 6;
+  optional double width_left = 7;
+  optional double width_right = 8;
+}
+
+message ReroutingStatus {
+  optional double last_rerouting_time = 1;
+  optional bool need_rerouting = 2 [default = false];
+  optional century.routing.RoutingRequest routing_request = 3;
+  optional bool is_new_routing = 4 [default = false];
+  optional uint32 keep_report_new_routing_times = 5 [default = 0];
+}
+
+message SpeedDeciderStatus {
+  repeated StopTime pedestrian_stop_time = 1;
+}
+
+message ScenarioStatus {
+  optional ScenarioConfig.ScenarioType scenario_type = 1;
+  optional ScenarioConfig.StageType stage_type = 2;
+}
+
+message StopSignStatus {
+  optional string current_stop_sign_overlap_id = 1;
+  optional string done_stop_sign_overlap_id = 2;
+  repeated string wait_for_obstacle_id = 3;
+}
+
+message TrafficLightStatus {
+  repeated string current_traffic_light_overlap_id = 1;
+  repeated string done_traffic_light_overlap_id = 2;
+  optional bool in_adjust_stage = 3 [default = false];
+  optional century.common.PointENU adc_adjust_end_pose = 4;
+  optional century.common.PointENU traffic_light_pose = 5;
+}
+
+message YieldSignStatus {
+  repeated string current_yield_sign_overlap_id = 1;
+  repeated string done_yield_sign_overlap_id = 2;
+  repeated string wait_for_obstacle_id = 3;
+}
+
+message TopBullStatus {
+  enum ActionType {
+    NONE = 0;
+    WAITING = 1;
+    BORROW = 2;
+    REVERSE = 3;
+  }
+  optional bool is_in_top_bull = 1 [default = false];
+  optional ActionType action_type = 2 [default = NONE];
+  optional string block_obs_id = 3 [default = ""];
+  // Random numbers are used for the final fallback decision
+  optional uint64 random_number = 4 [default = 0];
+  optional double reverse_distance = 5 [default = 0.0];
+  optional string blocking_igv_id = 6 [default = ""];
+  optional double ego_start_action_time = 7 [default = 0.0];
+  optional bool ego_complete_action = 8 [default = false];
+  optional string top_bull_msg = 9 [default = ""];
+}
+
+// note: please keep this one as minimal as possible. do NOT pollute it.
+message PlanningStatus {
+  optional BareIntersectionStatus bare_intersection = 1;
+  optional ChangeLaneStatus change_lane = 2;
+  optional CreepDeciderStatus creep_decider = 3;
+  optional CrosswalkStatus crosswalk = 4;
+  optional DestinationStatus destination = 5;
+  optional EmergencyStopStatus emergency_stop = 6;
+  optional OpenSpaceStatus open_space = 7;
+  optional ParkAndGoStatus park_and_go = 8;
+  optional PathDeciderStatus path_decider = 9;
+  optional PullOverStatus pull_over = 10;
+  optional ReroutingStatus rerouting = 11;
+  optional ScenarioStatus scenario = 12;
+  optional SpeedDeciderStatus speed_decider = 13;
+  optional StopSignStatus stop_sign = 14;
+  optional TrafficLightStatus traffic_light = 15;
+  optional YieldSignStatus yield_sign = 16;
+  optional RescueStatus rescue = 17;
+  optional double last_lateral_distance = 18;
+  optional OvertakeStatus overtake = 19;
+  optional MixedTraffic mixed_traffic = 20;
+  optional TebCommonStatus teb_common = 21;
+  optional LaneborrowStatus lane_borrow = 22;
+  optional TopBullStatus top_bull = 23;
+}

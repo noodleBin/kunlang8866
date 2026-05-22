@@ -1,0 +1,23 @@
+# Define all coms in DAG streaming.
+module_config {
+    module_library : "/century/bazel-bin/modules/localization/ins/libins_loc_component.so"
+
+    components {
+      class_name : "InsLocComponent"
+      config {
+        name : "ins_loc"
+        #flag_file_path : "/century/modules/localization/conf/loc.conf"
+        config_file_path : "/century/modules/localization/conf/ins_config.pb.txt"
+        readers: [
+          {
+            channel: "/century/sensor/gnss/insx"
+            qos_profile: {
+              depth : 10
+            }
+            pending_queue_size: 50
+          }
+        ]
+      }
+    }
+}
+

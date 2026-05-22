@@ -1,0 +1,97 @@
+norm_param: {
+  input_image_size: {
+    width: 1600.0,
+    height: 900.0
+  },
+  output_image_size: {
+    width: 704.0,
+    height: 256.0
+  },
+  camera_num: 6,
+  resize_limit: 0.48
+},
+voxel_param: {
+  min_range: {
+    x: -48.0,
+    y: -80.0,
+    z: -2.0
+  },
+  max_range: {
+    x: 48.0,
+    y: 80.0,
+    z: 6.0
+  },
+  voxel_size: {
+    x: 0.1,
+    y: 0.1,
+    z: 0.2
+  },
+  max_points_per_voxel: 10,
+  max_voxels: 160000,
+  max_points: 300000,
+  num_feature: 4,
+  lidar_backbone_onnx_path: "/century/modules/perception/production/data/perception/lidar/models/detection/bevfusion/lidar.backbone.xyz.onnx",
+  precision_type: "int8"
+},
+geometry_param: {
+  x_bound: {
+    x: -48.0,
+    y: -80.0,
+    z: 0.3
+  },
+  y_bound: {
+    x: 48.0,
+    y: 80.0,
+    z: 0.3
+  },
+  z_bound: {
+    x: -10.0,
+    y: 10.0,
+    z: 20.0
+  },
+  d_bound: {
+    x: 1.0,
+    y: 60.0,
+    z: 0.5
+  },
+  input_image_size: {
+    width: 704.0,
+    height: 256.0
+  },
+  feature_size: {
+    width: 88.0,
+    height: 32.0
+  },
+  camera_num: 6,
+  dim: {
+    x: 360,
+    y: 360,
+    z: 80
+  }
+},
+trans_bbox_param: {
+  out_size_factor: 8,
+  pc_range: {
+    x: -48.0,
+    y: -80.0
+  },
+  post_center_range_start: {
+    x: -48.0,
+    y: -80.0,
+    z: -2.0
+  },
+  post_center_range_end: {
+    x: 48,
+    y: 80,
+    z: 6
+  },
+  voxel_size: {
+    x: 0.1,
+    y: 0.1
+  },
+  head_bbox_plan_path: "/century/modules/perception/production/data/perception/lidar/models/detection/bevfusion/head.bbox.plan",
+  confidence_threshold: 0.3,
+  sorted_bboxes: true
+},
+model_path: "/century/modules/perception/production/data/perception/lidar/models/detection/bevfusion",
+enable_camera: false

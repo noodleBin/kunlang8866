@@ -1,0 +1,76 @@
+
+camera_dev: "/dev/video0"
+frame_id: "video0"
+pixel_format: "yuyv"
+io_method: IO_METHOD_MMAP
+width: 1920
+height: 1536
+frame_rate: 20
+monochrome: false
+brightness: -1
+contrast: -1
+saturation: -1
+sharpness: -1
+gain: -1
+auto_focus: false
+focus: -1
+auto_exposure: true
+exposure: 100
+auto_white_balance: true
+white_balance: 4000
+bytes_per_pixel: 2
+trigger_internal: 0
+trigger_fps: 20
+channel_name: "/century/sensor/camera/video0/image"
+device_wait_ms: 2000
+spin_rate: 200
+output_type: YUYV
+
+compress_conf {
+    output_channel: "/century/sensor/camera/video0/image/compressed"
+    image_pool_size: 100
+}
+
+topic_configs {
+    video_index : 0
+    raw_output_channel : "/century/sensor/camera/right_rear/image"
+    compressed_output_channel : "/century/sensor/camera/right_rear/image/compressed"
+    frame_id : "camera_right_rear"
+}
+
+topic_configs {
+    video_index : 1
+    raw_output_channel : "/century/sensor/camera/rear/image"
+    compressed_output_channel : "/century/sensor/camera/rear/image/compressed"
+    frame_id : "camera_rear"
+}
+
+topic_configs {
+    video_index : 2
+    raw_output_channel : "/century/sensor/camera/left_front/image"
+    compressed_output_channel : "/century/sensor/camera/left_front/image/compressed"
+    frame_id : "camera_left_front"
+}
+
+topic_configs {
+    video_index : 3
+    raw_output_channel : "/century/sensor/camera/left_rear/image"
+    compressed_output_channel : "/century/sensor/camera/left_rear/image/compressed"
+    frame_id : "camera_left_rear"
+}
+
+topic_configs {
+    video_index : 4
+    raw_output_channel : "/century/sensor/camera/right_front/image"
+    compressed_output_channel : "/century/sensor/camera/right_front/image/compressed"
+    frame_id : "camera_right_front"
+}
+
+topic_configs {
+    video_index : 5
+    raw_output_channel : "/century/sensor/camera/front/image"
+    compressed_output_channel : "/century/sensor/camera/front/image/compressed"
+    frame_id : "camera_front"
+}
+
+hb_j5dev_path: "/century/modules/drivers/camera/conf/hb_j5dev.json"

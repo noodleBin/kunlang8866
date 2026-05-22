@@ -1,0 +1,25 @@
+header {
+    timestamp_sec: 0
+    module_name: "routing_request_to_operation"
+    sequence_num: 2
+}
+waypoint {
+  #id: "68176"
+  heading: -0.17
+  #s: 15.0
+  pose {
+    x: -2618.41
+    y: 2257.81
+  }
+}
+waypoint {
+  #id: "68176"
+  #heading: -0.17
+  #s: 15.0
+  pose {
+    x: -2553.51
+    y: 2254.78
+  }
+}
+
+task_type: UNLOAD_OPERATIONAREA_DYNAMIC

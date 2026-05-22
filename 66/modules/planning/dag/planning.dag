@@ -1,0 +1,27 @@
+# Define all coms in DAG streaming.
+module_config {
+  module_library : "/century/bazel-bin/modules/planning/libplanning_component.so"
+
+  components {
+    class_name : "PlanningTriggerComponent"
+    config {
+      name : "planning_trigger"
+      readers {
+        channel: "/century/prediction"
+      }
+    }
+  }
+ 
+  components {
+    class_name : "PlanningComponent"
+    config {
+      name: "planning"
+      config_file_path:  "/century/modules/planning/conf/planning_config.pb.txt"
+      flag_file_path:  "/century/modules/planning/conf/planning.conf"
+      # interval: 100
+      readers {
+        channel: "/century/prediction/trigger"
+      }
+    }
+  }
+}

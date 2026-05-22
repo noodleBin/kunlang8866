@@ -1,0 +1,117 @@
+scenario_type: LANE_FOLLOW
+stage_type: LANE_FOLLOW_DEFAULT_STAGE
+stage_config: {
+  stage_type: LANE_FOLLOW_DEFAULT_STAGE
+  enabled: true
+  task_type: LEARNING_MODEL_INFERENCE_TASK
+  task_type: LANE_CHANGE_DECIDER
+  task_type: PATH_LANE_BORROW_DECIDER
+  task_type: PATH_BOUNDS_DECIDER
+  task_type: PATH_REFERENCE_DECIDER
+  task_type: PATH_REUSE_DECIDER
+  task_type: PIECEWISE_JERK_PATH_OPTIMIZER
+  task_type: PATH_ASSESSMENT_DECIDER
+  task_type: PATH_DECIDER
+  task_type: RULE_BASED_STOP_DECIDER
+  # task_type: ST_BOUNDS_DECIDER
+  task_type: SPEED_BOUNDS_PRIORI_DECIDER
+  task_type: SPEED_HEURISTIC_OPTIMIZER
+  task_type: SPEED_DECIDER
+  task_type: SPEED_BOUNDS_FINAL_DECIDER
+  # task_type: PIECEWISE_JERK_SPEED_OPTIMIZER
+  task_type: PIECEWISE_JERK_SPEED_OPTIMIZER
+  task_type: RSS_DECIDER
+
+  task_config: {
+    task_type: LEARNING_MODEL_INFERENCE_TASK
+    learning_model_inference_task_config {
+      model_type: CNN_LSTM
+      cpu_model_file: "/century/modules/planning/data/model/cpu_test_model_cnn_lstm.pt"
+      gpu_model_file: "/century/modules/planning/data/model/gpu_test_model_cnn_lstm.pt"
+      use_cuda: true
+      allow_empty_learning_based_data: true
+      allow_empty_output_trajectory: true
+    }
+  }
+
+  task_config: {
+    task_type: LANE_CHANGE_DECIDER
+    lane_change_decider_config {
+      enable_lane_change_urgency_check: true
+    }
+  }
+
+  task_config: {
+    task_type: PATH_LANE_BORROW_DECIDER
+  }
+
+  task_config: {
+    task_type: PATH_BOUNDS_DECIDER
+    path_bounds_decider_config {
+      adc_buffer_coeff: 0.0
+      is_extend_lane_bounds_to_include_adc: false
+    }
+  }
+  task_config: {
+    task_type: PATH_REFERENCE_DECIDER
+  }
+  task_config: {
+    task_type: PATH_REUSE_DECIDER
+    path_reuse_decider_config {
+      reuse_path: true
+    }
+  }
+  task_config: {
+    task_type: PIECEWISE_JERK_PATH_OPTIMIZER
+    piecewise_jerk_path_optimizer_config
+    {
+      path_reference_l_weight: 100.0
+      enable_boundary_drop_smooth_protection: true
+      boundary_drop_protection_forward_distance: 10.0
+      boundary_drop_protection_near_boundary_clearance: 0.3
+      boundary_drop_protection_large_drop_threshold: 0.35
+      boundary_drop_protection_ddl_weight_factor: 3.0
+      boundary_drop_protection_dddl_weight_factor: 4.0
+      boundary_drop_protection_path_x_ref_pre_smooth_time: 0.5
+      boundary_drop_protection_lateral_derivative_bound: 0.7
+      boundary_drop_protection_hold_length: 2.0
+      boundary_drop_protection_release_length: 3.0
+      boundary_drop_protection_start_x_ref_weight: 0.0
+      boundary_drop_protection_start_lateral_derivative_bound: 0.0
+      boundary_drop_protection_start_x_bound_buffer: 0.0
+    }
+  }
+  task_config: {
+    task_type: PATH_ASSESSMENT_DECIDER
+  }
+  task_config: {
+    task_type: PATH_DECIDER
+  }
+  task_config: {
+    task_type: ST_BOUNDS_DECIDER
+  }
+  task_config: {
+    task_type: SPEED_BOUNDS_PRIORI_DECIDER
+  }
+  task_config: {
+    task_type: SPEED_BOUNDS_FINAL_DECIDER
+  }
+  task_config: {
+    task_type: SPEED_HEURISTIC_OPTIMIZER
+  }
+  task_config: {
+    task_type: SPEED_DECIDER
+  }
+  task_config: {
+    task_type: PIECEWISE_JERK_SPEED_OPTIMIZER
+  }
+  task_config: {
+    task_type: RSS_DECIDER
+  }
+  task_config: {
+    task_type: RULE_BASED_STOP_DECIDER
+  }
+  task_config: {
+    task_type: PIECEWISE_JERK_NONLINEAR_SPEED_OPTIMIZER
+  }
+}

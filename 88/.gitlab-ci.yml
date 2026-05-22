@@ -1,0 +1,100 @@
+variables:
+  GIT_DEPTH: "20"
+  GIT_CLEAN_FLAGS: "-ffdx -e bazel-bin/ -e bazel-century/ -e bazel-out/ -e bazel-testlogs/"
+  mr_id: $CI_MERGE_REQUEST_IID
+  pipeline_id: $CI_PIPELINE_ID
+  job_id: $CI_JOB_ID
+  merge_branch: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+
+stages:
+  - check
+  - build
+
+before_script:
+  - echo "Running the pipeline for a merge request."
+  - git log -3
+
+after_script:
+  - echo "The pipeline for a merge request is done."
+
+coding_check_job:
+  stage: check
+  tags:
+    - docker_runner
+  image: python:3.0-slim
+  only:
+    - merge_requests
+  interruptible: true
+  script:
+    - echo "Checking modified files in Merge Request"
+    - git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    - MODIFIED_FILES=$(git diff --name-only origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD)
+    - echo "Modified files:" $MODIFIED_FILES
+    - python3 scripts/ci/check_chinese.py $MODIFIED_FILES
+    - echo "Checking function length (threshold 200)"
+    - python3 scripts/ci/check_function_length.py $MODIFIED_FILES --threshold 200 --branch $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    - echo "Checking nesting level (threshold 5)"
+    - python3 scripts/ci/check_nesting_level.py $MODIFIED_FILES --threshold 5 --branch $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+
+build_x86_job:
+  stage: build
+  resource_group: group_x86
+  tags:
+    - docker_runner
+  cache: []
+  script:
+    - echo "Step1:Smart Disk Cleanup"
+    - |
+      THRESHOLD=80
+      GLOBAL_CACHE="/home/${USER}/century_global_cache"
+      
+      CURRENT_USAGE=$(df -h . | awk 'NR==2 {print $5}' | sed 's/%//')
+      echo "Current disk usage: ${CURRENT_USAGE}%"
+
+      if [ "$CURRENT_USAGE" -gt "$THRESHOLD" ]; then
+        echo "Disk usage high ($CURRENT_USAGE%)! Performing tiered cleanup..."
+        find ${GLOBAL_CACHE}/bazel_root -atime +14 -type f -delete
+    
+        NEW_USAGE=$(df -h . | awk 'NR==2 {print $5}' | sed 's/%//')
+        if [ "$NEW_USAGE" -gt "$THRESHOLD" ]; then
+          echo "Still high ($NEW_USAGE%)! Deleting files older than 3 days..."
+          find ${GLOBAL_CACHE}/bazel_root -mtime +3 -type f -delete
+        
+        FINAL_USAGE=$(df -h . | awk 'NR==2 {print $5}' | sed 's/%//')
+          if [ "$FINAL_USAGE" -gt "$THRESHOLD" ]; then
+            echo "CRITICAL: Disk usage still at $FINAL_USAGE%. Purging ALL cache..."
+            rm -rf ${GLOBAL_CACHE}/bazel_root/*
+            rm -rf bazel-testlogs/*
+          fi
+        fi
+        echo "Cleanup sequence finished."
+        CURRENT_USAGE=$(df -h . | awk 'NR==2 {print $5}' | sed 's/%//')
+        echo "Current disk usage: ${CURRENT_USAGE}%"
+      fi
+
+    - echo "Step 2:Starting Container"
+    - bash docker/scripts/dev_start.sh -y
+    
+    - echo "Step 3:Building"
+    - starttime=$(date +"%Y-%m-%d %H:%M:%S")
+    - docker exec -u gitlab-runner century_dev_gitlab-runner bash -c "export BAZEL_WRK_ROOT=/root/.cache/bazel && bash /century/century.sh build"
+    - endtime=$(date +"%Y-%m-%d %H:%M:%S")
+    - echo "docker build cost $(( $(date -d "$endtime" +%s) - $(date -d "$starttime" +%s) )) s"
+  only:
+    - merge_requests
+  timeout: 2h
+  interruptible: true
+
+build_aarch64_job:
+  stage: build
+  resource_group: group_arm
+  tags:
+    - docker_runner
+  cache: []
+  script:
+    - sshpass -p '123' rsync -avc --delete --exclude='.git/' --exclude='.cache/' --exclude='data/' --exclude='.century.bazelrc' --exclude='nohup.out' ./ corage@192.168.20.39:/century
+    - sshpass -p 123 ssh corage@192.168.20.39 'source ~/.bashrc;cd /century; source cyber/setup.bash; bash century.sh build'
+  only:
+    - merge_requests
+  timeout: 2h
+  interruptible: true

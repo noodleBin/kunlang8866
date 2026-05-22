@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+package century.dreamview;
+
+import "modules/common/proto/header.proto";
+
+message BackgroundMusic {
+  optional century.common.Header header = 1;
+  optional bool background_music_switch = 2;
+  optional double last_modify_time = 3;
+}

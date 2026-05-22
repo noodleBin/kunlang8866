@@ -1,0 +1,70 @@
+vehicle_parameter {
+  brand: LINCOLN_MKZ
+  max_enable_fail_attempt: 5
+  driving_mode: COMPLETE_AUTO_DRIVE
+}
+
+can_card_parameter {
+  brand: HERMES_CAN
+  type: PCI_CARD
+  channel_id: CHANNEL_ID_ZERO
+  num_ports: 8
+  interface: NATIVE
+}
+
+enable_debug_mode: false
+enable_receiver_log: false
+enable_sender_log: false
+
+
+
+# Brake setting（0~250）
+debug_guide1_brake: 0
+#Target distance (cm, it is sent without change until it is in place, after it is in place, it needs to send 0 first and then send a new position)
+debug_guide1_target_distance: 0
+#Target gear (0: P gear 1: R gear 2: N gear 3: D gear)
+debug_guide1_gear: 0
+#Double flash
+debug_guide1_double_flash: 0
+#left_light
+debug_guide1_left_light: 0 
+#right_light
+debug_guide1_right_light: 0 
+#horn
+debug_guide1_horn: 0
+#estop
+debug_guide1_estop: 0
+#driving_light
+debug_guide1_driving_light: 0  
+#clearance_light
+debug_guide1_clearance_light: 0 
+#standby_mode
+debug_guide1_navigation_standby_mode: 0
+
+debug_guide1_zhuanxiang_mode: 0
+
+#reset
+debug_guide1_reset: 0
+#lowpower_mode
+debug_guide1_lowpower_mode: 0 
+
+#2-axis target speed (m/s, torque Nm when torque mode is selected)
+debug_guide1_target_torque_2_axis: 0.0
+#1 axis center equivalent target Angle (degree)
+debug_guide1_target_steering_angle_1axis: 0
+#3-axis target speed (m/s, torque Nm when torque mode is selected)
+debug_guide1_target_torque_3_axis: 0.0
+#4 axis center equivalent target Angle (degree)
+debug_guide1_target_steering_angle_4_axis: 0.0
+
+debug_guide1_voice_num: 0
+debug_guide1_voice_volue: 28
+
+debug_guide1_f_low_beam_light: 0
+debug_guide1_f_lhigh_beam_light: 0
+debug_guide1_r_low_beam_light: 0
+debug_guide1_r_high_beam_light: 0
+debug_guide1_fog_light: 0
+debug_guide1_unload_lamp: 0
+debug_guide1_loading_lamp: 0
+debug_guide1_loaded_lamp: 0

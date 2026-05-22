@@ -1,0 +1,19 @@
+syntax = "proto2";
+package century.planning;
+
+import "modules/common/proto/header.proto";
+enum BlockingAreaType {
+  BLOCKING_AREA_J1 = 0;
+  BLOCKING_AREA_J2J3 = 1;
+  BLOCKING_AREA_J4 = 2;
+}
+message BlockingArea {
+
+optional BlockingAreaType blocking_area_response_type = 1;
+}
+
+message BlockingAreaResponse {
+  optional century.common.Header header = 1;
+  optional bool need_stop = 2 [default = false];
+  repeated BlockingArea blocking_areas = 3;
+}

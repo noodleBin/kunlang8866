@@ -1,0 +1,48 @@
+topic_conf {
+  adccontainer_topic_name: "/century/prediction/adccontainer"
+  container_topic_name: "/century/prediction/container"
+  evaluator_topic_name: "/century/prediction/evaluator"
+  localization_topic: "/century/localization/pose"
+  perception_obstacle_topic: "/century/perception/obstacles"
+  perception_obstacles_topic_name: "/century/prediction/perception_obstacles"
+  planning_trajectory_topic: "/century/planning"
+  prediction_topic: "/century/prediction"
+  storytelling_topic: "/century/storytelling"
+}
+obstacle_conf {
+  obstacle_type: VEHICLE
+  obstacle_status: ON_LANE
+  evaluator_type: COST_EVALUATOR
+  predictor_type: SINGLE_LANE_PREDICTOR
+}
+obstacle_conf {
+  obstacle_type: VEHICLE
+  obstacle_status: OFF_LANE
+  predictor_type: EMPTY_PREDICTOR
+}
+obstacle_conf {
+  obstacle_type: PEDESTRIAN
+  predictor_type: FREE_MOVE_PREDICTOR
+}
+obstacle_conf {
+  obstacle_type: BICYCLE
+  obstacle_status: ON_LANE
+  evaluator_type: COST_EVALUATOR
+  predictor_type: SINGLE_LANE_PREDICTOR
+}
+obstacle_conf {
+  obstacle_type: BICYCLE
+  obstacle_status: OFF_LANE
+  predictor_type: EMPTY_PREDICTOR
+}
+obstacle_conf {
+  obstacle_type: UNKNOWN
+  obstacle_status: ON_LANE
+  evaluator_type: COST_EVALUATOR
+  predictor_type: SINGLE_LANE_PREDICTOR
+}
+obstacle_conf {
+  obstacle_type: UNKNOWN
+  obstacle_status: OFF_LANE
+  predictor_type: EMPTY_PREDICTOR
+}

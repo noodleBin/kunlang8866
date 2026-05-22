@@ -1,0 +1,409 @@
+errors:
+  - name: E_OK
+    value: 0
+    code: AD000
+    message: "OK"
+
+  - name: E_NOT_INIT
+    value: 1
+    code: AD802
+    message: "NOT_INIT"
+
+  - name: E_OUT_OF_MEM
+    value: 2
+    code: AD704
+    message: "OUT_OF_MEM"
+
+  - name: E_OUT_OF_CPU
+    value: 3
+    code: AD706
+    message: "OUT_OF_CPU"
+
+  - name: E_LOW_DISK
+    value: 4
+    code: AD703
+    message: "LOW_DISK"
+
+  - name: E_OUT_OF_DISK
+    value: 5
+    code: AD70301
+    message: "OUT_OF_DISK"
+
+  - name: E_DIFF_OF_MAP
+    value: 6
+    code: AD70302
+    message: "DIFF_OF_MAP"
+
+  - name: E_LOW_FREQ_LOCALIZATION
+    value: 7
+    code: AD401
+    message: "LOW_FREQ_LOCALIZATION"
+
+  - name: E_NO_FREQ_LOCALIZATION
+    value: 8
+    code: AD40101
+    message: "NO_FREQ_LOCALIZATION"
+
+  - name: E_LOCALIZATION_STATUS_ABNORMAL
+    value: 9
+    code: AD40102
+    message: "LOCALIZATION_STATUS_ABNORMAL"
+
+  - name: E_LOCALIZATION_DELAY
+    value: 10
+    code: AD40103
+    message: "LOCALIZATION_DELAY"
+
+  - name: E_LOW_FREQ_LOC
+    value: 7
+    code: AD401
+    message: "LOW_FREQ_LOC"
+
+  - name: E_NO_FREQ_LOC
+    value: 8
+    code: AD40101
+    message: "NO_FREQ_LOC"
+
+  - name: E_LOC_STATUS_ABNORMAL
+    value: 9
+    code: AD40102
+    message: "LOC_STATUS_ABNORMAL"
+
+  - name: E_LOC_DELAY
+    value: 10
+    code: AD40103
+    message: "LOC_DELAY"
+
+  - name: E_LOC_DIFF_MAX
+    value: 11
+    code: AD40104
+    message: "LOCALIZATION_DIFF_MAX"
+
+  - name: E_LOC_INIT_IMU_WAITING
+    value: 11
+    code: AD40104
+    message: "LOC_INIT_IMU_WAITING"
+
+  - name: E_LOC_INIT_GPS_WAITING
+    value: 12
+    code: AD40105
+    message: "LOC_INIT_GPS_WAITING"
+
+  - name: E_LOC_INIT_ODOMETRY_WAITING
+    value: 13
+    code: AD40106
+    message: "LOC_INIT_ODOMETRY_WAITING"
+
+  - name: E_LOC_INIT_LIDAR_WAITING
+    value: 14
+    code: AD40107
+    message: "LOC_INIT_LIDAR_WAITING"
+
+  - name: E_LOC_INIT_KEY_NOT_FOUND
+    value: 15
+    code: AD40108
+    message: "LOC_INIT_KEY_NOT_FOUND"
+
+  - name: E_LOW_FREQ_PERCEPTION
+    value: 16
+    code: AD101
+    message: "LOW_FREQ_PERCEPTION"
+
+  - name: E_NO_FREQ_PERCEPTION
+    value: 17
+    code: AD10101
+    message: "NO_FREQ_PERCEPTION"
+
+  - name: E_LOW_FREQ_PLANNING
+    value: 18
+    code: AD201
+    message: "LOW_FREQ_PLANNING"
+
+  - name: E_NO_FREQ_PLANNING
+    value: 19
+    code: AD20101
+    message: "NO_FREQ_PLANNING"
+
+  - name: E_LOW_FREQ_CONTROL
+    value: 20
+    code: AD301
+    message: "LOW_FREQ_CONTROL"
+
+  - name: E_NO_FREQ_CONTROL
+    value: 21
+    code: AD30101
+    message: "NO_FREQ_CONTROL"
+
+  - name: E_CONTROL_CALIBRATION_ANOMALY
+    value: 22
+    code: AD30102
+    message: "CONTROL_CALIBRATION_ANOMALY"
+
+  - name: E_CONTROL_BRAKE_ABNORMAL_INPUT
+    value: 23
+    code: AD30103
+    message: "CONTROL_BRAKE_ABNORMAL_INPUT"
+
+  - name: E_CONTROL_BRAKE_DEVIATION_TRAJECTORY
+    value: 24
+    code: AD30104
+    message: "CONTROL_BRAKE_DEVIATION_TRAJECTORY"
+
+  - name: E_CONTROL_BRAKE_FALLBACK_TRAJECTORY
+    value: 25
+    code: AD30105
+    message: "CONTROL_BRAKE_FALLBACK_TRAJECTORY"
+
+  - name: E_CONTROL_BRAKE_LOCATION_POOR
+    value: 26
+    code: AD30106
+    message: "CONTROL_BRAKE_LOCATION_POOR"
+
+  - name: E_LOW_FREQ_PREDICTION
+    value: 27
+    code: AD501
+    message: "LOW_FREQ_PREDICTION"
+
+  - name: E_NO_FREQ_PREDICTION
+    value: 28
+    code: AD50101
+    message: "NO_FREQ_PREDICTION"
+
+  - name: E_LOW_FREQ_TRAFFICLIGHT
+    value: 29
+    code: AD102
+    message: "LOW_FREQ_TRAFFICLIGHT"
+
+  - name: E_NO_FREQ_TRAFFICLIGHT
+    value: 30
+    code: AD10201
+    message: "NO_FREQ_TRAFFICLIGHT"
+
+  - name: E_LOW_FREQ_CHASSIS
+    value: 31
+    code: AD604
+    message: "LOW_FREQ_CHASSIS"
+
+  - name: E_NO_FREQ_CHASSIS
+    value: 32
+    code: AD60401
+    message: "NO_FREQ_CHASSIS"
+
+  - name: E_LOW_FREQ_MEMS
+    value: 33
+    code: AD103
+    message: "LOW_FREQ_MEMS"
+
+  - name: E_NO_FREQ_MEMS
+    value: 34
+    code: AD10301
+    message: "NO_FREQ_MEMS"
+
+  - name: E_LOW_FREQ_RADAR
+    value: 35
+    code: AD104
+    message: "LOW_FREQ_RADAR"
+
+  - name: E_NO_FREQ_RADAR
+    value: 36
+    code: AD10401
+    message: "NO_FREQ_RADAR"
+
+  - name: E_LOW_FREQ_RS
+    value: 37
+    code: AD105
+    message: "LOW_FREQ_RS"
+
+  - name: E_NO_FREQ_RS
+    value: 38
+    code: AD10501
+    message: "NO_FREQ_RS"
+
+  - name: E_RS_SDK_STATUS_ZERO
+    value: 39
+    code: AD10502
+    message: "RS_SDK_STATUS_ZERO"
+
+  - name: E_LOW_FREQ_ULTRASONIC
+    value: 40
+    code: AD106
+    message: "LOW_FREQ_ULTRASONIC"
+
+  - name: E_NO_FREQ_ULTRASONIC
+    value: 41
+    code: AD10601
+    message: "NO_FREQ_ULTRASONIC"
+
+  - name: E_LOW_FREQ_CAMERA
+    value: 42
+    code: AD107
+    message: "LOW_FREQ_CAMERA"
+
+  - name: E_NO_FREQ_CAMERA
+    value: 43
+    code: AD10701
+    message: "NO_FREQ_CAMERA"
+
+  - name: E_LOW_FREQ_RADAR_CUBTK_EOL
+    value: 44
+    code: AD108
+    message: "LOW_FREQ_RADAR_CUBTK_EOL"
+
+  - name: E_NO_FREQ_RADAR_CUBTK_EOL
+    value: 45
+    code: AD10801
+    message: "NO_FREQ_RADAR_CUBTK_EOL"
+
+  - name: E_RADAR_CUBTK_EOL_LEFT_STATUS
+    value: 46
+    code: AD10802
+    message: "RADAR_CUBTK_EOL_LEFT_STATUS"
+
+  - name: "E_RADAR_CUBTK_EOL_RIGHT_STATUS"
+    value: 47
+    code: "AD10803"
+    message: "RADAR_CUBTK_EOL_RIGHT_STATUS"
+  - name: "E_RADAR_CUBTK_EOL_REAR_STATUS"
+    value: 48
+    code: "AD10804"
+    message: "RADAR_CUBTK_EOL_REAR_STATUS"
+  - name: "E_LOW_FREQ_MCLOUD"
+    value: 49
+    code: "AD109"
+    message: "LOW_FREQ_MCLOUD"
+  - name: "E_NO_FREQ_MCLOUD"
+    value: 50
+    code: "AD10901"
+    message: "NO_FREQ_MCLOUD"
+  - name: "E_MCLOUD_STATUS_ERROR"
+    value: 51
+    code: "AD10902"
+    message: "MCLOUD_STATUS_ERROR"
+  - name: "E_MCLOUD_BOXSTATUS_OPEN"
+    value: 52
+    code: "AD10903"
+    message: "MCLOUD_BOXSTATUS_OPEN"
+  - name: "E_NO_FREQ_MONITOR_X86"
+    value: 53
+    code: "AD80301"
+    message: "NO_FREQ_MONITOR_X86"
+  - name: "E_NO_FREQ_MONITOR_AARCH"
+    value: 54
+    code: "AD80302"
+    message: "NO_FREQ_MONITOR_AARCH"
+  - name: "E_LOW_FREQ_FRONT_12MM_STATUS"
+    value: 55
+    code: "AD110"
+    message: "LOW_FREQ_FRONT_12MM_STATUS"
+  - name: "E_NO_FREQ_FRONT_12MM_STATUS"
+    value: 56
+    code: "AD11001"
+    message: "NO_FREQ_FRONT_12MM_STATUS"
+  - name: "E_LOW_FREQ_FRONT_3MM_STATUS"
+    value: 57
+    code: "AD111"
+    message: "LOW_FREQ_FRONT_3MM_STATUS"
+  - name: "E_NO_FREQ_FRONT_3MM_STATUS"
+    value: 58
+    code: "AD11101"
+    message: "NO_FREQ_FRONT_3MM_STATUS"
+  - name: "E_LOW_FREQ_BACK_3MM_STATUS"
+    value: 59
+    code: "AD112"
+    message: "LOW_FREQ_BACK_3MM_STATUS"
+  - name: "E_NO_FREQ_BACK_3MM_STATUS"
+    value: 60
+    code: "AD11201"
+    message: "NO_FREQ_BACK_3MM_STATUS"
+  - name: "E_DISK_WRITE_STATUS"
+    value: 61
+    code: "AD705"
+    message: "DISK_WRITE_STATUS"
+  - name: "E_LOG_WRITE_STATUS"
+    value: 62
+    code: "AD70501"
+    message: "LOG_WRITE_STATUS"
+  - name: "E_CYBER_RECORDER_WRITE_STATUS"
+    value: 63
+    code: "AD70502"
+    message: "CYBER_RECORDER_WRITE_STATUS"
+  - name: "E_LOW_FREQ_MEMS_STATUS"
+    value: 64
+    code: "AD113"
+    message: "LOW_FREQ_MEMS_STATUS"
+  - name: "E_NO_FREQ_MEMS_STATUS"
+    value: 65
+    code: "AD11301"
+    message: "NO_FREQ_MEMS_STATUS"
+  - name: "E_MEMS_FRONT_LEFT_RIGHT_STATUS_ABNORMAL"
+    value: 66
+    code: "AD11302"
+    message: "MEMS_FRONT_LEFT_RIGHT_STATUS_ABNORMAL"
+  - name: "E_MEMS_LEFT_RIGHT_STATUS_ABNORMAL"
+    value: 67
+    code: "AD11303"
+    message: "MEMS_LEFT_RIGHT_STATUS_ABNORMAL"
+  - name: "E_MEMS_FRONT_LEFT_STATUS_ABNORMAL"
+    value: 68
+    code: "AD11304"
+    message: "MEMS_FRONT_LEFT_STATUS_ABNORMAL"
+  - name: "E_MEMS_LEFT_STATUS_ABNORMAL"
+    value: 69
+    code: "AD11305"
+    message: "MEMS_LEFT_STATUS_ABNORMAL"
+  - name: "E_MEMS_FRONT_RIGHT_STATUS_ABNORMAL"
+    value: 70
+    code: "AD11306"
+    message: "MEMS_FRONT_RIGHT_STATUS_ABNORMAL"
+  - name: "E_MEMS_RIGHT_STATUS_ABNORMAL"
+    value: 71
+    code: "AD11307"
+    message: "MEMS_RIGHT_STATUS_ABNORMAL"
+  - name: "E_MEMS_FRONT_STATUS_ABNORMAL"
+    value: 72
+    code: "AD11308"
+    message: "MEMS_FRONT_STATUS_ABNORMAL"
+  - name: "E_LOW_FREQ_UDAS_ULTRASONIC_EOL"
+    value: 73
+    code: "AD114"
+    message: "LOW_FREQ_UDAS_ULTRASONIC_EOL"
+  - name: "E_NO_FREQ_UDAS_ULTRASONIC_EOL"
+    value: 74
+    code: "AD11401"
+    message: "NO_FREQ_UDAS_ULTRASONIC_EOL"
+  - name: "E_UDAS_ULTRASONIC_RIGHT_STATUS"
+    value: 75
+    code: "AD11402"
+    message: "UDAS_ULTRASONIC_RIGHT_STATUS"
+  - name: "E_UDAS_ULTRASONIC_MIDDLE_RIGHT_STATUS"
+    value: 76
+    code: "AD11403"
+    message: "UDAS_ULTRASONIC_MIDDLE_RIGHT_STATUS"
+  - name: "E_UDAS_ULTRASONIC_MIDDLE_LEFT_STATUS"
+    value: 77
+    code: "AD11404"
+    message: "UDAS_ULTRASONIC_MIDDLE_LEFT_STATUS"
+  - name: "E_UDAS_ULTRASONIC_LEFT_STATUS"
+    value: 78
+    code: "AD11405"
+    message: "UDAS_ULTRASONIC_LEFT_STATUS"
+  - name: "E_LOW_FREQ_IMU_RAW"
+    value: 79
+    code: "AD115"
+    message: "LOW_FREQ_IMU_RAW"
+  - name: "E_NO_FREQ_IMU_RAW"
+    value: 80
+    code: "AD11501"
+    message: "NO_FREQ_IMU_RAW"
+  - name: "E_EXCEEDING_TIME_DIFF"
+    value: 81
+    code: "AD708"
+    message: "EXCEEDING_TIME_DIFF"
+  - name: "E_NETNOTREACH"
+    value: 82
+    code: "AD709"
+    message: "NETNOTREACH"
+  - name: "E_NETDOWN"
+    value: 83
+    code: "AD70901"
+    message: "NETDOWN"

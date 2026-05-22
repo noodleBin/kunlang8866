@@ -1,0 +1,6 @@
+topic_config {
+  routing_request_topic: "/century/routing_request"
+  routing_response_topic: "/century/routing_response"
+  localization_pose_topic: "/century/localization/pose"
+  planning_topic: "/century/planning"
+}

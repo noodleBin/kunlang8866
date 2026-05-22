@@ -1,0 +1,25 @@
+header {
+    timestamp_sec: 0
+    module_name: "routing_request_to_qingdaogan"
+    sequence_num: 2
+}
+waypoint {
+  #id: "68176"
+  #heading: -0.17
+  #s: 15.0
+  pose {
+    x: -2615
+    y: 2263
+  }
+}
+waypoint {
+  #id: "68176"
+  #heading: -0.17
+  #s: 15.0
+  pose {
+    x: -2615
+    y: 2263
+  }
+}
+
+task_type: LOADING_OPERATIONAREA_SAMEDIRECTION_2

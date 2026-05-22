@@ -1,0 +1,21 @@
+syntax = "proto2";
+
+package century.control;
+
+import "modules/canbus/proto/chassis.proto";
+import "modules/common/proto/header.proto";
+import "modules/control/proto/pad_msg.proto";
+import "modules/localization/proto/localization.proto";
+import "modules/planning/proto/planning.proto";
+import "modules/planning/proto/planning_aeb.proto";
+import "modules/fas_aeb_backend/proto/fas_aeb_backend.proto";
+
+message LocalView {
+  optional century.common.Header header = 1;
+  optional century.canbus.Chassis chassis = 2;
+  optional century.planning.ADCTrajectory trajectory = 3;
+  optional century.localization.LocalizationEstimate localization = 4;
+  optional PadMessage pad_msg = 5;
+  optional century.planning.AebResult aeb_msg = 6;
+  optional century.fas_aeb_backend.FasAebInfo aeb_Enable = 7;
+  }

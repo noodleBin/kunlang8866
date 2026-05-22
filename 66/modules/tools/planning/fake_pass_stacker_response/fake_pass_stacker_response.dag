@@ -1,0 +1,10 @@
+module_config {
+    module_library : "/century/bazel-bin/modules/tools/planning/fake_pass_stacker_response/libfake_pass_stacker_response_component.so"
+    timer_components {
+        class_name : "FakePassStackerResponseComponent"
+        config {
+            name: "fake_pass_stacker_response"
+            interval: 100
+        }
+    }
+}

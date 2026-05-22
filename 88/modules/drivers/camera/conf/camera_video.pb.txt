@@ -1,0 +1,100 @@
+pixel_format: "yuyv"
+io_method: IO_METHOD_MMAP
+width: 1920
+height: 1536
+frame_rate: 20
+monochrome: false
+brightness: -1
+contrast: -1
+saturation: -1
+sharpness: -1
+gain: -1
+auto_focus: false
+focus: -1
+auto_exposure: true
+exposure: 100
+auto_white_balance: true
+white_balance: 4000
+bytes_per_pixel: 2
+trigger_internal: 0
+trigger_fps: 20
+channel_name: "/century/sensor/camera/video0/image"
+device_wait_ms: 2000
+spin_rate: 200
+output_type: YUYV
+enabled_camera_mask: 63
+v4l2_buffer_count: 2
+v4l2_timing_config {
+    init_device_delay_ms: 1000
+    clear_buffer_timeout_ms: 100
+    first_capture_delay_ms: 5
+    start_capture_retry_delay_ms: 20
+    poll_min_timeout_ms: 50
+    poll_max_timeout_ms: 500
+    grab_failure_retry_delay_ms: 5
+}
+v4l2_thread_config {
+    enable_realtime_scheduling: true
+    realtime_priority: 90
+    enable_cpu_affinity: true
+    cpu_affinity_core_count: 6
+}
+
+compress_conf {
+    output_channel: "/century/sensor/camera/video0/image/compressed"
+    image_pool_size: 100
+    jpeg_quality: 90
+}
+
+topic_configs {
+    video_index : 0
+    raw_output_channel : "/century/sensor/camera/right_rear/image"
+    compressed_output_channel : "/century/sensor/camera/right_rear/image/compressed"
+    frame_id : "camera_right_rear"
+}
+
+topic_configs {
+    video_index : 1
+    raw_output_channel : "/century/sensor/camera/rear/image"
+    compressed_output_channel : "/century/sensor/camera/rear/image/compressed"
+    frame_id : "camera_rear"
+}
+
+topic_configs {
+    video_index : 2
+    raw_output_channel : "/century/sensor/camera/left_front/image"
+    compressed_output_channel : "/century/sensor/camera/left_front/image/compressed"
+    frame_id : "camera_left_front"
+}
+
+topic_configs {
+    video_index : 3
+    raw_output_channel : "/century/sensor/camera/left_rear/image"
+    compressed_output_channel : "/century/sensor/camera/left_rear/image/compressed"
+    frame_id : "camera_left_rear"
+}
+
+topic_configs {
+    video_index : 4
+    raw_output_channel : "/century/sensor/camera/right_front/image"
+    compressed_output_channel : "/century/sensor/camera/right_front/image/compressed"
+    frame_id : "camera_right_front"
+}
+
+topic_configs {
+    video_index : 5
+    raw_output_channel : "/century/sensor/camera/front/image"
+    compressed_output_channel : "/century/sensor/camera/front/image/compressed"
+    frame_id : "camera_front"
+}
+
+hb_j5dev_path: "/century/modules/drivers/camera/conf/hb_j5dev.json"
+platform_config {
+    horizon_j5dev_path: "/century/modules/drivers/camera/conf/hb_j5dev.json"
+    camera_power_gpio {
+        power_value_paths: "/sys/class/tz_gpio/camera_0_1-power/value"
+        power_value_paths: "/sys/class/tz_gpio/camera_2_3-power/value"
+        power_value_paths: "/sys/class/tz_gpio/camera_4_5-power/value"
+        power_value_paths: "/sys/class/tz_gpio/camera_6_7-power/value"
+    }
+}

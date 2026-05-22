@@ -1,0 +1,41 @@
+syntax = "proto2";
+package century.perception.landmark_loc;
+
+message AmclPoint {
+  optional double x = 1 [default = 0.0];
+  optional double y = 2 [default = 0.0];
+  optional double z = 3 [default = 0.0];
+}
+
+message AmclParticle {
+  repeated AmclPoint point = 1;
+}
+
+message AmclCov {
+  optional double x_x = 1 [default = 0.0];
+  optional double y_y = 2 [default = 0.0];
+  optional double yaw_yaw = 3 [default = 0.0];
+}
+
+message AmclPointPackage {
+  optional double ts = 1 [default = 0];
+  optional AmclParticle particles = 2;
+  optional AmclPoint amcl_point = 3;
+  optional AmclCov amcl_cov = 4;
+  optional AmclPoint dr = 5;
+  optional int32 semantic_count = 6 [default = 0];
+  optional int32 cluster_count = 7 [default = 0];
+}
+
+message PredictedPose {
+  optional AmclPoint position = 1;
+  optional double ts = 2;
+}
+
+message AmclPredictedPoses {
+  repeated PredictedPose pose = 1;
+}
+
+message AmclPointPackages {
+  repeated AmclPointPackage package = 1;
+}

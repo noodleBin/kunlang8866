@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package century.ins;
+
+message InsConfig {
+  bool is_sim = 1;
+  string loc_config_path = 2;
+  string ins_pva_topic= 3;
+  string ins_loc_topic  = 4;
+  float ins_pos_thresh = 5;
+  float ins_atti_thresh = 6;
+  float ins_z_vel_thresh = 7;
+  float sync_time_thresh = 8;
+}

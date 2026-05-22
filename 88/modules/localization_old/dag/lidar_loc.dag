@@ -1,0 +1,23 @@
+# Define all coms in DAG streaming.
+module_config {
+    module_library : "/century/bazel-bin/modules/localization/msf/liblidar_loc_component.so"
+
+    components {
+      class_name : "LidarLocComponent"
+      config {
+        name : "lidar_loc"
+        #flag_file_path : "/century/modules/localization/conf/loc.conf"
+        config_file_path : "/century/modules/localization/conf/lidar_config.pb.txt"
+        readers: [
+          {
+            channel: "/century/sensor/gnss/imu"
+            qos_profile: {
+              depth : 10
+            }
+            pending_queue_size: 50
+          }
+        ]
+      }
+    }
+}
+

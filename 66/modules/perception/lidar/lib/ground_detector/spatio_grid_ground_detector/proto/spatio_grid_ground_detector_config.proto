@@ -1,0 +1,29 @@
+syntax = "proto2";
+package century.perception.lidar;
+
+message SpatioGridGroundDetectorConfig {
+  optional float range_around_forward_x = 1 [default = 0.0];
+  optional float range_around_forward_y = 2 [default = 0.0];
+  optional float range_around_backward_x = 3 [default = 0.0];
+  optional float range_around_backward_y = 4 [default = 0.0];
+
+  optional float original_intensity_threshold = 5 [default = 0.0];
+  optional float dust_intensity_threshold = 6 [default = 10];
+
+  optional float grid_size = 7 [default = 0.5];
+  optional float x_min = 8 [default = -70.0];
+  optional float x_max = 9 [default = 70.0];
+  optional float y_min = 10 [default = -50.0];
+  optional float y_max = 11 [default = 50.0];
+  optional float height_threshold = 12 [default = 0.1];
+  optional float min_z_threshold = 13 [default = 0.8];
+  optional float min_exception_z_value = 14 [default = -0.20];
+
+  optional bool enable_around_filter = 15 [default = false];
+
+  optional float filter_min_x = 16 [default = 5.5];
+  optional float filter_max_x = 17 [default = 9.5];
+  optional float filter_min_y = 18 [default = -1.0];
+  optional float filter_max_y = 19 [default = 3.5];
+  optional int32 port_index = 20 [default = 0];
+}

@@ -1,0 +1,46 @@
+syntax = "proto2";
+
+package century.tools;
+
+message LidarTopicConfig {
+  optional string topic = 1;
+  optional string child_frame_id = 2;
+}
+
+message LidarShmBridgeConfig {
+  optional string node_name = 1;
+  optional string tf_topic = 2;
+  optional string tf_static_topic = 3;
+  optional string lidar_pose_topic = 4;
+  optional string tf_frame_id = 5;
+  optional string tf_child_frame_id = 6;
+  optional string default_log_dir = 7;
+  optional string point_xyzirt_cloud_type = 8;
+  optional string point_cloud_packed_type = 9;
+  optional string transform_stampeds_type = 10;
+  optional string localization_estimate_type = 11;
+  optional string pose_with_cov_type = 12;
+  repeated LidarTopicConfig lidar_topic_config = 13;
+  optional uint32 verbose_startup_log_count = 14;
+  optional uint32 periodic_log_interval = 15;
+}
+
+message ShmReaderConfig {
+  optional string mode_tf = 1;
+  optional string mode_tf_static = 2;
+  optional string mode_cloud = 3;
+  optional string mode_compare = 4;
+  optional string mode_all = 5;
+  optional string mode_rate = 6;
+  optional string arg_topic = 7;
+  optional string arg_duration_sec = 8;
+  optional string arg_preview_count = 9;
+  optional uint32 default_preview_point_count = 10;
+  optional uint32 default_preview_transform_count = 11;
+  optional double default_duration_sec = 12;
+}
+
+message CyberRosBridgeConfig {
+  optional LidarShmBridgeConfig lidar_shm_bridge = 1;
+  optional ShmReaderConfig shm_reader = 2;
+}

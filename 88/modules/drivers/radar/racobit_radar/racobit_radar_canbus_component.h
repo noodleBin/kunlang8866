@@ -1,0 +1,104 @@
+/******************************************************************************
+ * Copyright 2018 The Century Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *****************************************************************************/
+
+/**
+ * @file
+ */
+
+#pragma once
+
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "cyber/cyber.h"
+
+#include "cyber/time/time.h"
+#include "modules/common/monitor_log/monitor_log_buffer.h"
+#include "modules/common/status/status.h"
+#include "modules/common/util/util.h"
+#include "modules/drivers/canbus/can_client/can_client.h"
+#include "modules/drivers/canbus/can_client/can_client_factory.h"
+#include "modules/drivers/canbus/can_comm/can_receiver.h"
+#include "modules/drivers/canbus/can_comm/can_sender.h"
+#include "modules/drivers/canbus/can_comm/message_manager.h"
+#include "modules/drivers/canbus/proto/can_card_parameter.pb.h"
+#include "modules/drivers/canbus/proto/sensor_canbus_conf.pb.h"
+#include "modules/drivers/canbus/sensor_gflags.h"
+#include "modules/drivers/proto/racobit_radar.pb.h"
+#include "modules/drivers/radar/racobit_radar/protocol/radar_config_200.h"
+#include "modules/drivers/radar/racobit_radar/racobit_radar_message_manager.h"
+
+/**
+ * @namespace century::drivers
+ * @brief century::drivers
+ */
+namespace century {
+namespace drivers {
+namespace racobit_radar {
+
+/**
+ * @class RacobitRadarCanbus
+ *
+ * @brief template of canbus-based sensor module main class (e.g.,
+ * racobit_radar).
+ */
+
+using century::common::ErrorCode;
+using century::common::Status;
+using century::common::monitor::MonitorMessageItem;
+using century::cyber::Time;
+using century::drivers::canbus::CanClient;
+using century::drivers::canbus::CanClientFactory;
+using century::drivers::canbus::CanReceiver;
+using century::drivers::canbus::SenderMessage;
+using century::drivers::canbus::SensorCanbusConf;
+
+class RacobitRadarCanbusComponent : public century::cyber::Component<> {
+ public:
+  // TODO(lizh): check whether we need a new msg item, say
+  // MonitorMessageItem::SENSORCANBUS
+  RacobitRadarCanbusComponent();
+  ~RacobitRadarCanbusComponent();
+
+  /**
+   * @brief module initialization function
+   * @return initialization success(true) or not(false).
+   */
+  bool Init() override;
+
+ private:
+  void RegisterCanClients();
+  century::common::ErrorCode ConfigureRadar();
+  Status OnError(const std::string &error_msg);
+  std::shared_ptr<CanClient> can_client_;
+  CanReceiver<RacobitRadar> can_receiver_;
+  std::unique_ptr<RacobitRadarMessageManager> sensor_message_manager_;
+
+  int64_t last_timestamp_ = 0;
+  century::common::monitor::MonitorLogBuffer monitor_logger_buffer_;
+  bool start_success_ = false;
+  // cyber
+  RacobitRadarConf racobit_radar_conf_;
+  std::shared_ptr<cyber::Writer<RacobitRadar>> racobit_radar_writer_;
+};
+
+CYBER_REGISTER_COMPONENT(RacobitRadarCanbusComponent)
+
+}  // namespace racobit_radar
+}  // namespace drivers
+}  // namespace century

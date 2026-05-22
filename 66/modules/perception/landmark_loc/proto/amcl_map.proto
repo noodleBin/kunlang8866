@@ -1,0 +1,47 @@
+syntax = "proto2";
+package century.perception.landmark_loc;
+
+enum SemanticType {
+  NUM0 = 0;
+  NUM1 = 1;
+  NUM2 = 2;
+  NUM3 = 3;
+  NUM4 = 4;
+  NUM5 = 5;
+  NUM6 = 6;
+  NUM7 = 7;
+  NUM8 = 8;
+  NUM9 = 9;
+  SLOT_LINE = 10;
+  BOUNDARY_LINE = 11;
+  ARROW = 12;
+  BUMP = 13;
+  MANHOLE_COVER = 14;
+  CIRCLE_COVER = 15;
+}
+
+message MapCell {
+  optional int32 occ_state = 1 [default = 0];
+  optional double occ_distance = 2 [default = 99999.0];
+}
+
+message MapLayer {
+  optional SemanticType type = 1;
+  optional int32 width = 2;
+  optional int32 height = 3;
+  repeated MapCell cells = 7;
+}
+
+message AmclMap {
+  optional double origin_x = 1 [default = 0.0];
+  optional double origin_y = 2 [default = 0.0];
+  optional double origin_yaw = 3 [default = 0.0];
+  optional double base_x = 4 [default = 0.0];
+  optional double base_y = 5 [default = 0.0];
+  optional double base_yaw = 6 [default = 0.0];
+  optional double scale = 7 [default = 0.1];
+  optional int32 width = 8;
+  optional int32 height = 9;
+  optional double max_occ_distance = 10 [default = 99999.0];
+  repeated MapLayer layer = 11;
+}

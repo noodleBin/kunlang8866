@@ -1,0 +1,27 @@
+syntax = "proto2";
+
+package century.perception;
+
+import "modules/common/proto/geometry.proto";
+import "modules/drivers/proto/pointcloud.proto";
+import "modules/perception/proto/perception_obstacle.proto";
+
+message PerceptionObstacleDebugMsg {
+  optional PerceptionObstacles obstacles = 1;
+  optional drivers.PointCloud raw_pointcloud = 2;  // PointCloud from drivers
+  optional drivers.PointCloud seg_pointcloud = 3;  // PointCloud from drivers
+  optional Affine3dProto lidar2world = 4;
+  // Smoothed freespace boundary polygons.
+  repeated century.common.Polygon freespace_mask_polygon = 6;
+  // Left corridor boundary polyline.
+  optional century.common.Polyline freespace_left_boundary = 7;
+  // Right corridor boundary polyline.
+  optional century.common.Polyline freespace_right_boundary = 8;
+  // Ray-casting origin debug marker.
+  optional century.common.Point3D freespace_ray_source = 9;
+  // HD map road polygons, each point already in local frame
+  // (world_point - lidar2world.translation). z is zeroed.
+  repeated century.common.Polygon road_polygons = 10;
+  // All electric fence polygons (all area types) in the same local frame.
+  repeated century.common.Polygon electric_fence_polygons = 12;
+}

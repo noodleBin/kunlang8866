@@ -1,0 +1,10 @@
+module_config {
+    module_library : "/century/bazel-bin/modules/tools/planning/fake_v2x_info/libfake_v2x_info_component.so"
+    timer_components {
+        class_name : "FakeV2xInfoComponent"
+        config {
+            name: "fake_v2x_info"
+            interval: 10000
+        }
+    }
+}

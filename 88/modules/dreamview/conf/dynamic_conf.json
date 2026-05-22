@@ -1,0 +1,1 @@
+{"dynamic_conf":[{"path":"/century/modules/planning/conf/planning.conf","restart":true,"type":"gflags","variable":["planning_upper_speed_limit","play_street_speed_limit","default_cruise_speed","auxiliary_road_limit_speed","overtake_upper_speed_limit","allow_lane_borrow_fsm","enable_borrow_request","enable_self_borrow"]}]}

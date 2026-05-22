@@ -1,0 +1,55 @@
+syntax = "proto2";
+package century.perception.lidar;
+
+message VecFloat {
+  optional float x = 1 [default = 0.0];
+  optional float y = 2 [default = 0.0];
+  optional float z = 3 [default = 0.0];
+}
+
+message RangeConfig {
+    optional VecFloat min_range = 1;
+    optional VecFloat max_range = 2;
+    optional VecFloat voxel_size = 3;
+}
+
+message ScoreThreashConfig {
+  repeated float score_threshold = 1;
+}
+
+message PointPillarAnchor {
+  optional string name = 1;
+  optional float length = 2;
+  optional float width = 3;
+  optional float height = 4;
+  optional float anchor_first_degree = 5;
+  optional float anchor_second_degree = 6;
+  optional float anchor_bottom_heights = 7;
+}
+
+message PointpillarAnchorConfig {
+  optional int32 len_per_anchor=1 [default = 4];
+  repeated PointPillarAnchor point_pillar_anchor= 2;
+}
+
+
+message PointpillarNmsIouConfig {
+  repeated float nms_iou = 1 [packed = true];
+}
+
+message PointpillarsDetectionConfig {
+    optional int32 max_voxels = 1 [default = 40000];
+    optional int32 max_points_per_voxel = 2 [default = 32];
+    optional int32 max_points = 3 [default = 300000];
+    optional int32 num_feature = 4 [default = 4];
+    optional int32 mem_size = 5 ;
+    optional int32 num_classes = 6 [default = 14];
+    optional int32 num_box_values = 7 [default = 7];
+    optional float dir_offset = 8 [default = 0.78539];
+    optional float z_offset = 9 [default = 1.6];
+    optional float intensity_threshold = 10 [default = 0.0];
+    optional RangeConfig range_config = 11;
+    optional ScoreThreashConfig score_threshold_config = 12;
+    optional PointpillarAnchorConfig pointpillar_anchor_config = 13;
+    optional PointpillarNmsIouConfig pointpillar_nms_iou_config = 14;
+}

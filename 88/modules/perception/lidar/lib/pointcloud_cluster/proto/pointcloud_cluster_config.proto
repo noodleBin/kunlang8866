@@ -1,0 +1,30 @@
+syntax = "proto2";
+package century.perception.lidar;
+
+message PointCloudClusterConfig {
+  optional int32 euclidean_min_size = 1;
+  optional int32 euclidean_max_size = 2;
+  optional double euclidean_tolerance = 3;
+  optional double euclidean_leaf_size = 4;
+
+  optional int32 dbscan_min_size = 5;
+  optional int32 dbscan_max_size = 6;
+  optional double dbscan_tolerance = 7;
+  optional int32 dbscan_max_neighbor = 8;
+  optional int32 graph_seg_row_num = 9;
+  optional int32 graph_seg_col_num = 10;
+  optional float graph_seg_f_down = 11;
+  optional float graph_seg_f_up = 12;
+  optional float graph_seg_phi_v = 13;
+  optional float graph_seg_phi_h = 14;
+  optional float graph_seg_sigma_v = 15;
+  optional float graph_seg_sigma_h = 16;
+  optional float graph_seg_horizontal_search_angle = 17;
+  optional float graph_seg_vertical_search_angle = 18;
+  optional int32 graph_seg_min_points_size = 19;
+
+  optional double bev_resolution = 20 [default = 0.7];
+  optional int32 bev_cluster_points_min_size = 21 [default = 3];
+  optional bool use_map_manager = 22 [default = true];
+
+}

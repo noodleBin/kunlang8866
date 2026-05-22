@@ -1,0 +1,17 @@
+syntax = "proto2";
+
+package century.mcloud;
+
+import "modules/common/proto/header.proto";
+
+message ReaderStatus{
+  optional bool localization_status = 1;
+  optional bool chassis_status = 2;
+  optional bool planning_status = 3;
+  optional bool perception_obstacles_status = 4;
+}
+
+message McloudInfo {
+  optional century.common.Header header = 1;
+  optional bool immediately_parking = 2;
+}

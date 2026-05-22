@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkliteDreamview=self.webpackChunkliteDreamview||[]).push([[170],{5170:(e,t,s)=>{s.r(t),s.d(t,{default:()=>u});s(5043);var i=s(5206),r=s(4135),a=s(7338),l=s(579);const u=()=>(0,l.jsx)(r.Ay,{status:"404",title:"404",subTitle:"\u62b1\u6b49\uff0c\u60a8\u8bbf\u95ee\u7684\u9875\u9762\u4e0d\u5b58\u5728\u3002",extra:(0,l.jsx)(i.Ay,{type:"primary",children:(0,l.jsx)(a.N_,{to:"/",children:"\u8fd4\u56de\u9996\u9875"})})})}}]);
+//# sourceMappingURL=170.c0f57e53.chunk.js.map

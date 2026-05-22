@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+package century.dreamview;
+
+// Command sent from Dreamview (machine 66) to remote machines (e.g. 88)
+// to notify them of a map change so they can update FLAGS_map_dir and
+// restart relevant modules.
+message MapChangeCmd {
+  // The new map directory path, e.g. "/century/modules/map/data/QingdaoPort".
+  optional string map_dir = 1;
+}

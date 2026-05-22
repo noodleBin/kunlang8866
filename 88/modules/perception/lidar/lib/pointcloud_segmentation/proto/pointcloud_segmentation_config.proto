@@ -1,0 +1,33 @@
+syntax = "proto2";
+package century.perception.lidar;
+
+message PointCloudSegmentationConfig {
+  optional bool filter_naninf_points = 1 [default = true];
+  optional bool filter_nearby_box_points = 2 [default = false];
+  optional float box_forward_x = 3 [default = 0];
+  optional float box_backward_x = 4 [default = 0];
+  optional float box_forward_y = 5 [default = 0];
+  optional float box_backward_y = 6 [default = 0];
+  optional bool filter_high_z_points = 7 [default = false];
+  optional float z_threshold = 8 [default = 5.0];
+
+  optional bool use_det = 9 [default = true];
+  optional int32 lidar_ring_num = 10 [default = 32];
+  optional float lidar_horizontal_resolution = 11 [default = 0.2];
+  optional float roi_forward_x = 12 [default = 0.8];
+  optional float roi_forward_y = 13 [default = 0.1];
+  optional float roi_backward_x = 14 [default = -0.8];
+  optional float roi_backward_y = 15 [default = -0.1];
+  optional float range_forward_x = 16 [default = 100];
+  optional float range_forward_y = 17 [default = 40];
+  optional float range_backward_x = 18 [default = -25];
+  optional float range_backward_y = 19 [default = -40];
+  optional float range_z_max = 20 [default = 6.0];
+  optional float range_z_min = 21 [default = -1.6];
+
+  optional bool is_filter = 22 [default = true];
+  optional bool is_intensity_filter = 23 [default = false];
+  optional float search_radium = 24 [default = 0];
+  optional int32 min_neighbors = 25 [default = 0];
+  optional bool is_rectified = 26 [default = true];
+}

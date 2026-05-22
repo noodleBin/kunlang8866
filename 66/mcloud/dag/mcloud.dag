@@ -1,0 +1,11 @@
+module_config {
+    module_library : "/century/bazel-bin/modules/mcloud/libmcloud.so"
+    timer_components {
+        class_name : "MCloud"
+        config {
+            name: "mcloud"
+            interval: 100
+            flag_file_path:  "/century/modules/mcloud/conf/mcloud.conf"
+        }
+    }
+}

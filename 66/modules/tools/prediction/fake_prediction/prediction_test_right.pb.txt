@@ -1,0 +1,48 @@
+header {
+  timestamp_sec: 0
+  module_name: "prediction"
+  sequence_num: 0
+}
+
+prediction_obstacle {
+  perception_obstacle {
+    id: 1
+    position {
+      x: -2608.43
+      y: 2262.89
+      z: 0.0
+    }
+    theta: 0.0
+    velocity {
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    }
+    length: 8.0
+    width: 5.0
+    height: 3.0
+    polygon_point {
+      x: -2610.43
+      y: 2264.89
+      z: 0.0
+    }
+    polygon_point {
+      x: -2600.43
+      y: 2263.89
+      z: 0.0
+    }
+    polygon_point {
+      x: -2600.43
+      y: 2258.89
+      z: 0.0
+    }
+    polygon_point {
+      x: -2610.43
+      y: 2260.89
+      z: 0.0
+    }
+    tracking_time: 0
+    type: UNKNOWN
+  }
+  is_static: false
+}

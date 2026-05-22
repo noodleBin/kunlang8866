@@ -1,0 +1,12 @@
+syntax = "proto2";
+package century.planning;
+
+import "modules/common/proto/header.proto";
+
+message Barrier {
+  optional century.common.Header header = 1;
+  optional bool east_south = 2 [default = false];
+  optional bool east_north = 3 [default = false];
+  optional bool west_south = 4 [default = false];
+  optional bool west_north = 5 [default = false];
+}

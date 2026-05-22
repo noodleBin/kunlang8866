@@ -1,0 +1,69 @@
+syntax = "proto2";
+
+package century.control;
+
+enum LatSignalType {
+  STEP_SIG = 0;
+  WAVE_SIG = 1;
+  FIXED_SIG = 2;
+}
+
+enum TurnMode {
+  EIGHT = 0;
+  DIAGONAL = 1;
+  FRONT_HALF_EIGHT = 2;
+  REAR_HALF_EIGHT = 3;
+}
+
+enum LonSignalType {
+  LON_STEP_SIG = 0;
+  LON_WAVE_SIG = 1;
+  LON_FIXED_SPEED = 2;
+  LON_UNIFORM_ACC_DEC = 3;
+}
+
+enum Gear {
+  N = 0;
+  D = 1;
+  R = 2;
+  P = 3;
+}
+
+enum DecelMethod {
+  MotorDecel = 0;
+  BrakeDecel = 1;
+}
+
+message LonSpeedTest {
+  optional LonSignalType lon_sig_type = 1;
+  optional Gear request_gear = 2;
+  optional double max_speed = 3;
+  optional double max_speed_still_time = 4;
+  optional double acceleration = 5;
+  optional double deceleration = 6;
+  optional DecelMethod decel_method = 7;
+  optional double brake = 8;
+}
+
+message ChassisTest {
+  optional LatSignalType sig_type = 1;
+  optional double step_signal_init_value = 2; 
+  optional double step_signal_delt_value = 3;
+  optional double step_signal_cycle = 4;
+
+  optional double sinewave_signal_amplitude = 5;
+  optional double sinewave_signal_cycle = 6;
+  optional double sinewave_signal_init_phase = 7;
+
+  optional double max_abs_angle = 8;
+
+  optional double fixed_angle = 9;
+
+  optional double angle_velocity = 10;
+  optional double angle_sensitivity = 11;
+  // optional double velocity = 12;
+  optional bool enable_test_mode = 13;
+  optional TurnMode turnmode = 14;
+
+  optional LonSpeedTest lon_speed_test = 15;
+}

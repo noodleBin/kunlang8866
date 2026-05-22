@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+package century.routing;
+
+import "modules/common/proto/geometry.proto";
+
+message PointsInfo {
+  optional string id = 1;
+  repeated century.common.PointENU pose = 2;
+}
+
+message FixedPoints {
+  repeated PointsInfo fixed_points = 1;
+}

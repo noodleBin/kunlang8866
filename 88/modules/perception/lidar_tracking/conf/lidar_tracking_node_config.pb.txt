@@ -1,0 +1,21 @@
+output_prediction_channel_name: "/century/prediction"
+output_perception_channel_name: "/century/perception/obstacles"
+input_localization_channel_name: "/century/loc/pose"
+input_perception_detection_channel_name: "/century/inner/perception/obstacles"
+perception_module_name: "perception_obstacle"
+localization_module_name: ""
+enable_dump_predictor: false
+local_ecef_frame: true
+duplicated_distance_thres: 1.0
+frame_wait_seconds: 5000
+dump_perception_input: false
+dump_prediction_output: false
+log_path: ""
+yaw_rate_active_perception: 0.0
+using_point_cloud_polygon_thres: -1.0
+min_length_threshold: 0.5
+height_diff_threshold: 0.5
+convariance_thres: 0.3
+mean_shift_thres: 0.1
+use_detector_pose: false
+

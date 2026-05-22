@@ -1,0 +1,4 @@
+topic_name: "/century/prediction"
+bind_port: 55557
+proto_name: "PredictionObstacles"
+enable_timeout: false

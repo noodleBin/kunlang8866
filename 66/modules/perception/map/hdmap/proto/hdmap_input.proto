@@ -1,0 +1,7 @@
+syntax = "proto2";
+import "modules/map/proto/map_junction.proto";
+package century.perception.map;
+
+message HDMapInPutConfig {
+  repeated century.hdmap.Junction.Type danger_junction_name = 1;
+}

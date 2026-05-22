@@ -1,0 +1,35 @@
+syntax = "proto2";
+
+package century.planning;
+import "modules/common/proto/header.proto";
+import "modules/canbus/proto/chassis.proto";
+import "modules/routing/proto/routing.proto";
+import "modules/planning/proto/top_bull_info.proto";
+
+message VehicleInfo {
+  optional century.common.Header header = 7;
+  optional string id = 1;
+  optional double x = 2 [default = 0.0];
+  optional double y = 3 [default = 0.0];
+  optional double heading = 4 [default = 0.0];
+  optional double speed = 5;
+  optional century.canbus.Chassis.DrivingMode driving_mode = 6;
+  optional century.canbus.Chassis.GearPosition gear = 8;
+  optional century.routing.TaskType task_type = 9[default = DEFAULT];
+  optional bool is_loading = 10 [default = false];
+  // IGV Path data (a total of 16 points)
+  repeated PathInfo path_info = 11;
+  // IGV turn type
+  optional TurnType turn_type = 12;
+  // Random numbers are used for the final fallback decision
+  optional uint64 random_number = 13 [default = 0];
+  optional bool is_in_top_bull = 14 [default = false];
+  optional TopBullType top_bull_type = 15 [default = TB_NONE];
+}
+
+message V2xInfo {
+    optional century.common.Header header = 1;
+    optional string ego_id = 2;
+    repeated VehicleInfo vehicle_info = 3;
+    repeated string id_sequence = 4;
+}

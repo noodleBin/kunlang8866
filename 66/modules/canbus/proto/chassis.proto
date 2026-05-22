@@ -1,0 +1,262 @@
+syntax = "proto2";
+
+package century.canbus ;
+
+import "modules/common/proto/header.proto";
+import "modules/common/proto/vehicle_signal.proto";
+import "modules/common/proto/drive_state.proto";
+import "modules/common/proto/geometry.proto";
+import "modules/common/configs/proto/vehicle_config.proto";
+// next id :31
+message Chassis {
+
+ enum ErrorCode {
+    NO_ERROR = 0;
+
+    CMD_NOT_IN_PERIOD = 1;  // control cmd not in period
+
+    // car chassis report error, like steer, brake, throttle, gear fault
+    CHASSIS_ERROR = 2;
+
+    // classify the types of the car chassis errors
+    CHASSIS_ERROR_ON_STEER = 6;
+    CHASSIS_ERROR_ON_BRAKE = 7;
+    CHASSIS_ERROR_ON_THROTTLE = 8;
+    CHASSIS_ERROR_ON_GEAR = 9;
+
+    MANUAL_INTERVENTION = 3;  // human manual intervention
+
+    // receive car chassis can frame not in period
+    CHASSIS_CAN_NOT_IN_PERIOD = 4;
+
+    UNKNOWN_ERROR = 5;
+  }
+
+  enum ChargeStatus {
+  CHARGE_NOT = 0 ;
+  CHARGING_UP = 1 ;
+  CHARGE_FINISHED = 2 ;
+  CHARGE_ERROR = 3 ;
+  CHARGE_INVALID = 4 ;
+
+  }
+  enum FaultLevel {
+  FAULT_NORMAL = 0 ;
+  FAULT_LIGHT = 1 ;
+  FAULT_MORE_SEVERE = 2 ;
+  FAULT_MOST_SEVERE = 3 ;
+  FAULT_INVALID = 4 ;
+
+  }
+  enum GearPosition {
+  GEAR_PARKING = 0 ;
+  GEAR_REVERSE = 1 ;
+  GEAR_NEUTRAL = 2 ;
+  GEAR_DRIVE = 3 ;
+  GEAR_LOW = 4;
+  GEAR_INVALID = 5;
+  GEAR_NONE = 6;
+
+  }
+  enum SteeringMode {
+  PARKING_PARALLEL = 0 ;
+  PARKING_FOREARD_DIAGONAL = 1 ;
+  PARKING_DIAGONAL = 2 ;
+  PARKING_REVERSE_DIAGONAL = 4 ;
+  PARKING_INVALID = 5 ;
+  }
+
+  enum DrivingMode {
+      COMPLETE_MANUAL = 0;  // human drive
+      COMPLETE_AUTO_DRIVE = 1;
+      AUTO_STEER_ONLY = 2;  // only steer
+      AUTO_SPEED_ONLY = 3;  // include throttle and brake
+
+      // security mode when manual intervention happens, only response status
+      EMERGENCY_MODE = 4;
+      COMPLETE_REMOTE = 5;
+      COMPLETE_MEDIAN = 6;
+      COMPLETE_MAINTENANCE = 7;
+
+      
+  }
+
+  enum WalkingMode {
+  WALKINGMODE_VELOCITY = 0 ;
+  WALKINGMODE_TORQUE = 1 ;
+  WALKINGMODE_POSITION= 2 ;
+  WALKINGMODE_INVALID = 3 ;
+  }
+  optional century.common.Header header = 1;
+  optional float bridge_1_left_wheel_angle = 2 [default = 0.0] ;
+  optional float bridge_1_right_wheel_angle = 3 [default = 0.0] ;
+  optional float bridge_4_left_wheel_angle = 4 [default = 0.0] ;
+  optional float bridge_4_right_wheel_angle = 5 [default = 0.0] ;
+
+  optional float wheel_speed_0 = 6 [default = 0.0] ;
+  optional float wheel_speed_1 = 7 [default = 0.0] ;
+  optional float wheel_speed_2 = 8 [default = 0.0] ;
+  optional float wheel_speed_3 = 9 [default = 0.0] ;
+
+  optional float front_drive_wheel_speed = 10 [default = 0.0] ;
+  optional float back_drive_wheel_speed = 11[default = 0.0] ;
+  optional float front_motor_torque = 12 [default = 0.0] ;
+  optional float back_motor_torque = 13 [default = 0.0] ;
+
+  optional float y2_12_brake_proportional_electromagnet = 14 [default = 0.0] ;
+  optional float y3_34_brake_proportional_electromagnet = 15 [default = 0.0] ;
+  optional float front_drive_service_brake_pressure = 16 [default = 0.0] ;
+  optional float back_drive_service_brake_pressure = 17 [default = 0.0] ;
+  optional ChargeStatus charge_status = 18 [default = CHARGE_NOT] ;
+  optional FaultLevel b2v_fault_level = 19 [default = FAULT_NORMAL] ;
+  optional FaultLevel whole_err_level = 20 [default = FAULT_NORMAL] ;
+  optional GearPosition gear_location = 21 [default = GEAR_PARKING] ;
+  optional SteeringMode current_steering_mode = 22 [default = PARKING_PARALLEL] ;
+  optional DrivingMode driving_mode = 23 [default = COMPLETE_MANUAL] ;
+  optional WalkingMode current_walking_mode = 24 [default = WALKINGMODE_TORQUE] ;
+  optional bool position_mode_feedback = 25 [default = false] ;
+  optional float total_weight = 26 [default = 0.0] ;
+  optional bool stop_command_flag = 27 [default = false] ;
+  optional float battery_soc = 28 [default = 0.0] ;
+
+  optional uint32 tire_pressure_11 = 29 [default = 0] ;
+  optional uint32 tire_pressure_14 = 30 [default = 0] ;
+  optional uint32 tire_pressure_21 = 31 [default = 0] ;
+  optional uint32 tire_pressure_24 = 32 [default = 0] ;
+  optional uint32 tire_pressure_31 = 33 [default = 0] ;
+  optional uint32 tire_pressure_34 = 34 [default = 0] ;
+  optional uint32 tire_pressure_41 = 35 [default = 0] ;
+  optional uint32 tire_pressure_44 = 36 [default = 0] ;
+
+  optional century.common.Header control_header = 50 ;
+
+  optional double control_target_speed = 51 ;
+
+  // target brake in percentage [0, 100]
+  optional double control_target_brake = 52;
+
+  optional double control_target_steering = 53 ;
+  optional GearPosition control_target_gear_location = 54;
+  optional float speed_mps = 55 [default = 0.0];
+  optional float steering_percentage = 56 [default = 0.0];
+  optional float steering_percentage_rear = 57 [default = 0.0];
+  optional century.common.VehicleSignal signal = 58;
+  optional float engine_rpm = 59 [default = 0.0];
+  optional float odometer_m = 60 [default = 0.0];
+  optional float throttle_percentage = 61 [default = 0.0];
+  optional float throttle_percentage_rear = 62 [default = 0.0];
+  optional float brake_percentage = 63 [default = 0.0];
+  optional float brake_percentage_rear = 64 [default = 0.0];
+  optional float steering_torque_nm = 65 [default = 0.0];
+  optional bool parking_brake = 66;
+  optional Surround surround = 67;
+  optional bool engine_started = 68;
+  optional int32 battery_soc_percentage = 69 [default = -1];
+  optional int32 fuel_range_m = 70;
+  optional bool high_beam_signal = 71 [deprecated = true];
+  optional bool low_beam_signal = 72 [deprecated = true];
+  optional bool left_turn_signal = 73 [deprecated = true];
+  optional bool right_turn_signal = 74 [deprecated = true];
+  optional bool horn = 75 [deprecated = true];
+  optional bool wiper = 76;
+  optional bool disengage_status = 77 [deprecated = true];
+  //optional bool waiting_steering_flag = 78 [default = false];
+  optional int32 chassis_error_mask = 79 [default = 0];
+  optional century.common.EngageAdvice engage_advice = 80;
+  optional WheelSpeed wheel_speed = 81;
+  optional century.common.VehicleID vehicle_id = 82;
+  optional ChassisGPS chassis_gps = 83;
+  optional double steering_timestamp = 84;
+  optional ErrorCode error_code = 85 [default = NO_ERROR]; 
+  optional double speed_orign = 86;
+  }
+
+message ChassisGPS {
+optional double latitude = 1 ;
+optional double longitude = 2 ;
+optional bool gps_valid = 3 ;
+
+optional int32 year = 4 ;
+optional int32 month = 5 ;
+optional int32 day = 6 ;
+optional int32 hours = 7 ;
+optional int32 minutes = 8 ;
+optional int32 seconds = 9 ;
+optional double compass_direction = 10 ;
+optional double pdop = 11 ;
+optional bool is_gps_fault = 12 ;
+optional bool is_inferred = 13 ;
+
+optional double altitude = 14 ;
+optional double heading = 15 ;
+optional double hdop = 16 ;
+optional double vdop = 17 ;
+optional GpsQuality quality = 18 ;
+optional int32 num_satellites = 19 ;
+optional double gps_speed = 20 ;
+}
+
+enum GpsQuality {
+FIX_NO = 0 ;
+FIX_2D = 1 ;
+FIX_3D = 2 ;
+FIX_INVALID = 3 ;
+}
+
+message WheelSpeed {
+enum WheelSpeedType {
+FORWARD = 0 ;
+BACKWARD = 1 ;
+STANDSTILL = 2 ;
+INVALID = 3 ;
+}
+optional bool is_wheel_spd_rr_valid = 1 [default = false] ;
+optional WheelSpeedType wheel_direction_rr = 2 [default = INVALID] ;
+optional double wheel_spd_rr = 3 [default = 0.0] ;
+optional bool is_wheel_spd_rl_valid = 4 [default = false] ;
+optional WheelSpeedType wheel_direction_rl = 5 [default = INVALID] ;
+optional double wheel_spd_rl = 6 [default = 0.0] ;
+optional bool is_wheel_spd_fr_valid = 7 [default = false] ;
+optional WheelSpeedType wheel_direction_fr = 8 [default = INVALID] ;
+optional double wheel_spd_fr = 9 [default = 0.0] ;
+optional bool is_wheel_spd_fl_valid = 10 [default = false] ;
+optional WheelSpeedType wheel_direction_fl = 11 [default = INVALID] ;
+optional double wheel_spd_fl = 12 [default = 0.0] ;
+}
+
+message Sonar {
+optional double range = 1 ; // Meter
+optional century.common.Point3D translation = 2 ; // Meter
+optional century.common.Quaternion rotation = 3 ;
+}
+
+message Surround {
+optional bool cross_traffic_alert_left = 1 ;
+optional bool cross_traffic_alert_left_enabled = 2 ;
+optional bool blind_spot_left_alert = 3 ;
+optional bool blind_spot_left_alert_enabled = 4 ;
+optional bool cross_traffic_alert_right = 5 ;
+optional bool cross_traffic_alert_right_enabled = 6 ;
+optional bool blind_spot_right_alert = 7 ;
+optional bool blind_spot_right_alert_enabled = 8 ;
+optional double sonar00 = 9 ;
+optional double sonar01 = 10 ;
+optional double sonar02 = 11 ;
+optional double sonar03 = 12 ;
+optional double sonar04 = 13 ;
+optional double sonar05 = 14 ;
+optional double sonar06 = 15 ;
+optional double sonar07 = 16 ;
+optional double sonar08 = 17 ;
+optional double sonar09 = 18 ;
+optional double sonar10 = 19 ;
+optional double sonar11 = 20 ;
+optional bool sonar_enabled = 21 ;
+optional bool sonar_fault = 22 ;
+repeated double sonar_range = 23 ;
+repeated Sonar sonar = 24 ;
+}
+
+message License {
+optional string vin = 1 [deprecated = true] ;
+}

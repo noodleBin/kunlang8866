@@ -1,0 +1,90 @@
+header {
+  timestamp_sec: 0
+  module_name: "prediction"
+  sequence_num: 0
+}
+
+prediction_obstacle {
+  perception_obstacle {
+    id: 1
+    position {
+      x: -2645.43
+      y: 2266.89
+      z: 0.0
+    }
+    theta: 0.0
+    velocity {
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    }
+    length: 8.0
+    width: 5.0
+    height: 3.0
+    polygon_point {
+      x: -2650.43
+      y: 2263.89
+      z: 0.0
+    }
+    polygon_point {
+      x: -2650.43
+      y: 2270.89
+      z: 0.0
+    }
+    polygon_point {
+      x: -2638.43
+      y: 2268.89
+      z: 0.0
+    }
+    polygon_point {
+      x: -2638.43
+      y: 2264.89
+      z: 0.0
+    }
+    tracking_time: 0
+    type: UNKNOWN
+  }
+  is_static: true
+}
+prediction_obstacle {
+  perception_obstacle {
+    id: 2
+    position {
+      x: -2645.43
+      y: 2266.89
+      z: 0.0
+    }
+    theta: 0.0
+    velocity {
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    }
+    length: 8.0
+    width: 5.0
+    height: 3.0
+    polygon_point {
+      x: -2650.43
+      y: 2263.89
+      z: 0.0
+    }
+    polygon_point {
+      x: -2650.43
+      y: 2270.89
+      z: 0.0
+    }
+    polygon_point {
+      x: -2638.43
+      y: 2268.89
+      z: 0.0
+    }
+    polygon_point {
+      x: -2638.43
+      y: 2264.89
+      z: 0.0
+    }
+    tracking_time: 0
+    type: UNKNOWN
+  }
+  is_static: true
+}

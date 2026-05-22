@@ -1,0 +1,8 @@
+topic_conf {
+  audio_data_topic_name: "/century/sensor/microphone"
+  audio_detection_topic_name: "/century/audio_detection"
+  localization_topic_name: "/century/localization/pose"
+  audio_event_topic_name: "/century/audio_event"
+  perception_topic_name: "/century/perception/obstacles"
+}
+respeaker_extrinsics_path: "/century/modules/audio/conf/respeaker_extrinsics.yaml"

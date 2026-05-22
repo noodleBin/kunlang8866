@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+package century.monitor;
+
+message ConfigInfo {
+  optional string name = 1;
+}
+
+message SwitchConfigs {
+  repeated ConfigInfo map_config = 1;
+  repeated ConfigInfo models_config = 2;
+  repeated ConfigInfo files_config = 3;
+
+}
+
+message Platform {
+  optional SwitchConfigs x86 = 1;
+  optional SwitchConfigs orin = 2;
+}
+

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <setting>
+        <startTime>2022-12-22 00:00:00</startTime>
+        <cycle>65535</cycle>
+    </setting>
+    <CopyrightStatistics>
+        <company>century</company>
+    </CopyrightStatistics>
+    <process name="Chassis" number="1">
+    	<channel>/century/canbus/chassis</channel>
+        <freq_threshold>25</freq_threshold>
+        <freq_expected>50</freq_expected>
+        <domain_type>aarch64</domain_type>
+        <cross_domain>true</cross_domain>
+    </process>
+    <process name="Control" number="2">
+    	<channel>/century/control</channel>
+        <freq_threshold>30</freq_threshold>
+        <freq_expected>50</freq_expected>
+        <domain_type>aarch64</domain_type>
+        <cross_domain>true</cross_domain>
+    </process>
+    <process name="Planning" number="3">
+    	<channel>/century/planning</channel>
+        <freq_threshold>5</freq_threshold>
+        <freq_expected>10</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="PerceptionObstacle" number="4">
+    	<channel>/century/perception/obstacles</channel>
+        <freq_threshold>4</freq_threshold>
+        <freq_expected>10</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="Prediction" number="5">
+    	<channel>/century/prediction</channel>
+        <freq_threshold>4</freq_threshold>
+        <freq_expected>10</freq_expected>
+        <domain_type>aarch64</domain_type>
+        <cross_domain>true</cross_domain>
+    </process>
+    <process name="TrafficLigth" number="6">
+    	<channel>/century/perception/traffic_light</channel>
+        <freq_threshold>0</freq_threshold>
+        <freq_expected>1</freq_expected>
+        <domain_type>aarch64</domain_type>
+        <cross_domain>true</cross_domain>
+    </process>
+    <process name="Localization" number="7">
+        <channel>/century/localization/pose</channel>
+        <freq_threshold>15</freq_threshold>
+        <freq_expected>30</freq_expected>
+        <domain_type>aarch64</domain_type>
+        <cross_domain>true</cross_domain>
+    </process>
+    <process name="Mems" number="8">
+        <channel>/century/tracker/mems</channel>
+        <freq_threshold>0</freq_threshold>
+        <freq_expected>10</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="Radar" number="9">
+        <channel>/century/tracker/radar</channel>
+        <freq_threshold>0</freq_threshold>
+        <freq_expected>10</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="Rs" number="10">
+        <channel>/century/tracker/rs</channel>
+        <freq_threshold>0</freq_threshold>
+        <freq_expected>10</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+     <process name="Ultrasonic" number="11">
+        <channel>/century/tracker/ultrasonic</channel>
+        <freq_threshold>0</freq_threshold>
+        <freq_expected>8</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="Camera" number="12">
+        <channel>/century/tracker/camera</channel>
+        <freq_threshold>0</freq_threshold>
+        <freq_expected>10</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="Radarcubtek" number="13">
+        <channel>/century/sensor/radar_eol</channel>
+        <freq_threshold>0.5</freq_threshold>
+        <freq_expected>0.5</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="mcloud" number="14">
+        <channel>/century/mcloud</channel>
+        <freq_threshold>5</freq_threshold>
+        <freq_expected>10</freq_expected>
+        <domain_type>x86</domain_type>
+        <cross_domain>true</cross_domain>
+    </process>
+    <process name="front_12mm_status" number="15">
+        <channel>/century/camera/front_12mm/status</channel>
+        <freq_threshold>5</freq_threshold>
+        <freq_expected>10</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="front_3mm_status" number="16">
+        <channel>/century/camera/front_3mm/status</channel>
+        <freq_threshold>5</freq_threshold>
+        <freq_expected>10</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="back_3mm_status" number="17">
+        <channel>/century/camera/back_3mm/status</channel>
+        <freq_threshold>5</freq_threshold>
+        <freq_expected>10</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="mems_status" number="18">
+        <channel>/century/sensor/zvision_ml30sa1/status</channel>
+        <freq_threshold>5</freq_threshold>
+        <freq_expected>10</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="udas_ultrasonic_status" number="19">
+        <channel> /century/sensor/udas_ultrasonic_eol</channel>
+        <freq_threshold>0.5</freq_threshold>
+        <freq_expected>0.5</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="imu_data_status" number="20">
+        <channel> imu_raw</channel>
+        <freq_threshold>50</freq_threshold>
+        <freq_expected>100</freq_expected>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="LocalizationDelay" number="21">
+        <channel>/century/localization/delay_status</channel>
+        <domain_type>aarch64</domain_type>
+    </process>
+    <process name="LocPose" number="22">
+        <channel>/century/loc/pose</channel>
+        <freq_threshold>15</freq_threshold>
+        <freq_expected>30</freq_expected>
+        <domain_type>aarch64</domain_type>
+        <cross_domain>true</cross_domain>
+    </process>
+    <running_process name="runningprocess" number="1">
+    	<process_name>rs_repostory</process_name>
+        <process_name>lcm_receiver</process_name>
+    </running_process>
+</config>

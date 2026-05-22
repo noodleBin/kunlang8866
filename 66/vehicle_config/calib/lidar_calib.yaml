@@ -1,0 +1,23 @@
+lidar1:
+    tf_vehicle_lidar:
+        rotation:
+            w: 1.0
+            x: 0.0
+            y: 0.0
+            z: 0.0
+        translation:
+            x: 0.0
+            y: 0.0
+            z: 0.0
+
+lidar2:
+    tf_vehicle_lidar:
+        rotation:
+            w: 1.0
+            x: 0.0
+            y: 0.0
+            z: 0.0
+        translation:
+            x: 0.0
+            y: 0.0
+            z: 0.0

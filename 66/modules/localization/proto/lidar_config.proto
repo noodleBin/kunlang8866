@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package century.loc;
+
+message LidarConfig {
+  bool is_sim = 1;
+  string loc_config_path = 2;
+  string lidar_pose_topic = 3;
+  string fusion_pose_topic = 4;
+  float sync_time_thresh = 5;
+}

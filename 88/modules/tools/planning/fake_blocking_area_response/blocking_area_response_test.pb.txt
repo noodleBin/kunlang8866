@@ -1,0 +1,12 @@
+header {
+  timestamp_sec: 0
+  module_name: "blocking_area_response"
+  sequence_num: 0
+}
+need_stop: true
+blocking_areas{
+  blocking_area_response_type:BLOCKING_AREA_J1
+}
+blocking_areas{
+  blocking_area_response_type:BLOCKING_AREA_J2J3
+}

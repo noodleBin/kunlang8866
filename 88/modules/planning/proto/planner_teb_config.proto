@@ -1,0 +1,440 @@
+syntax = "proto2";
+
+package century.planning;
+
+// Trajectory related parameters
+message TebTrajectory {
+  // Enable automatic resizing of the trajectory w.r.t
+  // to the temporal resolution (recommended)
+  optional bool teb_autosize = 1 [default = true];
+  // Desired temporal resolution of the trajectory (should
+  // be in the magniture of the underlying control rate)
+  optional double dt_ref = 2 [default = 0.3];
+  // Hysteresis for automatic resizing depending on
+  // the current temporal resolution (dt): usually
+  // 10% of dt_ref
+  optional double dt_hysteresis = 3 [default = 0.1];
+  // Minimum number of samples (should be always greater than 2)
+  optional int32 min_samples = 4 [default = 3];
+  // Maximum number of samples; Warning: if too small the
+  // discretization/resolution might not be sufficient for
+  // the given robot model or obstacle avoidance does not
+  // work anymore.
+  optional int32 max_samples = 5 [default = 500];
+  // Overwrite orientation of local subgoals provided by the
+  // global planner
+  optional bool global_plan_overwrite_orientation = 6 [default = true];
+  // If true, the underlying trajectories might be
+  // initialized with backwards motions in case the goal is
+  // behind the start within the local costmap (this is only
+  // recommended if the robot is equipped with rear sensors)
+  optional bool allow_init_with_backwards_motion = 7 [default = false];
+  // Min. separation between each two
+  // consecutive via-points extracted from
+  // the global plan (if negative: disabled)
+  optional double global_plan_viapoint_sep = 8 [default = -1.0];
+  // If true, the planner adheres to the order of
+  // via-points in the storage container
+  optional bool via_points_ordered = 9 [default = false];
+  // Specify maximum length (cumulative
+  // Euclidean distances) of the subset
+  // of the global plan taken into
+  // account for optimization [if <=0:
+  // disabled; the length is also
+  // bounded by the local costmap
+  // size!]
+  optional double max_global_plan_lookahead_dist = 10 [default = 1.0];
+  // Distance between robot and
+  // via_points of global plan which is
+  // used for pruning
+  optional double global_plan_prune_distance = 11 [default = 1.0];
+  // If true, the planner uses the exact arc length
+  // in velocity, acceleration and turning rate
+  // computations [-> increased cpu time], otherwise
+  // the euclidean approximation is used.
+  optional bool exact_arc_length = 12 [default = false];
+  // Reinitialize the trajectory if a
+  // previous goal is updated with a
+  // seperation of more than the specified
+  // value in meters (skip hot-starting)
+  optional double force_reinit_new_goal_dist = 13 [default = 1.0];
+  // Reinitialize the trajectory if a
+  // previous goal is updated with an
+  // angular difference of more than
+  // the specified value in radians
+  // (skip hot-starting)
+  optional double force_reinit_new_goal_angular = 14 [default = 1.57];
+  // Specify up to which pose on the
+  // predicted plan the feasibility should
+  // be checked each sampling interval.
+  optional int32 feasibility_check_no_poses = 15 [default = 5];
+  //  Specify up to which distance (and with an index below
+  //  feasibility_check_no_poses) from the robot the feasibility should be
+  //  checked each sampling interval; if -1, all poses up to
+  //  feasibility_check_no_poses are checked.
+  optional double feasibility_check_lookahead_distance = 16 [default = -1];
+  // Publish planner feedback containing the full
+  // trajectory and a list of active obstacles
+  // (should be enabled only for evaluation or
+  // debugging purposes)
+  optional bool publish_feedback = 17 [default = false];
+  // Min angular resolution
+  // used during the costmap
+  // collision check. If not
+  // respected, intermediate
+  // samples are added. [rad]
+  optional double min_resolution_collision_check_angular = 18 [default = 3.14];
+  // Index of the pose used to extract the velocity command
+  optional int32 control_look_ahead_poses = 19 [default = 1];
+  // Prevents control_look_ahead_poses to look within this many poses of the
+  // goal in order to prevent overshoot & oscillation when xy_goal_tolerance is
+  // very small
+  optional int32 prevent_look_ahead_poses_near_goal = 20 [default = 0];
+}
+
+// Robot related parameters
+message TebRobot {
+  // Maximum translational velocity of the robot
+  optional double max_vel_x = 1 [default = 0.4];
+  // Maximum translational velocity of the
+  // robot for driving backwards
+  optional double max_vel_x_backwards = 2 [default = 0.2];
+  // Maximum strafing velocity of the robot (should be
+  // zero for non-holonomic robots!)
+  optional double max_vel_y = 3 [default = 0.0];
+  // Maximum angular velocity of the robot
+  optional double max_vel_theta = 4 [default = 0.3];
+  // Maximum translational acceleration of the robot
+  optional double acc_lim_x = 5 [default = 0.5];
+  // Maximum strafing acceleration of the robot
+  optional double acc_lim_y = 6 [default = 0.5];
+  // Maximum angular acceleration of the robot
+  optional double acc_lim_theta = 7 [default = 0.5];
+  // Minimum turning radius of a carlike robot
+  // (diff-drive robot: zero);
+  optional double min_turning_radius = 8 [default = 0.0];
+  // The distance between the drive shaft and steering
+  // axle (only required for a carlike robot with
+  // 'cmd_angle_instead_rotvel' enabled); The value might
+  // be negative for back-wheeled robots!
+  optional double wheelbase = 9 [default = 1.0];
+  // Substitute the rotational velocity in
+  // the commanded velocity message by the
+  // corresponding steering angle (check
+  // 'axles_distance')
+  optional bool cmd_angle_instead_rotvel = 10 [default = false];
+  // If true, updated the footprint before
+  // checking trajectory feasibility
+  optional bool is_footprint_dynamic = 11 [default = false];
+
+  // Maximum  velocity x jerk of the robot
+  optional double jerk_lim_x = 12 [default = 0.3];
+
+    // Maximum angular jerk  of the robot
+  optional double jerk_lim_theta = 13 [default = 0.3];
+}
+
+// Goal tolerance related parameters
+message TebGoalTolerance {
+  // Allowed final orientation error
+  optional double yaw_goal_tolerance = 1 [default = 0.2];
+  // Allowed final euclidean distance to the goal position
+  optional double xy_goal_tolerance = 2 [default = 0.2];
+  // Allow the robot's velocity to be nonzero (usally
+  // max_vel) for planning purposes
+  optional bool free_goal_vel = 3 [default = false];
+  // true prevents the robot from ending the path
+  // early when it cross the end goal
+  optional bool complete_global_plan = 4 [default = true];
+}
+
+// Obstacle related parameters
+message TebObstacles {
+  // Minimum desired separation from obstacles
+  optional double min_obstacle_dist = 1 [default = 0.5];
+  // buffer zone around obstacles with non-zero
+  // penalty costs (should be larger than
+  // min_obstacle_dist in order to take effect)
+  optional double inflation_dist = 2 [default = 0.6];
+  // Buffer zone around predicted locations of dynamic obstacles
+  // with non-zero penalty costs (should be larger than
+  // min_obstacle_dist in order to take effect)
+  optional double dynamic_obstacle_inflation_dist = 3 [default = 0.6];
+  // Specify whether the movement of
+  // dynamic obstacles should be predicted
+  // by a constant velocity model (this
+  // also effects homotopy class planning);
+  // If false, all obstacles are considered
+  // to be static.
+  optional bool include_dynamic_obstacles = 4 [default = true];
+  // Specify whether the obstacles in the
+  // costmap should be taken into account
+  // directly
+  optional bool include_costmap_obstacles = 5 [default = true];
+  // Limit the occupied local costmap obstacles taken
+  // into account for planning behind the robot (specify
+  // distance in meters)
+  optional double costmap_obstacles_behind_robot_dist = 6 [default = 1.5];
+  // The obstacle position is attached to the
+  // closest pose on the trajectory to reduce
+  // computational effort, but take a number
+  // of neighbors into account as well
+  optional int32 obstacle_poses_affected = 7 [default = 25];
+  // If true, the old association strategy is used
+  // (for each obstacle, find the nearest TEB pose),
+  // otherwise the new one (for each teb pose, find only
+  // "relevant" obstacles).
+  optional bool legacy_obstacle_association = 8 [default = false];
+  // The non-legac obstacle association technique tries to
+  // connect only relevant obstacles with the discretized
+  // trajectory during optimization, all obstacles within a
+  // specifed distance are forced to be included (as a multiple of
+  // min_obstacle_dist), e.g. choose 2.0 in order to consider
+  // obstacles within a radius of 2.0*min_obstacle_dist.
+  optional double obstacle_association_force_inclusion_factor = 9
+      [default = 1.5];
+  // See obstacle_association_force_inclusion_factor,
+  // but beyond a multiple of [value]*min_obstacle_dist
+  // all obstacles are ignored during optimization.
+  // obstacle_association_force_inclusion_factor
+  // is processed first.
+  optional double obstacle_association_cutoff_s = 10 [default = 5.0];
+
+  optional double obstacle_association_cutoff_factor = 11 [default = 5.0];
+
+  // Define a plugin name of the costmap_converter package
+  // (costmap cells are converted to points/lines/polygons)
+  optional string costmap_converter_plugin = 12 [default = ""];
+  // If true, the costmap converter invokes its callback queue
+  // in a different thread
+  optional bool costmap_converter_spin_thread = 13 [default = true];
+  // The rate that defines how often the costmap_converter plugin
+  // processes the current costmap (the value should not be much
+  // higher than the costmap update rate)
+  optional int32 costmap_converter_rate = 14 [default = 5];
+}
+
+// Optimization related parameters
+message TebOptimization {
+  // Number of solver iterations called in each outerloop iteration
+  optional int32 no_inner_iterations = 1 [default = 5];
+  // Each outerloop iteration automatically resizes the trajectory and invokes
+  // the internal optimizer with no_inner_iterations
+  optional int32 no_outer_iterations = 2 [default = 4];
+
+  // Activate the optimization
+  optional bool optimization_activate = 3 [default = true];
+  // Print verbose information
+  optional bool optimization_verbose = 4 [default = false];
+
+  // Add a small safety margin to penalty functions for hard-constraint
+  // approximations
+  optional double penalty_epsilon = 5 [default = 0.05];
+
+  // Optimization weight for satisfying the maximum allowed translational
+  // velocity
+  optional double weight_max_vel_x = 6 [default = 2.0];
+  // Optimization weight for satisfying the maximum allowed strafing velocity
+  // (in use only for holonomic robots)
+  optional double weight_max_vel_y = 7 [default = 2.0];
+  // Optimization weight for satisfying the maximum allowed angular velocity
+  optional double weight_max_vel_theta = 8 [default = 1.0];
+  // Optimization weight for satisfying the maximum allowed translational
+  // acceleration
+  optional double weight_acc_lim_x = 9 [default = 1.0];
+  // Optimization weight for satisfying the maximum allowed strafing
+  // acceleration (in use only for holonomic robots)
+  optional double weight_acc_lim_y = 10 [default = 1.0];
+  // Optimization weight for satisfying the maximum allowed angular acceleration
+  optional double weight_acc_lim_theta = 11 [default = 1.0];
+  // Optimization weight for satisfying the non-holonomic kinematics
+  optional double weight_kinematics_nh = 12 [default = 1000.0];
+  // Optimization weight for forcing the robot to choose only forward directions
+  // (positive transl. velocities, only diffdrive robot)
+  optional double weight_kinematics_forward_drive = 13 [default = 1.0];
+  // Optimization weight for enforcing a minimum turning radius (carlike robots)
+  optional double weight_kinematics_turning_radius = 14 [default = 1.0];
+  // Optimization weight for contracting the trajectory w.r.t. transition time
+  optional double weight_optimaltime = 15 [default = 1.0];
+  // Optimization weight for contracting the trajectory w.r.t. path length
+  optional double weight_shortest_path = 16 [default = 0.0];
+  // Optimization weight for satisfying a minimum separation from obstacles
+  optional double weight_obstacle = 17 [default = 50.0];
+  // Optimization weight for the inflation penalty (should be small)
+  optional double weight_inflation = 18 [default = 0.1];
+  // Optimization weight for satisfying a minimum separation from dynamic
+  // obstacles
+  optional double weight_dynamic_obstacle = 19 [default = 50.0];
+  // Optimization weight for contracting the trajectory w.r.t. path length
+  optional double weight_dynamic_obstacle_inflation = 20 [default = 0.1];
+  // Optimization weight for satisfying a maximum allowed velocity with respect
+  // to the distance to a static obstacle
+  optional double weight_velocity_obstacle_ratio = 21 [default = 0.0];
+  // Optimization weight for minimizing the distance to via-points
+  optional double weight_viapoint = 22 [default = 1.0];
+  // Optimization weight for preferring a specific turning direction (->
+  // currently only activated if an oscillation is detected, see
+  // 'oscillation_recovery'
+  optional double weight_prefer_rotdir = 23 [default = 50.0];
+
+  // Some special weights (currently 'weight_obstacle') are repeatedly scaled by
+  // this factor in each outer TEB iteration (weight_new = weight_old*factor);
+  // Increasing weights iteratively instead of setting a huge value a-priori
+  // leads to better numerical conditions of the underlying optimization
+  // problem.
+  optional double weight_adapt_factor = 24 [default = 2.0];
+  // Exponent for nonlinear obstacle cost (cost = linear_cost *
+  // obstacle_cost_exponent). Set to 1 to disable nonlinear cost (default)
+  optional double obstacle_cost_exponent = 25 [default = 1.0];
+  optional double weight_jerk_lim_x = 26 [default = 10.0];
+  optional double weight_jerk_lim_theta = 27 [default = 10.0];
+}
+
+// HomotopyClasses related parameters
+message TebHomotopyClasses {
+  // Activate homotopy class planning (Requires much more resources that simple
+  // planning, since multiple trajectories are optimized at once).
+  optional bool enable_homotopy_class_planning = 1 [default = true];
+  // Activate multiple threading for planning multiple trajectories in parallel.
+  optional bool enable_multithreading = 2 [default = true];
+  // If true, distinctive trajectories are explored using a simple left-right
+  // approach (pass each obstacle on the left or right side) for path
+  // generation, otherwise sample possible roadmaps randomly in a specified
+  // region between start and goal.
+  optional bool simple_exploration = 3 [default = false];
+  // Specify the maximum number of allowed alternative homotopy classes (limits
+  // computational effort)
+  optional int32 max_number_classes = 4 [default = 5];
+  // Specify the maximum number of trajectories to try that are in the same
+  // homotopy class as the current trajectory (helps avoid local minima)
+  optional int32 max_number_plans_in_current_class = 5 [default = 1];
+  // Specify how much trajectory cost must a new candidate have w.r.t. a
+  // previously selected trajectory in order to be selected (selection if
+  // new_cost < old_cost*factor).
+  optional double selection_cost_hysteresis = 6 [default = 1.0];
+  // Specify a cost reduction in the interval (0,1) for the trajectory in the
+  // equivalence class of the initial plan.
+  optional double selection_prefer_initial_plan = 7 [default = 0.95];
+  // Extra scaling of obstacle cost terms just for selecting the 'best'
+  // candidate.
+  optional double selection_obst_cost_scale = 8 [default = 100.0];
+  // Extra scaling of via-point cost terms just for selecting the 'best'
+  // candidate.
+  optional double selection_viapoint_cost_scale = 9 [default = 1.0];
+  // If true, time cost is replaced by the total transition time.
+  optional bool selection_alternative_time_cost = 10 [default = false];
+  // At each planning cycle, TEBs other than the current 'best' one will be
+  // randomly dropped with this probability. Prevents becoming 'fixated' on
+  // sub-optimal alternative homotopies.
+  optional double selection_dropping_probability = 11 [default = 0.0];
+  // Specify a time duration in seconds that needs to be expired before a switch
+  // to new equivalence class is allowed
+  optional double switching_blocking_period = 12 [default = 0.0];
+
+  // Specify the number of samples generated for creating the roadmap graph, if
+  // simple_exploration is turend off.
+  optional int32 roadmap_graph_no_samples = 13 [default = 15];
+  // Random keypoints/waypoints are sampled in a rectangular region between
+  // start and goal. Specify the width of that region in meters.
+  optional double roadmap_graph_area_width = 14 [default = 6.0];
+  // The length of the rectangular region is determined by the distance between
+  // start and goal. This parameter further scales the distance such that the
+  // geometric center remains equal!
+  optional double roadmap_graph_area_length_scale = 15 [default = 1.0];
+  // Scale number of obstacle value in order to allow huge number of obstacles.
+  // Do not choose it extremly low, otherwise obstacles cannot be distinguished
+  // from each other (0.2<H<=1).
+  optional double h_signature_prescaler = 16 [default = 1.0];
+  // Two h-signatures are assumed to be equal, if both the difference of real
+  // parts and complex parts are below the specified threshold.
+  optional double h_signature_threshold = 17 [default = 0.1];
+
+  // If simple_exploration is turned on, this parameter determines the distance
+  // on the left and right side of the obstacle at which a new keypoint will be
+  // cretead (in addition to min_obstacle_dist).
+  optional double obstacle_keypoint_offset = 18 [default = 0.1];
+  // Specify the value of the normalized scalar product between obstacle heading
+  // and goal heading in order to take them (obstacles) into account for
+  // exploration [0,1]
+  optional double obstacle_heading_threshold = 19 [default = 0.45];
+
+  // If true, all trajectories of different topologies are attached to the
+  // current set of via-points, otherwise only the trajectory sharing the same
+  // one as the initial/global plan.
+  optional bool viapoints_all_candidates = 20 [default = true];
+
+  // Visualize the graph that is created for exploring new homotopy classes.
+  optional bool visualize_hc_graph = 21 [default = false];
+  // If this value is bigger than 0, the trajectory and obstacles are visualized
+  // in 3d using the time as the z-axis scaled by this value. Most useful for
+  // dynamic obstacles.
+  optional double visualize_with_time_as_z_axis_scale = 22 [default = 0.0];
+  // If enabled, the planner will discard the plans detouring backwards with
+  // respect to the best plan
+  optional bool delete_detours_backwards = 23 [default = true];
+  // A plan is considered a detour if its start orientation differs more than
+  // this from the best plan
+  optional double detours_orientation_tolerance = 24 [default = 1.57];
+  // Length of the vector used to compute the start orientation of a plan
+  optional double length_start_orientation_vector = 25 [default = 0.4];
+  // Detours are discarted if their execution time / the execution time of the
+  // best teb is > this
+  optional double max_ratio_detours_duration_best_duration = 26 [default = 3.0];
+}
+
+// Recovery/backup related parameters
+// Parameters related to recovery and backup strategies
+message TebRecovery {
+  // Allows the planner to shrink the horizon temporary (50%) in case of
+  // automatically detected issues.
+  optional bool shrink_horizon_backup = 1 [default = true];
+  // Specify minimum duration for the reduced horizon in case an infeasible
+  // trajectory is detected.
+  optional double shrink_horizon_min_duration = 2 [default = 10.0];
+  // Try to detect and resolve oscillations between multiple solutions in the
+  // same equivalence class (robot frequently switches between
+  // left/right/forward/backwards)
+  optional bool oscillation_recovery = 3 [default = true];
+  // Threshold for the average normalized linear velocity: if oscillation_v_eps
+  // and oscillation_omega_eps are not exceeded both, a possible oscillation is
+  // detected
+  optional double oscillation_v_eps = 4 [default = 0.1];
+  // Threshold for the average normalized angular velocity: if oscillation_v_eps
+  // and oscillation_omega_eps are not exceeded both, a possible oscillation is
+  // detected
+  optional double oscillation_omega_eps = 5 [default = 0.1];
+  // Minumum duration [sec] for which the recovery mode is activated after an
+  // oscillation is detected.
+  optional double oscillation_recovery_min_duration = 6 [default = 10.0];
+  // Filter length/duration [sec] for the detection of oscillations
+  optional double oscillation_filter_duration = 7 [default = 10.0];
+  // True to enable divergence detection.
+  optional bool divergence_detection_enable = 8 [default = false];
+  // Maximum acceptable Mahalanobis distance above which it is assumed that the
+  // optimization diverged.
+  optional double divergence_detection_max_chi_squared = 9 [default = 1];
+}
+
+// Planner Teb Config
+message PlannerTebConfig {
+  // Topic name of the odometry message,
+  // provided by the robot driver or simulator
+  optional string odom_topic = 1 [default = "odom"];
+  // Global planning frame
+  optional string map_frame = 2 [default = "odom"];
+  // Trajectory related parameters
+  optional TebTrajectory trajectory = 3;
+  // Robot related parameters
+  optional TebRobot robot = 4;
+  // Goal tolerance related parameters
+  optional TebGoalTolerance goal_tolerance = 5;
+  // Obstacle related parameters
+  optional TebObstacles obstacles = 6;
+  // Optimization related parameters
+  optional TebOptimization optim = 7;
+  // HomotopyClasses related parameters
+  optional TebHomotopyClasses hcp = 8;
+  // Recovery/backup related parameters
+  // Parameters related to recovery and backup strategies
+  optional TebRecovery recovery = 9;
+}

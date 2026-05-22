@@ -1,0 +1,21 @@
+# Define all coms in DAG streaming.
+module_config {
+    module_library : "/century/bazel-bin/modules/localization/msf/librecord_to_bin.so"
+
+    components {
+      class_name : "RecordToBin"
+      config {
+        name : "record_to_bin"
+        #config_file_path : "/century/modules/localization/conf/msf_config.pb.txt"
+        readers: [
+          {
+            channel: "/century/sensor/gnss/corrected_imu"
+            qos_profile: {
+              depth : 10
+            }
+            pending_queue_size: 50
+          }
+        ]
+      }
+    }
+}

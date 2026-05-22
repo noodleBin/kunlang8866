@@ -1,0 +1,351 @@
+syntax = "proto2";
+
+package century.perception;
+
+import "modules/common/proto/error_code.proto";
+import "modules/common/proto/geometry.proto";
+import "modules/common/proto/header.proto";
+import "modules/common/proto/pnc_point.proto";
+import "modules/map/proto/map_lane.proto";
+import "modules/contrib/lgsvl_msgs/proto/detection3d.proto";
+
+message Affine3dProto {
+    optional double tx = 1;
+    optional double ty = 2;
+    optional double tz = 3;
+    optional double qw = 4;
+    optional double qx = 5;
+    optional double qy = 6;
+    optional double qz = 7;
+}
+
+message BBox2D {
+  optional double xmin = 1;  // in pixels.
+  optional double ymin = 2;  // in pixels.
+  optional double xmax = 3;  // in pixels.
+  optional double ymax = 4;  // in pixels.
+}
+
+message LightStatus {
+  optional double brake_visible = 1;
+  optional double brake_switch_on = 2;
+  optional double left_turn_visible = 3;
+  optional double left_turn_switch_on = 4;
+  optional double right_turn_visible = 5;
+  optional double right_turn_switch_on = 6;
+}
+
+message V2XInformation {
+  enum V2XType {
+    NONE = 0;
+    ZOMBIES_CAR = 1;
+    BLIND_ZONE = 2;
+  };
+  repeated V2XType v2x_type = 1;
+}
+
+message SensorMeasurement {
+  optional string sensor_id = 1;
+  optional int32 id = 2;
+
+  optional century.common.Point3D position = 3;
+  optional double theta = 4;
+  optional double length = 5;
+  optional double width = 6;
+  optional double height = 7;
+
+  optional century.common.Point3D velocity = 8;
+
+  optional PerceptionObstacle.Type type = 9;
+  optional PerceptionObstacle.SubType sub_type = 10;
+  optional double timestamp = 11;
+  optional BBox2D box = 12;  // only for camera measurements
+}
+
+message Trajectory {
+  optional double probability = 1;  // probability of this trajectory
+  repeated century.common.TrajectoryPoint trajectory_point = 2;
+}
+
+message DebugMessage {
+  // can have multiple trajectories per obstacle
+  repeated Trajectory trajectory = 1;
+}
+
+message PerceptionObstacle {
+  optional int32 id = 1;  // obstacle ID.
+
+  // obstacle position in the world coordinate system.
+  optional century.common.Point3D position = 2;
+
+  optional double theta = 3;  // heading in the world coordinate system.
+  optional century.common.Point3D velocity = 4;  // obstacle velocity.
+
+  // Size of obstacle bounding box.
+  optional double length = 5;  // obstacle length.
+  optional double width = 6;   // obstacle width.
+  optional double height = 7;  // obstacle height.
+
+  repeated century.common.Point3D polygon_point = 8;  // obstacle corner points.
+
+  // duration of an obstacle since detection in s.
+  optional double tracking_time = 9;
+
+  enum Type {
+    UNKNOWN = 0;
+    UNKNOWN_MOVABLE = 1;
+    UNKNOWN_UNMOVABLE = 2;
+    PEDESTRIAN = 3;  // Pedestrian, usually determined by moving behavior.
+    BICYCLE = 4;     // bike, motor bike
+    VEHICLE = 5;     // Passenger car or truck.
+    WIDE40FOOT = 6;
+    NARROW20FOOT = 7;
+    CONE = 8;
+    STACKER = 9;
+    FORKLIFT_STACKER=10;
+    WHEELCRANE = 11;
+  };
+  optional Type type = 10;         // obstacle type
+  optional double timestamp = 11;  // GPS time in seconds.
+
+  // Just for offline debugging, will not fill this field on board.
+  // Format: [x0, y0, z0, x1, y1, z1...]
+  repeated double point_cloud = 12 [packed = true];
+
+  optional double confidence = 13 [deprecated = true];
+  enum ConfidenceType {
+    CONFIDENCE_UNKNOWN = 0;
+    CONFIDENCE_CNN = 1;
+    CONFIDENCE_RADAR = 2;
+  };
+  optional ConfidenceType confidence_type = 14 [deprecated = true];
+  // trajectory of object.
+  repeated century.common.Point3D drops = 15 [deprecated = true];
+
+  // The following fields are new added in Century 4.0
+  optional century.common.Point3D acceleration = 16;  // obstacle acceleration
+
+  // a stable obstacle point in the world coordinate system
+  // position defined above is the obstacle bounding box ground center
+  optional century.common.Point3D anchor_point = 17;
+  optional BBox2D bbox2d = 18;
+
+  enum SubType {
+    ST_UNKNOWN = 0;
+    ST_UNKNOWN_MOVABLE = 1;
+    ST_UNKNOWN_UNMOVABLE = 2;
+    ST_PEDESTRIAN = 3;
+    ST_CAR = 4;
+    ST_IGV_FULL = 5;
+    ST_TRUCK = 6;
+    ST_TRAILER_EMPTY = 7;
+    ST_TRAILER_FULL = 8;
+    ST_IGV_EMPTY = 9;
+    ST_CRANE = 10;
+    ST_OTHER_VEHICLE = 11;
+    ST_CONE = 12;
+    ST_CONTAINER_FORKLIFT = 13;
+    ST_FORKLIFT = 14;
+    ST_LORRY = 15;
+    ST_CONSTRUCTION_VEHICLE = 16;
+    ST_VAN = 17;
+    ST_BUS = 18;
+    ST_CYCLIST = 19;
+    ST_MOTORCYCLIST = 20;
+    ST_TRICYCLIST = 21;
+    ST_TRAFFICCONE = 22;
+    ST_SMALLMOT = 23;
+    ST_BIGMOT = 24;
+    ST_NONMOT = 25;
+  };
+
+  // enum SubType {
+  //   ST_UNKNOWN = 0;
+  //   ST_UNKNOWN_MOVABLE = 1;
+  //   ST_UNKNOWN_UNMOVABLE = 2;
+  //   ST_CAR = 3;
+  //   ST_VAN = 4;
+  //   ST_TRUCK = 5;
+  //   ST_BUS = 6;
+  //   ST_CYCLIST = 7;
+  //   ST_MOTORCYCLIST = 8;
+  //   ST_TRICYCLIST = 9;
+  //   ST_PEDESTRIAN = 10;
+  //   ST_TRAFFICCONE = 11;
+  // };
+  optional SubType sub_type = 19;  // obstacle sub_type
+
+  repeated SensorMeasurement measurements = 20;  // sensor measurements
+
+  // orthogonal distance between obstacle lowest point and ground plane
+  optional double height_above_ground = 21 [default = nan];
+
+  // position covariance which is a row-majored 3x3 matrix
+  repeated double position_covariance = 22 [packed = true];
+  // velocity covariance which is a row-majored 3x3 matrix
+  repeated double velocity_covariance = 23 [packed = true];
+  // acceleration covariance which is a row-majored 3x3 matrix
+  repeated double acceleration_covariance = 24 [packed = true];
+
+  // lights of vehicles
+  optional LightStatus light_status = 25;
+
+  // Debug Message
+  optional DebugMessage msg = 26;
+
+  enum Source {
+    HOST_VEHICLE = 0;
+    V2X = 1;
+  };
+
+  optional Source source = 27 [default = HOST_VEHICLE];
+  optional V2XInformation v2x_info = 28;
+}
+
+message LaneMarker {
+  optional century.hdmap.LaneBoundaryType.Type lane_type = 1;
+  optional double quality = 2;  // range = [0,1]; 1 = the best quality
+  optional int32 model_degree = 3;
+
+  // equation X = c3 * Z^3 + c2 * Z^2 + c1 * Z + c0
+  optional double c0_position = 4;
+  optional double c1_heading_angle = 5;
+  optional double c2_curvature = 6;
+  optional double c3_curvature_derivative = 7;
+  optional double view_range = 8;
+  optional double longitude_start = 9;
+  optional double longitude_end = 10;
+}
+
+message LaneMarkers {
+  optional LaneMarker left_lane_marker = 1;
+  optional LaneMarker right_lane_marker = 2;
+  repeated LaneMarker next_left_lane_marker = 3;
+  repeated LaneMarker next_right_lane_marker = 4;
+}
+
+message CIPVInfo {
+  optional int32 cipv_id = 1;
+  repeated int32 potential_cipv_id = 2;
+}
+
+message PerceptionStacticArea {
+  optional int32 id = 1;  // static area ID.
+  enum StaticArea_Type {
+    SA_UNKNOWN = 0;
+    SA_TERRAIN = 1;
+    SA_FENCE = 2;
+    SA_CURB = 3;
+    SA_VEGETATION = 4;
+  };
+  optional StaticArea_Type static_area_type = 2;
+
+  // corner points in the world coordinate system.
+  repeated century.common.Point3D polygon_point = 3;
+}
+
+enum PerceptionRemoteControl  {
+  PERC_NO_REQUEST = 0;
+  PERC_ABNORMAL_OBSTACLES_AROUND = 1;
+}
+
+message PerceptionObstacles {
+  repeated PerceptionObstacle perception_obstacle = 1;  // An array of obstacles
+  optional century.common.Header header = 2;             // Header
+  optional century.common.ErrorCode error_code = 3 [default = OK];
+  optional LaneMarkers lane_marker = 4;
+  optional CIPVInfo cipv_info = 5;  // Closest In Path Vehicle (CIPV)
+  repeated PerceptionStacticArea perception_static_areas = 6;
+  optional Affine3dProto lidar2world = 7;
+}
+
+
+message TransmissionObstacle {
+  optional PerceptionObstacle obstacle = 1;
+  repeated float type_probs = 2;
+  repeated float object_features = 3;
+  optional float object_suspension_ratio = 4;
+}
+
+message PerceptionStaticCell {
+  optional int32 width = 1;
+  optional int32 height = 2;
+  repeated GridCell grid_cells = 3;
+}
+
+message GridCell {
+  enum CostValue {
+    FREE_SPACE = 0;
+    NO_INFORMATION = 1;
+    LETHAL_OBSTACLE = 2;
+  };
+
+  optional double grid_center_x = 1;
+  optional double grid_center_y = 2;
+  optional double avg_grid_z = 3;
+  optional double min_grid_z = 4;
+  optional double max_grid_z = 5;
+  optional CostValue cost_value = 6;
+}
+
+message PerceptionStaticCameraSemantic {
+  enum StaticCamera_Type {
+    SC_BACKGROUND  = 0;
+    SC_CAR = 1;
+    SC_BUS = 2;
+    SC_TRUCK = 3;
+    SC_OTHER_VEHICLE = 4;
+    SC_PERSON = 5;
+    SC_ANIMAL = 6;
+    SC_BICYCLE = 7;
+    SC_TRICYCLE = 8;
+    SC_CART = 9;
+    SC_TRAFFIC_CONE = 10;
+    SC_LIFTING_LEVERS = 11;
+    SC_ROAD_BLOCKS = 12;
+    SC_ROAD = 13;
+    SC_VEGETATION = 14;
+    SC_TERRAIN = 15;
+    SC_FENCE = 16;
+    SC_CURB = 17;
+    SC_UNKNOWN = 18;
+    SC_MAX_SEG_OBJECT_TYPE = 19;
+  };
+  optional StaticCamera_Type static_camera_type = 1;
+}
+
+message FreespaceKeypoint {
+  optional float x = 1;
+  optional float y = 2;
+  optional StaticFreespace_Type static_freespace_type = 3;
+  enum StaticFreespace_Type {
+    SF_CAR = 0;
+    SF_PERSON = 1;
+    SF_BICYCLE = 2;
+    SF_TRAFFIC_CONE = 3;
+    SF_OTHER_BLOCKS = 4;
+    SF_CURB = 5;
+    SF_OTHER_EDGES = 6;
+    SF_UPPER_EDGE = 7;
+    SF_LOWER_EDGE = 8;
+    SF_UNKNOWN = 9;
+  };
+}
+
+message TransmissionObstacles {
+  repeated TransmissionObstacle transmission_obstacle = 1;  // An array of obstacles
+  optional century.common.Header header = 2;             // Header
+  optional century.common.ErrorCode error_code = 3 [default = OK];
+  // optional century.contrib.lgsvl_msgs.Pose sensor2world_pose = 4;
+  optional PerceptionStaticCell perception_static_cells = 5;
+  repeated PerceptionStacticArea perception_static_areas = 6;
+  optional int32 camera_semantics_height = 7;
+  optional int32 camera_semantics_width = 8;
+  optional int32 camera_pixel_height = 9;
+  optional int32 camera_pixel_width = 10;
+  repeated PerceptionStaticCameraSemantic perception_static_camera_semantics = 11;
+  optional int32 is_raining = 12 [default = 0];
+  repeated FreespaceKeypoint freespace_keypoint = 13;
+  optional bool rs_sdk_status = 14 [default = true];
+  optional PerceptionRemoteControl perception_remote_control = 15;
+}

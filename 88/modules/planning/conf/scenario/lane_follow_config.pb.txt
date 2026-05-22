@@ -1,0 +1,263 @@
+scenario_type: LANE_FOLLOW
+stage_type: LANE_FOLLOW_DEFAULT_STAGE
+stage_config: {
+  stage_type: LANE_FOLLOW_DEFAULT_STAGE
+  enabled: true
+  task_type: LANE_CHANGE_DECIDER
+  task_type: LANE_OVERTAKE_DECIDER
+  task_type: PATH_REUSE_DECIDER
+  task_type: PATH_LANE_BORROW_DECIDER
+  task_type: PATH_BOUNDS_DECIDER
+  task_type: RISK_SHIFT_DECIDER
+  task_type: PIECEWISE_JERK_PATH_OPTIMIZER
+  task_type: PATH_ASSESSMENT_DECIDER
+  task_type: PATH_DECIDER
+  task_type: TOP_BULL_DECIDER
+  task_type: RULE_BASED_STOP_DECIDER
+  # task_type: ST_BOUNDS_DECIDER
+  task_type: SPEED_BOUNDS_PRIORI_DECIDER
+  task_type: SPEED_HEURISTIC_OPTIMIZER
+  task_type: SPEED_DECIDER
+  task_type: SPEED_BOUNDS_FINAL_DECIDER
+  task_type: PIECEWISE_JERK_SPEED_OPTIMIZER
+  # task_type: PIECEWISE_JERK_NONLINEAR_SPEED_OPTIMIZER
+  # task_type: RSS_DECIDER
+
+  task_config: {
+    task_type: LANE_CHANGE_DECIDER
+    lane_change_decider_config {
+      enable_lane_change_urgency_check: true
+    }
+  }
+  task_config: {
+    task_type: LANE_OVERTAKE_DECIDER
+    lane_overtake_decider_config {
+      allow_overtake_fsm: false
+      slow_obs_total_times: 200
+      max_distance_check_threshold: 40.0
+      cancel_turn_slow_obs_total_times: 10
+      cancel_turn_safe_count: 20
+      allow_turn_sustain_time: 6.0
+      min_safe_follow_distance: 0.5
+      min_distance_check_threshold: 5.0
+      pre_change_ttc: 3.0
+      pre_change_hwt: 2.0
+      pre_change_ttc_for_vehicle: 4.0
+      max_overtake_spend_time: 15.0
+      min_overtake_keep_time_for_stable: 3.0
+      slow_vehicle_type_obs_total_times: 300
+      obs_faster_than_adc_ratio: 1.2
+      overtake_coef_of_road_limit: 0.5
+      overtake_coef_of_road_limit_for_vehicle: 0.5
+      overtake_velocity_limit_for_vehicle: 3.0
+      block_stop_velocity_threshold: 0.5
+    }
+  }
+  task_config: {
+    task_type: TOP_BULL_DECIDER
+    top_bull_decider_config {
+      enable_top_bull: true
+    }
+  }
+  task_config: {
+    task_type: PATH_REUSE_DECIDER
+    path_reuse_decider_config {
+      reuse_path: false
+      min_lane_change_traj_time_length: 6.0
+      allow_max_deceleration_for_lane_change_path: 0.5
+    }
+  }
+
+  task_config: {
+    task_type: PATH_LANE_BORROW_DECIDER
+    path_lane_borrow_decider_config {
+      slow_obs_threshold_times: 1
+      borrow_path_fail_remote_report_threshold: 10
+      stop_near_intersection_time_threshold: 5.0
+      stop_near_intersection_distance_threshold: 50.0
+      obs_far_away_safe_distance: 70.0
+      pass_by_safe_distance: 10.0
+      safe_check_time_opposite_direction: 5.0
+      forward_safe_distance_opposite_direction: 25.0
+      far_from_intersection_distance_threshold: 12.0
+      obs_to_solid_line_distance_threshold: 0.2
+      adc_to_solid_line_distance_threshold: 0.2
+      adc_goto_neighbor_lane_heading_threshold: 15.0 # unit:degree
+      left_neighbor_lane_obs_buffer: 0.45
+      reference_lane_obs_buffer: 0.45
+      truck_distance_threshold: 80.0
+      truck_height_threshold: 12.2
+      truck_keep_check_time_threshold: 300
+      crowd_traffic_car_gap_distance_limit: 5.0
+      crowd_traffic_overlap_car_lookforward_distance: 40.0
+      crowd_traffic_car_number_limit: 5
+    }
+  }
+  task_config: {
+    task_type: PATH_BOUNDS_DECIDER
+    path_bounds_decider_config {
+      max_lateral_acceleration: 0.6
+      lane_change_preview_time: 3.5
+      min_lane_change_preview_time_for_cubic: 0.0
+      max_lane_change_preview_time_for_cubic: 1.0
+      cubic_max_dl_bound: 0.6
+      cubic_dl_bound_weight: 0.1
+      lane_change_acceleration: 0.3
+      lane_change_path_bound_method: CUBIC # CUBIC、LINEAR_LINE、PRE_FORWARD
+      forbidden_zone_use_deceleration: 0.5
+      fix_lateral_buffer_first_level: 0.05
+      adc_slow_down_block_count_threshold: 20
+      narrow_area_lat_safe_buffer: 0.22
+      narrow_area_lon_start_safe_buffer: 1.0
+      narrow_area_lon_end_safe_buffer: 0.5
+      lane_borrow_use_remain_path_threshold: 20.0
+      routing_end_reserved_distance: 5.0
+      fixed_short_path_length: 15.0
+      keep_hold_safe_check_times: 15
+      moving_obstacle_keep_time_threshold: 20
+      ignore_obs_edge_distance_threshold: 40.0  #borrow consider distance
+      min_safe_obstacle_lateral_buffer: 0.3    #need to changge
+      ignore_obs_edge_distance_threshold_mixed_traffic: 10.0
+      self_path_keep_straight_count_limit: 20
+      self_path_obs_start_l_limit: -0.3
+      adc_buffer_coeff: 0.9
+      min_include_adc_path_bound_buffer: 0.2
+      anchor_change_path_preparation_plan_time: 20.0
+    }
+  }
+  task_config: {
+    task_type: RISK_SHIFT_DECIDER
+    risk_shift_decider_config
+    {
+      enable_reverse_shift_avoid: true
+      enable_risk_shift_avoid_static_obstacle: true
+      enable_risk_shift_avoid_slow_obstacle: false
+      enable_risk_shift_in_play_street: true
+      min_check_keep_exist_reverse_obstacle_time: 2
+      max_check_keep_exist_reverse_obstacle_time: 10
+      min_check_turn_on_distance: 12.0
+      max_check_turn_on_distance: 40.0
+      quit_reverse_shift_state_count_threshold: 4
+      check_lateral_risk_safe_buffer: 0.6
+      check_lateral_risk_safe_buffer_for_vehicle: 0.8
+      check_lateral_risk_safe_buffer_for_large_vehicle: 1.0
+      check_reverse_max_lateral_deceleration: 1.8
+      cruise_ttc: 2.0
+      reverse_ttc: 10.0
+      ignore_lon_risk_reverse_obs_threshold: 45.0
+      check_reverse_heading_diff_degree: 155.0
+      check_forward_heading_diff_degree: 20.0
+      cruise_min_lon_safe_distance: 6.0
+      potential_lat_steering_angle: 0.1
+      potential_lat_steering_angle_for_static_obs: 0.18
+      cruise_max_lat_safe_distance: 1.7
+      left_front_reverse_risk_weight: 10.0
+      right_front_reverse_risk_weight: 9.6
+      left_rear_forward_risk_weight: 7.0
+      right_rear_forward_risk_weight: 8.0
+      check_risk_max_lat_decelerate: 1.5
+      reverse_lon_risk_weight: 200.0
+      reverse_lat_risk_weight: 10000.0
+      forward_lon_risk_weight: 50.0
+      forward_lat_risk_weight: 6000.0
+      lateral_risk_value_rate_of_rise: 2.0
+      far_from_lane_center_efficiency_weight: 800.0
+      far_from_adc_center_efficiency_weight: 6000.0
+      reverse_shift_result_risk_weight: 0.6
+      reverse_shift_result_efficiency_weight: 1.0
+      keep_lane_center_lateral_ref_shift: 0.6
+      consider_reverse_lateral_overlap_buffer: 0.7
+      enable_efficiency_shift_bypass: false
+      enable_radical_efficiency_shift_public_road: false
+      quit_efficiency_bypass_state_count_threshold: 5
+      efficiency_shift_obs_speed_limit_coef: 0.55
+      check_keep_exist_slow_obstacle_time: 80
+      check_keep_exist_slow_obstacle_time_in_playstreet: 40
+      check_keep_exist_slow_obstacle_time_in_laneborrow: 3
+      obs_faster_than_adc_ratio: 2.0
+      efficidency_check_ttc: 3.0
+      efficidency_check_hwt: 2.0
+    }
+  }
+  task_config: {
+    task_type: PIECEWISE_JERK_PATH_OPTIMIZER
+    piecewise_jerk_path_optimizer_config
+    {
+      lane_change_min_ratio: 0.54
+      lane_change_distance_diff: 0.2
+      lane_change_ratio_step: 0.022
+      lane_change_min_time_return_reference_lane: 6.0
+      overtake_end_state_l_ratio: 0.6
+      overtake_end_state_l_threshold: 1.2
+      ignore_end_state_l_distance_threshold: 60.0
+      ignore_end_state_l_distance_threshold_mixed_traffic: 60.0
+      fallback_smooth_ratio: 0.95
+      min_end_state_l_lateral_buffer: 1.5
+      max_end_state_l_lateral_buffer: 2.5
+      merge_lane_fix_end_state_shift_buffer: 0.2
+      path_x_ref_pre_smooth_time: 1.0
+      path_failure_times_threshold: 1
+      max_allow_path_failure_time: 30
+      adc_to_solid_line_distance_threshold: 15.0
+      adc_goback_heading_threshold: 2.3
+      lateral_buffer_to_center: 0.6
+      adc_slow_drive_threshold: 2.0
+      max_caution_pedestrain_front_dis_threshold: 12.0
+      min_caution_pedestrain_front_dis_threshold: 6.0
+      caution_pedestrain_check_times_threshold: 30
+      single_lane_selfborrow_buffer: 0.3
+      smooth_l_heading_diff_threshold: 0.08
+      end_state_center_threshold: 0.25
+      enable_boundary_drop_smooth_protection: true
+      boundary_drop_protection_forward_distance: 5.0
+      boundary_drop_protection_near_boundary_clearance: 0.3
+      boundary_drop_protection_large_drop_threshold: 0.35
+      boundary_drop_protection_ddl_weight_factor: 3.0
+      boundary_drop_protection_dddl_weight_factor: 4.0
+      boundary_drop_protection_path_x_ref_pre_smooth_time: 0.5
+      boundary_drop_protection_lateral_derivative_bound: 0.7
+      boundary_drop_protection_hold_length: 2.0
+      boundary_drop_protection_release_length: 3.0
+      boundary_drop_protection_start_x_ref_weight: 0.0
+      boundary_drop_protection_start_lateral_derivative_bound: 0.0
+      boundary_drop_protection_start_x_bound_buffer: 0.0
+    }
+  }
+  task_config: {
+    task_type: PATH_ASSESSMENT_DECIDER
+    path_assessment_decider_config
+    {
+      assess_lane_borrow_exit_times: 500
+    }
+  }
+  task_config: {
+    task_type: PATH_DECIDER
+  }
+  task_config: {
+    task_type: ST_BOUNDS_DECIDER
+  }
+  task_config: {
+    task_type: SPEED_BOUNDS_PRIORI_DECIDER
+  }
+  task_config: {
+    task_type: SPEED_BOUNDS_FINAL_DECIDER
+  }
+  task_config: {
+    task_type: SPEED_HEURISTIC_OPTIMIZER
+  }
+  task_config: {
+    task_type: SPEED_DECIDER
+  }
+  task_config: {
+    task_type: PIECEWISE_JERK_SPEED_OPTIMIZER
+  }
+  task_config: {
+    task_type: RSS_DECIDER
+  }
+  task_config: {
+    task_type: RULE_BASED_STOP_DECIDER
+  }
+  task_config: {
+    task_type: PIECEWISE_JERK_NONLINEAR_SPEED_OPTIMIZER
+  }
+}

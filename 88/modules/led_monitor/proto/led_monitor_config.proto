@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+package century.led_monitor;
+
+message TopicConfig {
+  optional string planning_trajectory_topic = 1;
+}
+
+message LedMonitorConfig {
+  // front or rear
+  optional bool is_front = 1;
+  // post process
+  optional bool post_process = 2;
+  // led monitor ip
+  optional string ip = 3;
+  // topic config
+  optional TopicConfig topic_config = 4;
+}

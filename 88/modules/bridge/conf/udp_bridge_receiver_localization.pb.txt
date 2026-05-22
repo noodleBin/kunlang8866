@@ -1,0 +1,4 @@
+topic_name: "/century/localization/pose"
+bind_port: 55555
+proto_name: "LocalizationEstimate"
+enable_timeout: false

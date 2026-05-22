@@ -1,0 +1,34 @@
+gravity_acc: 
+    x: 2.2250738585072014e-308
+    y: 2.2250738585072014e-308
+    z: 9.8
+
+gyro_noise:
+    x: 5.0e-08
+    y: 5.0e-08
+    z: 5.0e-08
+
+acc_noise:
+    x: 0.0002
+    y: 0.0002
+    z: 0.0002
+
+tf_vehicle_imu: 
+    rotation: 
+        roll: 0.0
+        pitch: 0.0
+        yaw: 0.0
+    translation:
+        x: 0.0  
+        y: 0.0
+        z: 0.0
+
+tf_imu_gnss: 
+    rotation: 
+        roll: 0.0
+        pitch: 0.0
+        yaw: 0.0
+    translation:
+        x: 0.0  
+        y: 0.0
+        z: 0.0

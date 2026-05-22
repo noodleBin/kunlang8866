@@ -1,0 +1,10 @@
+syntax = "proto2";
+
+package century.mcloud;
+
+import "modules/common/proto/header.proto";
+
+message EmergencyStop {
+    optional century.common.Header header = 1;
+    optional bool emergency_stop = 2;
+}

@@ -1,0 +1,42 @@
+syntax = "proto2";
+package century.perception.lidar.centerpoint;
+
+message VecFloat {
+  optional float x = 1 [default = 0.0];
+  optional float y = 2 [default = 0.0];
+  optional float z = 3 [default = 0.0];
+}
+
+message RangeConfig {
+    optional VecFloat min_range = 1;
+    optional VecFloat max_range = 2;
+    optional VecFloat voxel_size = 3;
+}
+
+message ScoreThreashConfig {
+  repeated float score_threshold = 1;
+}
+
+message CenterPointNmsIouConfig {
+  repeated float nms_iou = 1 [packed = true];
+}
+
+message CenterPointDetectionConfig {
+  optional int32 max_points = 1 [default = 300000];
+  optional int32 feature_num = 2 [default = 4];
+  optional RangeConfig range_config = 3;
+  optional float max_points_per_voxel = 4;
+  optional float max_voxels_num = 5;
+  optional int32 num_class = 6;
+  optional float out_size_factor = 7;
+  optional int32 nms_pre_max_size = 8;
+  optional int32 nms_post_max_size = 9;
+  repeated string class_names = 10;
+  repeated int32 task_num_stride = 11;
+  optional float score_threshold = 12;
+  optional float nms_iou_threshold = 13;
+  optional int32 num_tasks = 14;
+  optional ScoreThreashConfig score_threshold_config = 15;
+  optional CenterPointNmsIouConfig centerpoint_nms_iou_config = 16;
+
+}

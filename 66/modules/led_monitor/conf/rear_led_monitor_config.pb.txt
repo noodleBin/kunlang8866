@@ -1,0 +1,7 @@
+is_front: false
+post_process: false
+ip: "192.168.100.11"
+
+topic_config {
+  planning_trajectory_topic: "/century/planning"
+}

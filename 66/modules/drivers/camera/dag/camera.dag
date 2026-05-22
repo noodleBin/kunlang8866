@@ -1,0 +1,12 @@
+# Define all coms in DAG streaming.
+module_config {
+    module_library : "/century/bazel-bin/modules/drivers/camera/libcamera_component.so"
+    timer_components {
+      class_name : "CameraComponent"
+      config {
+        name : "camera_drivers"
+        interval: 100
+        config_file_path : "/century/vehicle_config/camera_video.pb.txt"
+      }
+    }
+}

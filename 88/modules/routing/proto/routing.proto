@@ -1,0 +1,273 @@
+syntax = "proto2";
+
+package century.routing;
+
+import "modules/common/proto/header.proto";
+import "modules/common/proto/geometry.proto";
+import "modules/common/proto/error_code.proto";
+import "modules/map/proto/map_parking_space.proto";
+import "modules/map/proto/map_geometry.proto";
+
+message LaneWaypoint {
+  optional string id = 1;
+  optional double s = 2;
+  optional century.common.PointENU pose = 3;
+  // When the developer selects a point on the dreamview route editing
+  // the direction can be specified by dragging the mouse
+  // dreamview calculates the heading based on this to support construct lane
+  // way point with heading
+  optional double heading = 4;
+}
+
+message LaneSegment {
+  optional string id = 1;
+  optional double start_s = 2;
+  optional double end_s = 3;
+}
+
+enum ParkingSpaceType {
+  VERTICAL_PLOT = 0;
+  PARALLEL_PARKING = 1;
+}
+
+enum DeadEndRoutingType {
+  ROUTING_OTHER = 0;
+  ROUTING_IN = 1;
+  ROUTING_OUT = 2;
+}
+
+message ParkingInfo {
+  optional string parking_space_id = 1;
+  optional century.common.PointENU parking_point = 2;
+  optional ParkingSpaceType parking_space_type = 3;
+  // The four corner points are in order.
+  optional century.hdmap.Polygon corner_point = 4;
+}
+
+message DeadEndInfo {
+  // dead end in/out routing
+  optional DeadEndRoutingType dead_end_routing_type = 1;
+  // traget point from the out routing's start point
+  optional century.common.PointENU target_point = 2;
+}
+
+message StationInfo {
+  optional string id = 1;
+  optional int32 uturn = 2 [default = 0];
+}
+
+enum LocalRoutingType {
+  // default: from dreamview or user local request
+  ROUTING_DEFAULT = 0;
+  // planning: from planning inside
+  // rerouting(modules/planning/traffic_rules/rerouting.h)
+  ROUTING_PLANNING = 1;
+  // routing: from routing self (cloud multiple requests)
+  ROUTING_INSIDE = 2;
+  // planning: from loop run
+  ROUTING_LOOP = 3;
+  // routing: huaman shaped area
+  ROUTING_J4_TO_T4T5_EAST = 4;
+  ROUTING_T4T5_TO_J4_WEST = 5;
+  ROUTING_J4_TO_T4T5_MIDDLE = 6;
+  ROUTING_T4T5_TO_J4_MIDDLE = 7;
+  ROUTING_J4_TO_T4T5 = 8;
+  ROUTING_T4T5_TO_J4 = 9;
+  ROUTING_J4_TO_T4T5_EAST_NEAR = 10;
+}
+
+enum TinyAdjustmentType {
+  DEFAULT_ADIUSTMENT = 0;
+  DREAMVIEW_ADIUSTMENT = 1;
+  STACKER_ADIUSTMENT = 2;
+  TIRE_CRANE_ADIUSTMENT = 3;
+}
+
+enum PartRoutingType {
+  PART_ROUTING_DEFAULT = 0;
+  PART_ROUTING_HUMAN_SHAPED = 1;
+}
+
+enum BlockReRoutingType {
+  RE_ROUTING_DEFAULT = 0;
+  RE_ROUTING_DEAD_END = 1;
+  RE_ROUTING_D7 = 2;
+}
+
+message ReverseReRouting {
+  optional bool is_rerouting = 1 [default = false];
+  optional LaneWaypoint backward_point = 2;
+}
+
+message BlockReRouting {
+  optional bool is_rerouting = 1 [default = false];
+  optional BlockReRoutingType rerouting_type = 2 [default = RE_ROUTING_DEFAULT];
+}
+
+message HuamanShaped {
+  optional int32 level = 1 [default = 999];
+  optional PartRoutingType part_routing_type = 2 [default = PART_ROUTING_DEFAULT];
+  optional bool is_part_rerouting = 3 [default = false];
+  optional LaneWaypoint next_waypoint = 4;
+}
+
+message DeadRoad {
+  optional bool is_rerouting = 1 [default = false];
+  repeated LaneWaypoint waypoint = 2;
+  optional int32 level = 3 [default = 999];
+}
+
+message LoopRunning {
+  repeated LaneWaypoint waypoint = 1;
+}
+
+message ReroutingInfo {
+  optional bool is_rerouting = 1 [default = false];
+  optional bool is_merge_routing = 2 [default = false];
+  optional bool is_skip_rerouting = 3 [default = false];
+  optional BlockReRouting block_rerouting = 4;
+  optional ReverseReRouting reverse_rerouting = 5;
+  optional LaneWaypoint last_waypoint = 6;
+  optional HuamanShaped huaman_shaped = 7;
+  optional DeadRoad dead_road = 8;
+  optional LoopRunning loop_run = 9;
+}
+
+enum MultipleRoutingType {
+  NOPROCESS = 0;
+  PROCESSINGSTART = 1;
+  HANDLEFIRST = 2;
+  HANDLESECOND = 3;
+}
+
+enum CoordinateType {
+  SITE_COORDINATE = 0;
+  WHEEL_CRANE_COORDINATE = 1;
+  STACKER_COORDINATE = 2;
+}
+
+message RoutingRequest {
+  optional century.common.Header header = 1;
+  optional bool from_cloud = 2 [default = false];
+  repeated LaneWaypoint waypoint = 3;
+
+  optional TaskType task_type = 4 [default = DEFAULT];
+  optional CoordinateType coordinate_type = 5 [default = SITE_COORDINATE];
+  optional string operation_stacker_id = 6;
+  optional LocalRoutingType local_routing_type = 7 [default = ROUTING_DEFAULT];
+  optional bool is_loading = 8 [default = true];
+  repeated LaneSegment blacklisted_lane = 9;
+  repeated string blacklisted_road = 10;
+  optional ParkingInfo parking_info = 11;
+  optional DeadEndInfo dead_end_info = 12;
+  optional ReroutingInfo rerouting_info = 13;
+  optional bool is_reverse_trajectory = 14 [default = false];
+  optional bool is_backward = 15 [default = false];
+  optional TaskType dreamview_task_type = 16 [default = DEFAULT];
+
+  optional TinyAdjustmentType tiny_adjustment_type = 17 [default = DEFAULT_ADIUSTMENT];
+  optional double tiny_adjustment_distance = 18 [default = 0.3];
+
+  optional bool is_loop_running = 19 [default = false];
+  optional bool is_one_click_loop_running = 20 [default = false];
+
+  optional bool is_early_stop = 22 [default = false];
+  optional MultipleRoutingType multi_routing_type = 23 [default = NOPROCESS];
+  optional int32 select_routing_route = 24 [default = 999];
+  optional bool final_route  = 25 [default = true];
+}
+
+enum TaskType {
+  DEFAULT = 0; 
+  PARKINGSPACE =1;
+
+  RAILWAY_WAITINGAREA_STATIC = 2;
+  RAILWAY_WAITINGAREA_DYNAMIC = 3;
+  RAILWAY_OPERATIONAREA_DYNAMIC = 4;
+
+  LOADING_OPERATIONAREA_SAMEDIRECTION_1 = 6;
+  LOADING_OPERATIONAREA_SAMEDIRECTION_2 = 7;
+  LOADING_OPERATIONAREA_SAMEDIRECTION_3_0 = 8;
+  LOADING_OPERATIONAREA_SAMEDIRECTION_3_1 = 9;
+  LOADING_OPERATIONAREA_DIFFDIRECTION_1 = 10;
+
+  YARD_WAITINGAREA_STATIC = 11;
+  YARD_OPERATIONAREA_STATIC = 12;
+  YARD_OPERATIONAREA_DYNAMIC = 14;
+  
+  UNLOAD_OPERATIONAREA_SAMEDIRECTION_1 = 15;
+  UNLOAD_OPERATIONAREA_SAMEDIRECTION_2 = 16;
+  UNLOAD_OPERATIONAREA_SAMEDIRECTION_3_0 = 17;
+  UNLOAD_OPERATIONAREA_SAMEDIRECTION_3_1 = 18;
+  UNLOAD_OPERATIONAREA_DIFFDIRECTION_1 = 19;
+  TINY_ADJUSTMENT_FRONT = 20;
+  TINY_ADJUSTMENT_BACK = 21;
+  TINY_ADJUSTMENT_STOP = 22;
+  TINY_ADJUSTMENT_LEFT = 23;
+  TINY_ADJUSTMENT_RIGHT = 24;
+
+  BACKWARD_ROUTING_NEED_PLANNING_REROUTING = 25;
+  LEFT_LANECHANGE_ROUTING= 26;
+  RIGHT_LANECHANGE_ROUTING=27;
+  BACKWARD_ROUTING_FROM_PLANNING_REROUTING = 28;
+  BACKWARD_ROUTING_DIRECTLY = 29;
+  
+  LONG_ADJUSTMENT_FRONT = 30;
+  LONG_ADJUSTMENT_BACK = 31;
+
+  TWO_ROUTING_FRONT = 32;
+  TWO_ROUTING_BACK = 33;
+
+  HASTASK = 34;
+  NOTASK = 35;
+  TEMPORARY_PARKING = 36;
+  TEMPORARY_VEH_RELOCATION = 37;
+  SEARCH_REACH_STACKER = 38;
+};
+message Measurement {
+  optional double distance = 1;
+}
+
+enum ChangeLaneType {
+  FORWARD = 0;
+  LEFT = 1;
+  RIGHT = 2;
+};
+
+message Passage {
+  repeated LaneSegment segment = 1;
+  optional bool can_exit = 2;
+  optional ChangeLaneType change_lane_type = 3 [default = FORWARD];
+}
+
+message RoadSegment {
+  optional string id = 1;
+  repeated Passage passage = 2;
+}
+
+message RoutingResponse {
+  optional century.common.Header header = 1;
+  repeated RoadSegment road = 2;
+  optional Measurement measurement = 3;
+  optional RoutingRequest routing_request = 4;
+
+  // the map version which is used to build road graph
+  optional bytes map_version = 5;
+  optional century.common.StatusPb status = 6;
+
+  optional bool is_reverse_type = 7 [default = false];
+  optional double cost = 8 [default = 0.0];
+  repeated century.common.PointENU road_points = 9;
+}
+
+message RoutingResponses {
+  optional century.common.Header header = 1;
+  repeated RoutingResponse routing_response = 2;
+}
+
+message RoutingResult {
+  optional century.common.Header header = 1;
+  optional bool routing_result = 2 [default = false];
+  optional bool from_cloud = 3 [default = false];
+  optional bool temporary_parking = 4 [default = false];
+}

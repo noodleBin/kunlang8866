@@ -1,0 +1,5 @@
+is_sim: false
+loc_config_path: "/century/vehicle_config/loc_config.yaml"
+msf_loc_rate: 50
+sync_time_thresh: 0.2
+non_recv_time_thresh: 0.5

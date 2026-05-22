@@ -1,0 +1,10 @@
+module_config {
+    module_library : "/century/bazel-bin/modules/tools/planning/fake_borrow_response/libfake_borrow_response_component.so"
+    timer_components {
+        class_name : "FakeBorrowResponseComponent"
+        config {
+            name: "fake_borrow_response"
+            interval: 10000
+        }
+    }
+}

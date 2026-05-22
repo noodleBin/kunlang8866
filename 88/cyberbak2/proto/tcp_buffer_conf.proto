@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+package century.cyber.proto;
+
+message TcpChannelBuffer {
+  optional string channel_name = 1;
+  // Max message size in bytes for this channel.
+  optional uint64 max_msg_size = 2;
+};
+
+message TcpBufferConf {
+  // Default buffer size in bytes.
+  optional uint32 default_buf = 1 [default = 262144];  // 256KB
+  // Max buffer size in bytes to clamp to.
+  optional uint32 max_buf = 2 [default = 16777216];  // 16MB
+  // Per-channel max message size override.
+  repeated TcpChannelBuffer channel_conf = 3;
+};

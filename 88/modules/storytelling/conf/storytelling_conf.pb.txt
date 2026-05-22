@@ -1,0 +1,4 @@
+topic_config {
+  planning_trajectory_topic: "/century/planning"
+  storytelling_topic: "/century/storytelling"
+}

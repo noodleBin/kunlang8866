@@ -1,0 +1,40 @@
+syntax = "proto2";
+package century.planning;
+
+import "modules/common/proto/header.proto";
+
+message Feature {
+  optional century.common.Header header = 1;
+  optional uint32 one_level_unknown_obs = 2 [default = 0];  
+  optional uint32 one_level_typed_obs = 3 [default = 0];  
+  optional uint32 two_level_unknown_obs = 4 [default = 0]; 
+  optional uint32 two_level_typed_obs = 5 [default = 0]; 
+  optional uint32 three_level_unknown_obs = 6 [default = 0]; 
+  optional uint32 three_level_typed_obs = 7 [default = 0];
+  optional uint32 four_level_unknown_obs = 8 [default = 0];  
+  optional uint32 four_level_typed_obs = 9 [default = 0];
+  optional uint32 five_level_unknown_obs = 10 [default = 0];
+  optional uint32 five_level_typed_obs = 11 [default = 0];
+
+  
+  optional uint32 dynamic_one_level_unknown_obs = 12 [default = 0];
+  optional uint32 dynamic_one_level_typed_obs = 13 [default = 0];
+  optional uint32 dynamic_two_level_unknown_obs = 14 [default = 0]; 
+  optional uint32 dynamic_two_level_typed_obs = 15 [default = 0];
+  optional uint32 dynamic_three_level_unknown_obs = 16 [default = 0];
+  optional uint32 dynamic_three_level_typed_obs = 17 [default = 0];
+  optional uint32 dynamic_four_level_unknown_obs = 18 [default = 0]; 
+  optional uint32 dynamic_four_level_typed_obs = 19 [default = 0];
+  optional uint32 dynamic_five_level_unknown_obs = 20 [default = 0]; 
+  optional uint32 dynamic_five_level_typed_obs = 21 [default = 0];
+
+  optional uint32 label = 22 [default = 0];  
+
+}
+
+message SvmFeatureData {
+  optional century.common.Header header = 1;
+
+  // driving action
+  repeated Feature featrue = 2;
+}
