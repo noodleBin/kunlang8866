@@ -1,0 +1,36 @@
+# 归档与压缩包
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.rar
+*.7z
+
+# 二进制库
+*.so
+*.so.*
+*.dll
+*.dylib
+*.a
+
+# 模型权重
+*.onnx
+*.pt
+*.pth
+*.ckpt
+*.h5
+*.pkl
+*.bin
+*.safetensors
+
+# 系统包
+*.deb
+*.rpm
+
+# 前端构建产物
+**/dist/
+**/build/
+**/node_modules/
+
+# 3D 资源
+*.obj
