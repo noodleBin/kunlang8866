@@ -171,11 +171,21 @@ void HybridTransmitter<M>::Disable(const RoleAttributes& opposite_attr) {
     return;
   }
 
+  // Guard: the transmitter for this relation may not exist (e.g. a DIFF_HOST
+  // channel not in the RTPS whitelist). Mirror the check in Enable() so we do
+  // not dereference a null TransmitterPtr that map::operator[] would create.
+  auto mode = mapping_table_[relation];
+  if (transmitters_.find(mode) == transmitters_.end()) {
+    AWARN << "No transmitter available for relation " << relation
+          << " on channel [" << this->attr_.channel_name() << "]";
+    return;
+  }
+
   uint64_t id = opposite_attr.id();
   std::lock_guard<std::mutex> lock(mutex_);
-  receivers_[mapping_table_[relation]].erase(id);
-  if (receivers_[mapping_table_[relation]].empty()) {
-    transmitters_[mapping_table_[relation]]->Disable(opposite_attr);
+  receivers_[mode].erase(id);
+  if (receivers_[mode].empty()) {
+    transmitters_[mode]->Disable(opposite_attr);
   }
 }
 
