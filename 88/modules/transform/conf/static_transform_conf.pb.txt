@@ -60,17 +60,3 @@ extrinsic_file {
     file_path: "/century/modules/perception/data/params/m1_rear_extrinsics.yaml"
     enable: true
 }
-
-extrinsic_file {
-    frame_id: "imu"
-    child_frame_id: "lidar_hesai_at128p_front"
-    file_path: "/century/modules/perception/data/params/hesai_at128p_front_extrinsics.yaml"
-    enable: true
-}
-
-extrinsic_file {
-    frame_id: "imu"
-    child_frame_id: "lidar_hesai_at128p_rear"
-    file_path: "/century/modules/perception/data/params/hesai_at128p_rear_extrinsics.yaml"
-    enable: true
-}
