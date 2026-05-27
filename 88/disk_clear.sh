@@ -10,6 +10,12 @@ mkdir -p "$(dirname "$LOG_FILE")"
 touch "$LOG_FILE"
 chmod 666 "$LOG_FILE" 2>/dev/null
 
+# Run cleanup at low CPU/IO priority so big-file deletions do not stall the
+# realtime perception pipeline. (ionice is a no-op on the 'none' nvme IO
+# scheduler but harmless; renice reduces the periodic find/sort scan cost.)
+renice -n 19 -p $$ >/dev/null 2>&1
+ionice -c3 -p $$ >/dev/null 2>&1
+
 log() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$LOG_FILE"
 }
@@ -44,6 +50,10 @@ cleanup_loop() {
                         fi
                         if rm -f "$file"; then
                             log "Deleted: $file"
+                            # Spread deletions over time so a batch of large
+                            # .record files does not cause an IO burst that
+                            # stalls realtime perception (~0.5s latency spikes).
+                            sleep 0.3
                         else
                             log "Failed to delete: $file"
                         fi
